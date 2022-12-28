@@ -1,8 +1,10 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
+import SidelineSideline from './sideline.sideline'
 
 
 export default { 
+  SidelineSideline: load(SidelineSideline, 'sideline.sideline'),
   
 }
 
