@@ -1,23 +1,30 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { Employer } from "./employer";
 import { Params } from "./params";
 
 export const protobufPackage = "sideline.sideline";
 
 /** GenesisState defines the sideline module's genesis state. */
 export interface GenesisState {
+  params:
+    | Params
+    | undefined;
   /** this line is used by starport scaffolding # genesis/proto/state */
-  params: Params | undefined;
+  employerList: Employer[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined };
+  return { params: undefined, employerList: [] };
 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.employerList) {
+      Employer.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -32,6 +39,9 @@ export const GenesisState = {
         case 1:
           message.params = Params.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.employerList.push(Employer.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -41,12 +51,22 @@ export const GenesisState = {
   },
 
   fromJSON(object: any): GenesisState {
-    return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
+    return {
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+      employerList: Array.isArray(object?.employerList)
+        ? object.employerList.map((e: any) => Employer.fromJSON(e))
+        : [],
+    };
   },
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    if (message.employerList) {
+      obj.employerList = message.employerList.map((e) => e ? Employer.toJSON(e) : undefined);
+    } else {
+      obj.employerList = [];
+    }
     return obj;
   },
 
@@ -55,6 +75,7 @@ export const GenesisState = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
+    message.employerList = object.employerList?.map((e) => Employer.fromPartial(e)) || [];
     return message;
   },
 };

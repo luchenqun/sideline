@@ -3,6 +3,7 @@ package sideline.sideline;
 
 import "gogoproto/gogo.proto";
 import "sideline/sideline/params.proto";
+import "sideline/sideline/employer.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "sideline/x/sideline/types";
@@ -10,5 +11,6 @@ option go_package = "sideline/x/sideline/types";
 // GenesisState defines the sideline module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Employer employerList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package sideline.sideline;
+
+option go_package = "sideline/x/sideline/types";
+
+message Employer {
+  string index = 1; 
+  string name = 2; 
+  string introduce = 3; 
+  string email = 4; 
+  string avatar = 5; 
+  uint64 taskCount = 6; 
+  uint64 taskFail = 7; 
+  repeated string feedbacks = 8; 
+  
+}
+
