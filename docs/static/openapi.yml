@@ -74954,6 +74954,12 @@ definitions:
         type: array
         items:
           type: string
+  sideline.sideline.MsgCreateTaskResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   sideline.sideline.MsgRegistDeveloperResponse:
     type: object
   sideline.sideline.MsgRegistEmployerResponse:

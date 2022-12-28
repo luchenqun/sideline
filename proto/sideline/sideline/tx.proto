@@ -9,6 +9,7 @@ option go_package = "sideline/x/sideline/types";
 service Msg {
       rpc RegistEmployer(MsgRegistEmployer) returns (MsgRegistEmployerResponse);
   rpc RegistDeveloper(MsgRegistDeveloper) returns (MsgRegistDeveloperResponse);
+  rpc CreateTask(MsgCreateTask) returns (MsgCreateTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -35,6 +36,19 @@ message MsgRegistDeveloper {
 }
 
 message MsgRegistDeveloperResponse {
+}
+
+message MsgCreateTask {
+  string creator = 1;
+  string title = 2;
+  string description = 3;
+  string remuneration = 4;
+  string deposit = 5;
+  uint64 deadline = 6;
+}
+
+message MsgCreateTaskResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
