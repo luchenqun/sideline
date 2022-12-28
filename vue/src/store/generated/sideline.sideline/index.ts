@@ -1,10 +1,11 @@
 import { Client, registry, MissingWalletError } from 'sideline-client-ts'
 
+import { Developer } from "sideline-client-ts/sideline.sideline/types"
 import { Employer } from "sideline-client-ts/sideline.sideline/types"
 import { Params } from "sideline-client-ts/sideline.sideline/types"
 
 
-export { Employer, Params };
+export { Developer, Employer, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -38,8 +39,11 @@ const getDefaultState = () => {
 				Params: {},
 				Employer: {},
 				EmployerAll: {},
+				Developer: {},
+				DeveloperAll: {},
 				
 				_Structure: {
+						Developer: getStructure(Developer.fromPartial({})),
 						Employer: getStructure(Employer.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
@@ -87,6 +91,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.EmployerAll[JSON.stringify(params)] ?? {}
+		},
+				getDeveloper: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Developer[JSON.stringify(params)] ?? {}
+		},
+				getDeveloperAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.DeveloperAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -187,6 +203,54 @@ export default {
 				return getters['getEmployerAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryEmployerAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryDeveloper({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.SidelineSideline.query.queryDeveloper( key.index)).data
+				
+					
+				commit('QUERY', { query: 'Developer', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryDeveloper', payload: { options: { all }, params: {...key},query }})
+				return getters['getDeveloper']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryDeveloper API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryDeveloperAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.SidelineSideline.query.queryDeveloperAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.SidelineSideline.query.queryDeveloperAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'DeveloperAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryDeveloperAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getDeveloperAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryDeveloperAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

@@ -20,6 +20,24 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface SidelineDeveloper {
+  index?: string;
+  name?: string;
+  introduce?: string;
+  email?: string;
+  avatar?: string;
+  education?: string;
+  major?: string;
+  skills?: string[];
+
+  /** @format uint64 */
+  taskSuccess?: string;
+
+  /** @format uint64 */
+  taskFail?: string;
+  feedbacks?: string[];
+}
+
 export interface SidelineEmployer {
   index?: string;
   name?: string;
@@ -40,6 +58,21 @@ export interface SidelineEmployer {
  */
 export type SidelineParams = object;
 
+export interface SidelineQueryAllDeveloperResponse {
+  developer?: SidelineDeveloper[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface SidelineQueryAllEmployerResponse {
   employer?: SidelineEmployer[];
 
@@ -53,6 +86,10 @@ export interface SidelineQueryAllEmployerResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface SidelineQueryGetDeveloperResponse {
+  developer?: SidelineDeveloper;
 }
 
 export interface SidelineQueryGetEmployerResponse {
@@ -260,10 +297,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title sideline/sideline/employer.proto
+ * @title sideline/sideline/developer.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDeveloperAll
+   * @summary Queries a list of Developer items.
+   * @request GET:/sideline/sideline/developer
+   */
+  queryDeveloperAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<SidelineQueryAllDeveloperResponse, RpcStatus>({
+      path: `/sideline/sideline/developer`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDeveloper
+   * @summary Queries a Developer by index.
+   * @request GET:/sideline/sideline/developer/{index}
+   */
+  queryDeveloper = (index: string, params: RequestParams = {}) =>
+    this.request<SidelineQueryGetDeveloperResponse, RpcStatus>({
+      path: `/sideline/sideline/developer/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
