@@ -55,6 +55,8 @@ export interface SidelineEmployer {
   feedbacks?: string[];
 }
 
+export type SidelineMsgRegistDeveloperResponse = object;
+
 export type SidelineMsgRegistEmployerResponse = object;
 
 /**

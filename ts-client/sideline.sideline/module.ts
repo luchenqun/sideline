@@ -8,9 +8,10 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgRegistEmployer } from "./types/sideline/sideline/tx";
+import { MsgRegistDeveloper } from "./types/sideline/sideline/tx";
 
 
-export { MsgRegistEmployer };
+export { MsgRegistEmployer, MsgRegistDeveloper };
 
 type sendMsgRegistEmployerParams = {
   value: MsgRegistEmployer,
@@ -18,9 +19,19 @@ type sendMsgRegistEmployerParams = {
   memo?: string
 };
 
+type sendMsgRegistDeveloperParams = {
+  value: MsgRegistDeveloper,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgRegistEmployerParams = {
   value: MsgRegistEmployer,
+};
+
+type msgRegistDeveloperParams = {
+  value: MsgRegistDeveloper,
 };
 
 
@@ -55,12 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgRegistDeveloper({ value, fee, memo }: sendMsgRegistDeveloperParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegistDeveloper: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRegistDeveloper({ value: MsgRegistDeveloper.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRegistDeveloper: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgRegistEmployer({ value }: msgRegistEmployerParams): EncodeObject {
 			try {
 				return { typeUrl: "/sideline.sideline.MsgRegistEmployer", value: MsgRegistEmployer.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgRegistEmployer: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRegistDeveloper({ value }: msgRegistDeveloperParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgRegistDeveloper", value: MsgRegistDeveloper.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRegistDeveloper: Could not create message: ' + e.message)
 			}
 		},
 		

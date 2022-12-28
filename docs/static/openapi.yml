@@ -74954,6 +74954,8 @@ definitions:
         type: array
         items:
           type: string
+  sideline.sideline.MsgRegistDeveloperResponse:
+    type: object
   sideline.sideline.MsgRegistEmployerResponse:
     type: object
   sideline.sideline.Params:

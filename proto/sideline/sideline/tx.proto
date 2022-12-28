@@ -8,6 +8,7 @@ option go_package = "sideline/x/sideline/types";
 // Msg defines the Msg service.
 service Msg {
       rpc RegistEmployer(MsgRegistEmployer) returns (MsgRegistEmployerResponse);
+  rpc RegistDeveloper(MsgRegistDeveloper) returns (MsgRegistDeveloperResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,6 +21,20 @@ message MsgRegistEmployer {
 }
 
 message MsgRegistEmployerResponse {
+}
+
+message MsgRegistDeveloper {
+  string creator = 1;
+  string name = 2;
+  string introduce = 3;
+  string email = 4;
+  string avatar = 5;
+  string education = 6;
+  string major = 7;
+  repeated string skills = 8;
+}
+
+message MsgRegistDeveloperResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
