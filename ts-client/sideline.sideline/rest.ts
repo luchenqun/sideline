@@ -26,6 +26,7 @@ export interface SidelineDeveloper {
   introduce?: string;
   email?: string;
   avatar?: string;
+  address?: string;
   education?: string;
   major?: string;
   skills?: string[];
@@ -44,6 +45,7 @@ export interface SidelineEmployer {
   introduce?: string;
   email?: string;
   avatar?: string;
+  address?: string;
 
   /** @format uint64 */
   taskCount?: string;
@@ -52,6 +54,8 @@ export interface SidelineEmployer {
   taskFail?: string;
   feedbacks?: string[];
 }
+
+export type SidelineMsgRegistEmployerResponse = object;
 
 /**
  * Params defines the parameters for the module.

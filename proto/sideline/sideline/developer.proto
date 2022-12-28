@@ -8,13 +8,14 @@ message Developer {
   string name = 2; 
   string introduce = 3; 
   string email = 4; 
-  string avatar = 5; 
-  string education = 6; 
-  string major = 7; 
-  repeated string skills = 8; 
-  uint64 taskSuccess = 9; 
-  uint64 taskFail = 10; 
-  repeated string feedbacks = 11; 
+  string avatar = 5;
+  string address = 6;
+  string education = 7;
+  string major = 8;
+  repeated string skills = 9;
+  uint64 taskSuccess = 10;
+  uint64 taskFail = 11;
+  repeated string feedbacks = 12;
   
 }
 

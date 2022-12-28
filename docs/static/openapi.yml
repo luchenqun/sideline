@@ -44707,6 +44707,8 @@ paths:
                       type: string
                     avatar:
                       type: string
+                    address:
+                      type: string
                     education:
                       type: string
                     major:
@@ -44853,6 +44855,8 @@ paths:
                     type: string
                   avatar:
                     type: string
+                  address:
+                    type: string
                   education:
                     type: string
                   major:
@@ -44920,6 +44924,8 @@ paths:
                     email:
                       type: string
                     avatar:
+                      type: string
+                    address:
                       type: string
                     taskCount:
                       type: string
@@ -45058,6 +45064,8 @@ paths:
                   email:
                     type: string
                   avatar:
+                    type: string
+                  address:
                     type: string
                   taskCount:
                     type: string
@@ -74901,6 +74909,8 @@ definitions:
         type: string
       avatar:
         type: string
+      address:
+        type: string
       education:
         type: string
       major:
@@ -74932,6 +74942,8 @@ definitions:
         type: string
       avatar:
         type: string
+      address:
+        type: string
       taskCount:
         type: string
         format: uint64
@@ -74942,6 +74954,8 @@ definitions:
         type: array
         items:
           type: string
+  sideline.sideline.MsgRegistEmployerResponse:
+    type: object
   sideline.sideline.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -74962,6 +74976,8 @@ definitions:
             email:
               type: string
             avatar:
+              type: string
+            address:
               type: string
             education:
               type: string
@@ -75024,6 +75040,8 @@ definitions:
             email:
               type: string
             avatar:
+              type: string
+            address:
               type: string
             taskCount:
               type: string
@@ -75134,6 +75152,8 @@ definitions:
             type: string
           avatar:
             type: string
+          address:
+            type: string
           education:
             type: string
           major:
@@ -75167,6 +75187,8 @@ definitions:
           email:
             type: string
           avatar:
+            type: string
+          address:
             type: string
           taskCount:
             type: string

@@ -10,6 +10,7 @@ export interface Developer {
   introduce: string;
   email: string;
   avatar: string;
+  address: string;
   education: string;
   major: string;
   skills: string[];
@@ -25,6 +26,7 @@ function createBaseDeveloper(): Developer {
     introduce: "",
     email: "",
     avatar: "",
+    address: "",
     education: "",
     major: "",
     skills: [],
@@ -51,23 +53,26 @@ export const Developer = {
     if (message.avatar !== "") {
       writer.uint32(42).string(message.avatar);
     }
+    if (message.address !== "") {
+      writer.uint32(50).string(message.address);
+    }
     if (message.education !== "") {
-      writer.uint32(50).string(message.education);
+      writer.uint32(58).string(message.education);
     }
     if (message.major !== "") {
-      writer.uint32(58).string(message.major);
+      writer.uint32(66).string(message.major);
     }
     for (const v of message.skills) {
-      writer.uint32(66).string(v!);
+      writer.uint32(74).string(v!);
     }
     if (message.taskSuccess !== 0) {
-      writer.uint32(72).uint64(message.taskSuccess);
+      writer.uint32(80).uint64(message.taskSuccess);
     }
     if (message.taskFail !== 0) {
-      writer.uint32(80).uint64(message.taskFail);
+      writer.uint32(88).uint64(message.taskFail);
     }
     for (const v of message.feedbacks) {
-      writer.uint32(90).string(v!);
+      writer.uint32(98).string(v!);
     }
     return writer;
   },
@@ -95,21 +100,24 @@ export const Developer = {
           message.avatar = reader.string();
           break;
         case 6:
-          message.education = reader.string();
+          message.address = reader.string();
           break;
         case 7:
-          message.major = reader.string();
+          message.education = reader.string();
           break;
         case 8:
-          message.skills.push(reader.string());
+          message.major = reader.string();
           break;
         case 9:
-          message.taskSuccess = longToNumber(reader.uint64() as Long);
+          message.skills.push(reader.string());
           break;
         case 10:
-          message.taskFail = longToNumber(reader.uint64() as Long);
+          message.taskSuccess = longToNumber(reader.uint64() as Long);
           break;
         case 11:
+          message.taskFail = longToNumber(reader.uint64() as Long);
+          break;
+        case 12:
           message.feedbacks.push(reader.string());
           break;
         default:
@@ -127,6 +135,7 @@ export const Developer = {
       introduce: isSet(object.introduce) ? String(object.introduce) : "",
       email: isSet(object.email) ? String(object.email) : "",
       avatar: isSet(object.avatar) ? String(object.avatar) : "",
+      address: isSet(object.address) ? String(object.address) : "",
       education: isSet(object.education) ? String(object.education) : "",
       major: isSet(object.major) ? String(object.major) : "",
       skills: Array.isArray(object?.skills) ? object.skills.map((e: any) => String(e)) : [],
@@ -143,6 +152,7 @@ export const Developer = {
     message.introduce !== undefined && (obj.introduce = message.introduce);
     message.email !== undefined && (obj.email = message.email);
     message.avatar !== undefined && (obj.avatar = message.avatar);
+    message.address !== undefined && (obj.address = message.address);
     message.education !== undefined && (obj.education = message.education);
     message.major !== undefined && (obj.major = message.major);
     if (message.skills) {
@@ -167,6 +177,7 @@ export const Developer = {
     message.introduce = object.introduce ?? "";
     message.email = object.email ?? "";
     message.avatar = object.avatar ?? "";
+    message.address = object.address ?? "";
     message.education = object.education ?? "";
     message.major = object.major ?? "";
     message.skills = object.skills?.map((e) => e) || [];

@@ -10,13 +10,24 @@ export interface Employer {
   introduce: string;
   email: string;
   avatar: string;
+  address: string;
   taskCount: number;
   taskFail: number;
   feedbacks: string[];
 }
 
 function createBaseEmployer(): Employer {
-  return { index: "", name: "", introduce: "", email: "", avatar: "", taskCount: 0, taskFail: 0, feedbacks: [] };
+  return {
+    index: "",
+    name: "",
+    introduce: "",
+    email: "",
+    avatar: "",
+    address: "",
+    taskCount: 0,
+    taskFail: 0,
+    feedbacks: [],
+  };
 }
 
 export const Employer = {
@@ -36,14 +47,17 @@ export const Employer = {
     if (message.avatar !== "") {
       writer.uint32(42).string(message.avatar);
     }
+    if (message.address !== "") {
+      writer.uint32(50).string(message.address);
+    }
     if (message.taskCount !== 0) {
-      writer.uint32(48).uint64(message.taskCount);
+      writer.uint32(56).uint64(message.taskCount);
     }
     if (message.taskFail !== 0) {
-      writer.uint32(56).uint64(message.taskFail);
+      writer.uint32(64).uint64(message.taskFail);
     }
     for (const v of message.feedbacks) {
-      writer.uint32(66).string(v!);
+      writer.uint32(74).string(v!);
     }
     return writer;
   },
@@ -71,12 +85,15 @@ export const Employer = {
           message.avatar = reader.string();
           break;
         case 6:
-          message.taskCount = longToNumber(reader.uint64() as Long);
+          message.address = reader.string();
           break;
         case 7:
-          message.taskFail = longToNumber(reader.uint64() as Long);
+          message.taskCount = longToNumber(reader.uint64() as Long);
           break;
         case 8:
+          message.taskFail = longToNumber(reader.uint64() as Long);
+          break;
+        case 9:
           message.feedbacks.push(reader.string());
           break;
         default:
@@ -94,6 +111,7 @@ export const Employer = {
       introduce: isSet(object.introduce) ? String(object.introduce) : "",
       email: isSet(object.email) ? String(object.email) : "",
       avatar: isSet(object.avatar) ? String(object.avatar) : "",
+      address: isSet(object.address) ? String(object.address) : "",
       taskCount: isSet(object.taskCount) ? Number(object.taskCount) : 0,
       taskFail: isSet(object.taskFail) ? Number(object.taskFail) : 0,
       feedbacks: Array.isArray(object?.feedbacks) ? object.feedbacks.map((e: any) => String(e)) : [],
@@ -107,6 +125,7 @@ export const Employer = {
     message.introduce !== undefined && (obj.introduce = message.introduce);
     message.email !== undefined && (obj.email = message.email);
     message.avatar !== undefined && (obj.avatar = message.avatar);
+    message.address !== undefined && (obj.address = message.address);
     message.taskCount !== undefined && (obj.taskCount = Math.round(message.taskCount));
     message.taskFail !== undefined && (obj.taskFail = Math.round(message.taskFail));
     if (message.feedbacks) {
@@ -124,6 +143,7 @@ export const Employer = {
     message.introduce = object.introduce ?? "";
     message.email = object.email ?? "";
     message.avatar = object.avatar ?? "";
+    message.address = object.address ?? "";
     message.taskCount = object.taskCount ?? 0;
     message.taskFail = object.taskFail ?? 0;
     message.feedbacks = object.feedbacks?.map((e) => e) || [];
