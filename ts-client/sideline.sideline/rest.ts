@@ -88,6 +88,21 @@ export interface SidelineQueryAllEmployerResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface SidelineQueryAllTaskResponse {
+  Task?: SidelineTask[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface SidelineQueryGetDeveloperResponse {
   developer?: SidelineDeveloper;
 }
@@ -96,12 +111,34 @@ export interface SidelineQueryGetEmployerResponse {
   employer?: SidelineEmployer;
 }
 
+export interface SidelineQueryGetTaskResponse {
+  Task?: SidelineTask;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface SidelineQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: SidelineParams;
+}
+
+export interface SidelineTask {
+  /** @format uint64 */
+  id?: string;
+  title?: string;
+  description?: string;
+  remuneration?: string;
+  depositEmployer?: string;
+  depositDeveloper?: string;
+  employer?: string;
+  developer?: string;
+
+  /** @format uint64 */
+  deadline?: string;
+
+  /** @format uint64 */
+  status?: string;
 }
 
 /**
@@ -396,6 +433,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<SidelineQueryParamsResponse, RpcStatus>({
       path: `/sideline/sideline/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTaskAll
+   * @summary Queries a list of Task items.
+   * @request GET:/sideline/sideline/task
+   */
+  queryTaskAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<SidelineQueryAllTaskResponse, RpcStatus>({
+      path: `/sideline/sideline/task`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTask
+   * @summary Queries a Task by id.
+   * @request GET:/sideline/sideline/task/{id}
+   */
+  queryTask = (id: string, params: RequestParams = {}) =>
+    this.request<SidelineQueryGetTaskResponse, RpcStatus>({
+      path: `/sideline/sideline/task/${id}`,
       method: "GET",
       format: "json",
       ...params,

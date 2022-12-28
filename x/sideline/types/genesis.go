@@ -12,6 +12,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		EmployerList:  []Employer{},
 		DeveloperList: []Developer{},
+		TaskList:      []Task{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -39,6 +40,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for developer")
 		}
 		developerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated ID in task
+	taskIdMap := make(map[uint64]bool)
+	taskCount := gs.GetTaskCount()
+	for _, elem := range gs.TaskList {
+		if _, ok := taskIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for task")
+		}
+		if elem.Id >= taskCount {
+			return fmt.Errorf("task id should be lower or equal than the last id")
+		}
+		taskIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

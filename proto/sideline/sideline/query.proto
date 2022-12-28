@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "sideline/sideline/params.proto";
 import "sideline/sideline/employer.proto";
 import "sideline/sideline/developer.proto";
+import "sideline/sideline/task.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "sideline/x/sideline/types";
@@ -35,6 +36,16 @@ service Query {
 	// Queries a list of Developer items.
 	rpc DeveloperAll(QueryAllDeveloperRequest) returns (QueryAllDeveloperResponse) {
 		option (google.api.http).get = "/sideline/sideline/developer";
+	}
+
+// Queries a Task by id.
+	rpc Task(QueryGetTaskRequest) returns (QueryGetTaskResponse) {
+		option (google.api.http).get = "/sideline/sideline/task/{id}";
+	}
+
+	// Queries a list of Task items.
+	rpc TaskAll(QueryAllTaskRequest) returns (QueryAllTaskResponse) {
+		option (google.api.http).get = "/sideline/sideline/task";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -82,6 +93,23 @@ message QueryAllDeveloperRequest {
 
 message QueryAllDeveloperResponse {
 	repeated Developer developer = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetTaskRequest {
+	uint64 id = 1;
+}
+
+message QueryGetTaskResponse {
+	Task Task = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTaskRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTaskResponse {
+	repeated Task Task = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
