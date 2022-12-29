@@ -9,13 +9,14 @@ const TypeMsgCreateTask = "create_task"
 
 var _ sdk.Msg = &MsgCreateTask{}
 
-func NewMsgCreateTask(creator string, title string, description string, remuneration string, deposit string, deadline uint64) *MsgCreateTask {
+func NewMsgCreateTask(creator string, title string, description string, remuneration string, deposit string, collateral string, deadline uint64) *MsgCreateTask {
 	return &MsgCreateTask{
 		Creator:      creator,
 		Title:        title,
 		Description:  description,
 		Remuneration: remuneration,
 		Deposit:      deposit,
+		Collateral:   collateral,
 		Deadline:     deadline,
 	}
 }

@@ -12,15 +12,15 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	task := types.Task{
-		Title:            msg.Title,
-		Description:      msg.Description,
-		Remuneration:     msg.Remuneration,
-		DepositEmployer:  msg.Deposit,
-		DepositDeveloper: "",
-		Employer:         msg.Creator,
-		Developer:        "",
-		Deadline:         msg.Deadline,
-		Status:           0,
+		Title:        msg.Title,
+		Description:  msg.Description,
+		Remuneration: msg.Remuneration,
+		Deposit:      msg.Deposit,
+		Collateral:   msg.Collateral,
+		Employer:     msg.Creator,
+		Developer:    "",
+		Deadline:     msg.Deadline,
+		Status:       0,
 	}
 
 	// 只有雇主才能发布任务

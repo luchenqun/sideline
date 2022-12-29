@@ -15,15 +15,16 @@ var _ = strconv.Itoa(0)
 
 func CmdCreateTask() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-task [title] [description] [remuneration] [deposit] [deadline]",
+		Use:   "create-task [title] [description] [remuneration] [deposit] [collateral] [deadline]",
 		Short: "Broadcast message create-task",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argTitle := args[0]
 			argDescription := args[1]
 			argRemuneration := args[2]
-			argDepositEmployer := args[3]
-			argDeadline, err := cast.ToUint64E(args[4])
+			argDeposit := args[3]
+			argCollateral := args[4]
+			argDeadline, err := cast.ToUint64E(args[5])
 			if err != nil {
 				return err
 			}
@@ -38,7 +39,8 @@ func CmdCreateTask() *cobra.Command {
 				argTitle,
 				argDescription,
 				argRemuneration,
-				argDepositEmployer,
+				argDeposit,
+				argCollateral,
 				argDeadline,
 			)
 			if err := msg.ValidateBasic(); err != nil {

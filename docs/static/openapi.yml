@@ -45162,9 +45162,9 @@ paths:
                       type: string
                     remuneration:
                       type: string
-                    depositEmployer:
+                    deposit:
                       type: string
-                    depositDeveloper:
+                    collateral:
                       type: string
                     employer:
                       type: string
@@ -45303,9 +45303,9 @@ paths:
                     type: string
                   remuneration:
                     type: string
-                  depositEmployer:
+                  deposit:
                     type: string
-                  depositDeveloper:
+                  collateral:
                     type: string
                   employer:
                     type: string
@@ -75104,9 +75104,9 @@ definitions:
               type: string
             remuneration:
               type: string
-            depositEmployer:
+            deposit:
               type: string
-            depositDeveloper:
+            collateral:
               type: string
             employer:
               type: string
@@ -75223,9 +75223,9 @@ definitions:
             type: string
           remuneration:
             type: string
-          depositEmployer:
+          deposit:
             type: string
-          depositDeveloper:
+          collateral:
             type: string
           employer:
             type: string
@@ -75256,9 +75256,9 @@ definitions:
         type: string
       remuneration:
         type: string
-      depositEmployer:
+      deposit:
         type: string
-      depositDeveloper:
+      collateral:
         type: string
       employer:
         type: string

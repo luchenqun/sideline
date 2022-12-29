@@ -140,8 +140,8 @@ export interface SidelineTask {
   title?: string;
   description?: string;
   remuneration?: string;
-  depositEmployer?: string;
-  depositDeveloper?: string;
+  deposit?: string;
+  collateral?: string;
   employer?: string;
   developer?: string;
 

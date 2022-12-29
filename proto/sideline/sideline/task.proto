@@ -8,8 +8,8 @@ message Task {
   string title = 2; 
   string description = 3; 
   string remuneration = 4; 
-  string depositEmployer = 5; 
-  string depositDeveloper = 6; 
+  string deposit = 5;
+  string collateral = 6;
   string employer = 7; 
   string developer = 8; 
   uint64 deadline = 9; 

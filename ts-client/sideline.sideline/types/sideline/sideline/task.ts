@@ -9,8 +9,8 @@ export interface Task {
   title: string;
   description: string;
   remuneration: string;
-  depositEmployer: string;
-  depositDeveloper: string;
+  deposit: string;
+  collateral: string;
   employer: string;
   developer: string;
   deadline: number;
@@ -23,8 +23,8 @@ function createBaseTask(): Task {
     title: "",
     description: "",
     remuneration: "",
-    depositEmployer: "",
-    depositDeveloper: "",
+    deposit: "",
+    collateral: "",
     employer: "",
     developer: "",
     deadline: 0,
@@ -46,11 +46,11 @@ export const Task = {
     if (message.remuneration !== "") {
       writer.uint32(34).string(message.remuneration);
     }
-    if (message.depositEmployer !== "") {
-      writer.uint32(42).string(message.depositEmployer);
+    if (message.deposit !== "") {
+      writer.uint32(42).string(message.deposit);
     }
-    if (message.depositDeveloper !== "") {
-      writer.uint32(50).string(message.depositDeveloper);
+    if (message.collateral !== "") {
+      writer.uint32(50).string(message.collateral);
     }
     if (message.employer !== "") {
       writer.uint32(58).string(message.employer);
@@ -87,10 +87,10 @@ export const Task = {
           message.remuneration = reader.string();
           break;
         case 5:
-          message.depositEmployer = reader.string();
+          message.deposit = reader.string();
           break;
         case 6:
-          message.depositDeveloper = reader.string();
+          message.collateral = reader.string();
           break;
         case 7:
           message.employer = reader.string();
@@ -118,8 +118,8 @@ export const Task = {
       title: isSet(object.title) ? String(object.title) : "",
       description: isSet(object.description) ? String(object.description) : "",
       remuneration: isSet(object.remuneration) ? String(object.remuneration) : "",
-      depositEmployer: isSet(object.depositEmployer) ? String(object.depositEmployer) : "",
-      depositDeveloper: isSet(object.depositDeveloper) ? String(object.depositDeveloper) : "",
+      deposit: isSet(object.deposit) ? String(object.deposit) : "",
+      collateral: isSet(object.collateral) ? String(object.collateral) : "",
       employer: isSet(object.employer) ? String(object.employer) : "",
       developer: isSet(object.developer) ? String(object.developer) : "",
       deadline: isSet(object.deadline) ? Number(object.deadline) : 0,
@@ -133,8 +133,8 @@ export const Task = {
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
     message.remuneration !== undefined && (obj.remuneration = message.remuneration);
-    message.depositEmployer !== undefined && (obj.depositEmployer = message.depositEmployer);
-    message.depositDeveloper !== undefined && (obj.depositDeveloper = message.depositDeveloper);
+    message.deposit !== undefined && (obj.deposit = message.deposit);
+    message.collateral !== undefined && (obj.collateral = message.collateral);
     message.employer !== undefined && (obj.employer = message.employer);
     message.developer !== undefined && (obj.developer = message.developer);
     message.deadline !== undefined && (obj.deadline = Math.round(message.deadline));
@@ -148,8 +148,8 @@ export const Task = {
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.remuneration = object.remuneration ?? "";
-    message.depositEmployer = object.depositEmployer ?? "";
-    message.depositDeveloper = object.depositDeveloper ?? "";
+    message.deposit = object.deposit ?? "";
+    message.collateral = object.collateral ?? "";
     message.employer = object.employer ?? "";
     message.developer = object.developer ?? "";
     message.deadline = object.deadline ?? 0;

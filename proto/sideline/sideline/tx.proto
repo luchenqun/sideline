@@ -44,7 +44,8 @@ message MsgCreateTask {
   string description = 3;
   string remuneration = 4;
   string deposit = 5;
-  uint64 deadline = 6;
+  string collateral = 6;
+  uint64 deadline = 7;
 }
 
 message MsgCreateTaskResponse {

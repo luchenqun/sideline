@@ -35,6 +35,7 @@ export interface MsgCreateTask {
   description: string;
   remuneration: string;
   deposit: string;
+  collateral: string;
   deadline: number;
 }
 
@@ -322,7 +323,7 @@ export const MsgRegistDeveloperResponse = {
 };
 
 function createBaseMsgCreateTask(): MsgCreateTask {
-  return { creator: "", title: "", description: "", remuneration: "", deposit: "", deadline: 0 };
+  return { creator: "", title: "", description: "", remuneration: "", deposit: "", collateral: "", deadline: 0 };
 }
 
 export const MsgCreateTask = {
@@ -342,8 +343,11 @@ export const MsgCreateTask = {
     if (message.deposit !== "") {
       writer.uint32(42).string(message.deposit);
     }
+    if (message.collateral !== "") {
+      writer.uint32(50).string(message.collateral);
+    }
     if (message.deadline !== 0) {
-      writer.uint32(48).uint64(message.deadline);
+      writer.uint32(56).uint64(message.deadline);
     }
     return writer;
   },
@@ -371,6 +375,9 @@ export const MsgCreateTask = {
           message.deposit = reader.string();
           break;
         case 6:
+          message.collateral = reader.string();
+          break;
+        case 7:
           message.deadline = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -388,6 +395,7 @@ export const MsgCreateTask = {
       description: isSet(object.description) ? String(object.description) : "",
       remuneration: isSet(object.remuneration) ? String(object.remuneration) : "",
       deposit: isSet(object.deposit) ? String(object.deposit) : "",
+      collateral: isSet(object.collateral) ? String(object.collateral) : "",
       deadline: isSet(object.deadline) ? Number(object.deadline) : 0,
     };
   },
@@ -399,6 +407,7 @@ export const MsgCreateTask = {
     message.description !== undefined && (obj.description = message.description);
     message.remuneration !== undefined && (obj.remuneration = message.remuneration);
     message.deposit !== undefined && (obj.deposit = message.deposit);
+    message.collateral !== undefined && (obj.collateral = message.collateral);
     message.deadline !== undefined && (obj.deadline = Math.round(message.deadline));
     return obj;
   },
@@ -410,6 +419,7 @@ export const MsgCreateTask = {
     message.description = object.description ?? "";
     message.remuneration = object.remuneration ?? "";
     message.deposit = object.deposit ?? "";
+    message.collateral = object.collateral ?? "";
     message.deadline = object.deadline ?? 0;
     return message;
   },
