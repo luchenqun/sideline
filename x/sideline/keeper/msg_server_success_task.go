@@ -15,6 +15,10 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 	if !found {
 		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
 	}
+	// 状态已经终结了，无法再成功
+	if task.Status == types.TaskStatusSuccess || task.Status == types.TaskStatusFail || task.Status == types.TaskStatusJudging || task.Status == types.TaskStatusDeveloperWin || task.Status == types.TaskStatusEmployerWin {
+		return nil, errors.Wrapf(types.ErrTaskStatus, "status = %s forbid success task", task.Status)
+	}
 
 	if task.Employer == msg.Creator {
 		// 只要有人接了你的任务，任何时候都可以认为开发者完成了任务

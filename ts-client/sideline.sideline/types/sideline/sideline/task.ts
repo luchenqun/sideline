@@ -14,7 +14,7 @@ export interface Task {
   employer: string;
   developer: string;
   accuser: string;
-  arbitrateHeight: number;
+  judgeHeight: number;
   votedAccounts: string[];
   voteYes: number;
   voteNo: number;
@@ -35,7 +35,7 @@ function createBaseTask(): Task {
     employer: "",
     developer: "",
     accuser: "",
-    arbitrateHeight: 0,
+    judgeHeight: 0,
     votedAccounts: [],
     voteYes: 0,
     voteNo: 0,
@@ -75,8 +75,8 @@ export const Task = {
     if (message.accuser !== "") {
       writer.uint32(74).string(message.accuser);
     }
-    if (message.arbitrateHeight !== 0) {
-      writer.uint32(80).uint64(message.arbitrateHeight);
+    if (message.judgeHeight !== 0) {
+      writer.uint32(80).uint64(message.judgeHeight);
     }
     for (const v of message.votedAccounts) {
       writer.uint32(90).string(v!);
@@ -137,7 +137,7 @@ export const Task = {
           message.accuser = reader.string();
           break;
         case 10:
-          message.arbitrateHeight = longToNumber(reader.uint64() as Long);
+          message.judgeHeight = longToNumber(reader.uint64() as Long);
           break;
         case 11:
           message.votedAccounts.push(reader.string());
@@ -179,7 +179,7 @@ export const Task = {
       employer: isSet(object.employer) ? String(object.employer) : "",
       developer: isSet(object.developer) ? String(object.developer) : "",
       accuser: isSet(object.accuser) ? String(object.accuser) : "",
-      arbitrateHeight: isSet(object.arbitrateHeight) ? Number(object.arbitrateHeight) : 0,
+      judgeHeight: isSet(object.judgeHeight) ? Number(object.judgeHeight) : 0,
       votedAccounts: Array.isArray(object?.votedAccounts) ? object.votedAccounts.map((e: any) => String(e)) : [],
       voteYes: isSet(object.voteYes) ? Number(object.voteYes) : 0,
       voteNo: isSet(object.voteNo) ? Number(object.voteNo) : 0,
@@ -201,7 +201,7 @@ export const Task = {
     message.employer !== undefined && (obj.employer = message.employer);
     message.developer !== undefined && (obj.developer = message.developer);
     message.accuser !== undefined && (obj.accuser = message.accuser);
-    message.arbitrateHeight !== undefined && (obj.arbitrateHeight = Math.round(message.arbitrateHeight));
+    message.judgeHeight !== undefined && (obj.judgeHeight = Math.round(message.judgeHeight));
     if (message.votedAccounts) {
       obj.votedAccounts = message.votedAccounts.map((e) => e);
     } else {
@@ -227,7 +227,7 @@ export const Task = {
     message.employer = object.employer ?? "";
     message.developer = object.developer ?? "";
     message.accuser = object.accuser ?? "";
-    message.arbitrateHeight = object.arbitrateHeight ?? 0;
+    message.judgeHeight = object.judgeHeight ?? 0;
     message.votedAccounts = object.votedAccounts?.map((e) => e) || [];
     message.voteYes = object.voteYes ?? 0;
     message.voteNo = object.voteNo ?? 0;

@@ -68,6 +68,8 @@ export type SidelineMsgRegistDeveloperResponse = object;
 
 export type SidelineMsgRegistEmployerResponse = object;
 
+export type SidelineMsgStartJudgeTaskResponse = object;
+
 export type SidelineMsgSubmitTaskResponse = object;
 
 export type SidelineMsgSuccessTaskResponse = object;
@@ -157,7 +159,7 @@ export interface SidelineTask {
   accuser?: string;
 
   /** @format uint64 */
-  arbitrateHeight?: string;
+  judgeHeight?: string;
   votedAccounts?: string[];
 
   /** @format uint64 */

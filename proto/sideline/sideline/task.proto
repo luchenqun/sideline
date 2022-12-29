@@ -13,7 +13,7 @@ message Task {
   string employer = 7; 
   string developer = 8;
   string accuser = 9;
-  uint64 arbitrateHeight = 10;
+  uint64 judgeHeight = 10;
   repeated string votedAccounts = 11;
   uint64 voteYes = 12;
   uint64 voteNo = 13;

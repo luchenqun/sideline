@@ -38,6 +38,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdUndoneTask())
 	cmd.AddCommand(CmdSuccessTask())
 	cmd.AddCommand(CmdFailTask())
+	cmd.AddCommand(CmdStartJudgeTask())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

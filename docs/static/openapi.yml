@@ -45172,7 +45172,7 @@ paths:
                       type: string
                     accuser:
                       type: string
-                    arbitrateHeight:
+                    judgeHeight:
                       type: string
                       format: uint64
                     votedAccounts:
@@ -45333,7 +45333,7 @@ paths:
                     type: string
                   accuser:
                     type: string
-                  arbitrateHeight:
+                  judgeHeight:
                     type: string
                     format: uint64
                   votedAccounts:
@@ -75008,6 +75008,8 @@ definitions:
     type: object
   sideline.sideline.MsgRegistEmployerResponse:
     type: object
+  sideline.sideline.MsgStartJudgeTaskResponse:
+    type: object
   sideline.sideline.MsgSubmitTaskResponse:
     type: object
   sideline.sideline.MsgSuccessTaskResponse:
@@ -75164,7 +75166,7 @@ definitions:
               type: string
             accuser:
               type: string
-            arbitrateHeight:
+            judgeHeight:
               type: string
               format: uint64
             votedAccounts:
@@ -75303,7 +75305,7 @@ definitions:
             type: string
           accuser:
             type: string
-          arbitrateHeight:
+          judgeHeight:
             type: string
             format: uint64
           votedAccounts:
@@ -75356,7 +75358,7 @@ definitions:
         type: string
       accuser:
         type: string
-      arbitrateHeight:
+      judgeHeight:
         type: string
         format: uint64
       votedAccounts:
