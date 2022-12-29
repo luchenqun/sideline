@@ -1,0 +1,62 @@
+package keeper
+
+import (
+	"context"
+	"cosmossdk.io/errors"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"sideline/x/sideline/types"
+)
+
+func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*types.MsgFailTaskResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	task, found := k.GetTask(ctx, msg.Id)
+	if !found {
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+	}
+
+	// 状态已经终结了，无法再失败
+	if task.Status == types.TaskStatusSuccess || task.Status == types.TaskStatusFail || task.Status == types.TaskStatusJudging || task.Status == types.TaskStatusDeveloperWin || task.Status == types.TaskStatusEmployerWin {
+		return nil, errors.Wrapf(types.ErrTaskStatus, "status = %s forbid fail task", task.Status)
+	}
+
+	if task.Employer == msg.Creator {
+		// 雇佣者只有在任务未完成的情况下有权告知任务失败
+		if uint64(ctx.BlockHeight()) < task.Deadline {
+			return nil, errors.Wrapf(types.ErrTaskStatus, "It's too early to fail a task")
+		}
+	} else if task.Developer == msg.Creator {
+		// 只要你接了任务，任何时候都可以放弃任务任务
+	} else {
+		return nil, errors.Wrapf(types.ErrPermission, "employer = %s, developer = %s, creator = %s", task.Employer, task.Developer, msg.Creator)
+	}
+
+	// 扣除开发者抵押物，把保证金以及酬金返回给雇佣者
+	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
+	if err != nil {
+		panic(err)
+	}
+
+	remuneration, err := sdk.ParseCoinNormalized(task.Remuneration)
+	if err != nil {
+		panic(err)
+	}
+
+	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
+	if err != nil {
+		panic(err)
+	}
+
+	employer, _ := sdk.AccAddressFromBech32(task.Employer)
+	sdkError := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{collateral.Add(remuneration).Add(deposit)})
+	if sdkError != nil {
+		return nil, sdkError
+	}
+
+	task.Status = types.TaskStatusFail
+
+	k.SetTask(ctx, task)
+
+	return &types.MsgFailTaskResponse{}, nil
+}

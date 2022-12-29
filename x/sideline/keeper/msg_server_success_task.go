@@ -53,7 +53,9 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 	if err != nil {
 		panic(err)
 	}
-	sdkError = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, developer, sdk.Coins{deposit})
+
+	employer, _ := sdk.AccAddressFromBech32(task.Employer)
+	sdkError = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{deposit})
 	if sdkError != nil {
 		return nil, sdkError
 	}

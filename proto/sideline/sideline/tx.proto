@@ -14,6 +14,7 @@ service Msg {
   rpc SubmitTask(MsgSubmitTask) returns (MsgSubmitTaskResponse);
   rpc UndoneTask(MsgUndoneTask) returns (MsgUndoneTaskResponse);
   rpc SuccessTask(MsgSuccessTask) returns (MsgSuccessTaskResponse);
+  rpc FailTask(MsgFailTask) returns (MsgFailTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -87,6 +88,14 @@ message MsgSuccessTask {
 }
 
 message MsgSuccessTaskResponse {
+}
+
+message MsgFailTask {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgFailTaskResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

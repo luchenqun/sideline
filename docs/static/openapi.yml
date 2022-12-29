@@ -75002,6 +75002,8 @@ definitions:
         format: uint64
   sideline.sideline.MsgDoTaskResponse:
     type: object
+  sideline.sideline.MsgFailTaskResponse:
+    type: object
   sideline.sideline.MsgRegistDeveloperResponse:
     type: object
   sideline.sideline.MsgRegistEmployerResponse:

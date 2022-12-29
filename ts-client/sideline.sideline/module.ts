@@ -7,19 +7,38 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgDoTask } from "./types/sideline/sideline/tx";
 import { MsgRegistDeveloper } from "./types/sideline/sideline/tx";
+import { MsgFailTask } from "./types/sideline/sideline/tx";
+import { MsgCreateTask } from "./types/sideline/sideline/tx";
 import { MsgSuccessTask } from "./types/sideline/sideline/tx";
 import { MsgUndoneTask } from "./types/sideline/sideline/tx";
-import { MsgCreateTask } from "./types/sideline/sideline/tx";
-import { MsgSubmitTask } from "./types/sideline/sideline/tx";
-import { MsgDoTask } from "./types/sideline/sideline/tx";
 import { MsgRegistEmployer } from "./types/sideline/sideline/tx";
+import { MsgSubmitTask } from "./types/sideline/sideline/tx";
 
 
-export { MsgRegistDeveloper, MsgSuccessTask, MsgUndoneTask, MsgCreateTask, MsgSubmitTask, MsgDoTask, MsgRegistEmployer };
+export { MsgDoTask, MsgRegistDeveloper, MsgFailTask, MsgCreateTask, MsgSuccessTask, MsgUndoneTask, MsgRegistEmployer, MsgSubmitTask };
+
+type sendMsgDoTaskParams = {
+  value: MsgDoTask,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgRegistDeveloperParams = {
   value: MsgRegistDeveloper,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgFailTaskParams = {
+  value: MsgFailTask,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateTaskParams = {
+  value: MsgCreateTask,
   fee?: StdFee,
   memo?: string
 };
@@ -36,8 +55,8 @@ type sendMsgUndoneTaskParams = {
   memo?: string
 };
 
-type sendMsgCreateTaskParams = {
-  value: MsgCreateTask,
+type sendMsgRegistEmployerParams = {
+  value: MsgRegistEmployer,
   fee?: StdFee,
   memo?: string
 };
@@ -48,21 +67,21 @@ type sendMsgSubmitTaskParams = {
   memo?: string
 };
 
-type sendMsgDoTaskParams = {
+
+type msgDoTaskParams = {
   value: MsgDoTask,
-  fee?: StdFee,
-  memo?: string
 };
-
-type sendMsgRegistEmployerParams = {
-  value: MsgRegistEmployer,
-  fee?: StdFee,
-  memo?: string
-};
-
 
 type msgRegistDeveloperParams = {
   value: MsgRegistDeveloper,
+};
+
+type msgFailTaskParams = {
+  value: MsgFailTask,
+};
+
+type msgCreateTaskParams = {
+  value: MsgCreateTask,
 };
 
 type msgSuccessTaskParams = {
@@ -73,20 +92,12 @@ type msgUndoneTaskParams = {
   value: MsgUndoneTask,
 };
 
-type msgCreateTaskParams = {
-  value: MsgCreateTask,
+type msgRegistEmployerParams = {
+  value: MsgRegistEmployer,
 };
 
 type msgSubmitTaskParams = {
   value: MsgSubmitTask,
-};
-
-type msgDoTaskParams = {
-  value: MsgDoTask,
-};
-
-type msgRegistEmployerParams = {
-  value: MsgRegistEmployer,
 };
 
 
@@ -107,6 +118,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgDoTask({ value, fee, memo }: sendMsgDoTaskParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDoTask: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDoTask({ value: MsgDoTask.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgDoTask: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgRegistDeveloper({ value, fee, memo }: sendMsgRegistDeveloperParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgRegistDeveloper: Unable to sign Tx. Signer is not present.')
@@ -118,6 +143,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgRegistDeveloper: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgFailTask({ value, fee, memo }: sendMsgFailTaskParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgFailTask: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgFailTask({ value: MsgFailTask.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgFailTask: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreateTask({ value, fee, memo }: sendMsgCreateTaskParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateTask: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateTask({ value: MsgCreateTask.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateTask: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -149,17 +202,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgCreateTask({ value, fee, memo }: sendMsgCreateTaskParams): Promise<DeliverTxResponse> {
+		async sendMsgRegistEmployer({ value, fee, memo }: sendMsgRegistEmployerParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateTask: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgRegistEmployer: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateTask({ value: MsgCreateTask.fromPartial(value) })
+				let msg = this.msgRegistEmployer({ value: MsgRegistEmployer.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateTask: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgRegistEmployer: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -177,40 +230,36 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDoTask({ value, fee, memo }: sendMsgDoTaskParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgDoTask: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDoTask({ value: MsgDoTask.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		msgDoTask({ value }: msgDoTaskParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgDoTask", value: MsgDoTask.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDoTask: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgDoTask: Could not create message: ' + e.message)
 			}
 		},
-		
-		async sendMsgRegistEmployer({ value, fee, memo }: sendMsgRegistEmployerParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegistEmployer: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRegistEmployer({ value: MsgRegistEmployer.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegistEmployer: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		
 		msgRegistDeveloper({ value }: msgRegistDeveloperParams): EncodeObject {
 			try {
 				return { typeUrl: "/sideline.sideline.MsgRegistDeveloper", value: MsgRegistDeveloper.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgRegistDeveloper: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgFailTask({ value }: msgFailTaskParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgFailTask", value: MsgFailTask.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgFailTask: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateTask({ value }: msgCreateTaskParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgCreateTask", value: MsgCreateTask.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateTask: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -230,11 +279,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgCreateTask({ value }: msgCreateTaskParams): EncodeObject {
+		msgRegistEmployer({ value }: msgRegistEmployerParams): EncodeObject {
 			try {
-				return { typeUrl: "/sideline.sideline.MsgCreateTask", value: MsgCreateTask.fromPartial( value ) }  
+				return { typeUrl: "/sideline.sideline.MsgRegistEmployer", value: MsgRegistEmployer.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateTask: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgRegistEmployer: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -243,22 +292,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/sideline.sideline.MsgSubmitTask", value: MsgSubmitTask.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitTask: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgDoTask({ value }: msgDoTaskParams): EncodeObject {
-			try {
-				return { typeUrl: "/sideline.sideline.MsgDoTask", value: MsgDoTask.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgDoTask: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRegistEmployer({ value }: msgRegistEmployerParams): EncodeObject {
-			try {
-				return { typeUrl: "/sideline.sideline.MsgRegistEmployer", value: MsgRegistEmployer.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegistEmployer: Could not create message: ' + e.message)
 			}
 		},
 		
