@@ -26,7 +26,7 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 	// 只有雇主才能发布任务
 	_, found := k.GetEmployer(ctx, msg.Creator)
 	if !found {
-		return &types.MsgCreateTaskResponse{Id: 0}, errors.Wrap(types.ErrNotRegistForEmployer, "forbid create task")
+		return nil, errors.Wrap(types.ErrNotRegistForEmployer, "forbid create task")
 	}
 	// @todo 任务结束快高不能低于现在的快高
 
