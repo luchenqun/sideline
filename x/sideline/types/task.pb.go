@@ -23,16 +23,23 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Task struct {
-	Id           uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Title        string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Description  string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Remuneration string `protobuf:"bytes,4,opt,name=remuneration,proto3" json:"remuneration,omitempty"`
-	Deposit      string `protobuf:"bytes,5,opt,name=deposit,proto3" json:"deposit,omitempty"`
-	Collateral   string `protobuf:"bytes,6,opt,name=collateral,proto3" json:"collateral,omitempty"`
-	Employer     string `protobuf:"bytes,7,opt,name=employer,proto3" json:"employer,omitempty"`
-	Developer    string `protobuf:"bytes,8,opt,name=developer,proto3" json:"developer,omitempty"`
-	Deadline     uint64 `protobuf:"varint,9,opt,name=deadline,proto3" json:"deadline,omitempty"`
-	Status       uint64 `protobuf:"varint,10,opt,name=status,proto3" json:"status,omitempty"`
+	Id              uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title           string   `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description     string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Remuneration    string   `protobuf:"bytes,4,opt,name=remuneration,proto3" json:"remuneration,omitempty"`
+	Deposit         string   `protobuf:"bytes,5,opt,name=deposit,proto3" json:"deposit,omitempty"`
+	Collateral      string   `protobuf:"bytes,6,opt,name=collateral,proto3" json:"collateral,omitempty"`
+	Employer        string   `protobuf:"bytes,7,opt,name=employer,proto3" json:"employer,omitempty"`
+	Developer       string   `protobuf:"bytes,8,opt,name=developer,proto3" json:"developer,omitempty"`
+	Accuser         string   `protobuf:"bytes,9,opt,name=accuser,proto3" json:"accuser,omitempty"`
+	ArbitrateHeight uint64   `protobuf:"varint,10,opt,name=arbitrateHeight,proto3" json:"arbitrateHeight,omitempty"`
+	VotedAccounts   []string `protobuf:"bytes,11,rep,name=votedAccounts,proto3" json:"votedAccounts,omitempty"`
+	VoteYes         uint64   `protobuf:"varint,12,opt,name=voteYes,proto3" json:"voteYes,omitempty"`
+	VoteNo          uint64   `protobuf:"varint,13,opt,name=voteNo,proto3" json:"voteNo,omitempty"`
+	Deadline        uint64   `protobuf:"varint,14,opt,name=deadline,proto3" json:"deadline,omitempty"`
+	Deliver         string   `protobuf:"bytes,15,opt,name=deliver,proto3" json:"deliver,omitempty"`
+	DeliverHeight   uint64   `protobuf:"varint,16,opt,name=deliverHeight,proto3" json:"deliverHeight,omitempty"`
+	Status          uint64   `protobuf:"varint,17,opt,name=status,proto3" json:"status,omitempty"`
 }
 
 func (m *Task) Reset()         { *m = Task{} }
@@ -124,9 +131,58 @@ func (m *Task) GetDeveloper() string {
 	return ""
 }
 
+func (m *Task) GetAccuser() string {
+	if m != nil {
+		return m.Accuser
+	}
+	return ""
+}
+
+func (m *Task) GetArbitrateHeight() uint64 {
+	if m != nil {
+		return m.ArbitrateHeight
+	}
+	return 0
+}
+
+func (m *Task) GetVotedAccounts() []string {
+	if m != nil {
+		return m.VotedAccounts
+	}
+	return nil
+}
+
+func (m *Task) GetVoteYes() uint64 {
+	if m != nil {
+		return m.VoteYes
+	}
+	return 0
+}
+
+func (m *Task) GetVoteNo() uint64 {
+	if m != nil {
+		return m.VoteNo
+	}
+	return 0
+}
+
 func (m *Task) GetDeadline() uint64 {
 	if m != nil {
 		return m.Deadline
+	}
+	return 0
+}
+
+func (m *Task) GetDeliver() string {
+	if m != nil {
+		return m.Deliver
+	}
+	return ""
+}
+
+func (m *Task) GetDeliverHeight() uint64 {
+	if m != nil {
+		return m.DeliverHeight
 	}
 	return 0
 }
@@ -145,24 +201,30 @@ func init() {
 func init() { proto.RegisterFile("sideline/sideline/task.proto", fileDescriptor_9db0135d1b1d3183) }
 
 var fileDescriptor_9db0135d1b1d3183 = []byte{
-	// 267 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0xb1, 0x4e, 0xc3, 0x30,
-	0x10, 0x86, 0xeb, 0x90, 0xa6, 0xcd, 0x81, 0x90, 0xb0, 0x10, 0x32, 0xa8, 0xb2, 0xa2, 0x4e, 0x9d,
-	0xca, 0xd0, 0x37, 0xe0, 0x11, 0x2a, 0x26, 0x36, 0x53, 0xdf, 0x60, 0xd5, 0x8d, 0x2d, 0xdb, 0x45,
-	0xf4, 0x2d, 0x98, 0x79, 0x22, 0xc6, 0x8e, 0x8c, 0x28, 0x79, 0x11, 0xd4, 0x83, 0x84, 0xb0, 0xdd,
-	0xff, 0x7d, 0x77, 0xc3, 0xfd, 0x30, 0x8b, 0x46, 0xa3, 0x35, 0x35, 0xde, 0xf7, 0x43, 0x52, 0x71,
-	0xbb, 0xf4, 0xc1, 0x25, 0xc7, 0xaf, 0x3a, 0xb8, 0xec, 0x86, 0xf9, 0x7b, 0x06, 0xf9, 0xa3, 0x8a,
-	0x5b, 0x7e, 0x09, 0x99, 0xd1, 0x82, 0x55, 0x6c, 0x91, 0xaf, 0x33, 0xa3, 0xf9, 0x35, 0x8c, 0x93,
-	0x49, 0x16, 0x45, 0x56, 0xb1, 0x45, 0xb9, 0xfe, 0x09, 0xbc, 0x82, 0x73, 0x8d, 0x71, 0x13, 0x8c,
-	0x4f, 0xc6, 0xd5, 0xe2, 0x8c, 0xdc, 0x10, 0xf1, 0x39, 0x5c, 0x04, 0xdc, 0xed, 0x6b, 0x0c, 0x8a,
-	0x56, 0x72, 0x5a, 0xf9, 0xc7, 0xb8, 0x80, 0x89, 0x46, 0xef, 0xa2, 0x49, 0x62, 0x4c, 0xba, 0x8b,
-	0x5c, 0x02, 0x6c, 0x9c, 0xb5, 0x2a, 0x61, 0x50, 0x56, 0x14, 0x24, 0x07, 0x84, 0xdf, 0xc1, 0x14,
-	0x77, 0xde, 0xba, 0x03, 0x06, 0x31, 0x21, 0xdb, 0x67, 0x3e, 0x83, 0x52, 0xe3, 0x0b, 0x5a, 0xe7,
-	0x31, 0x88, 0x29, 0xc9, 0x3f, 0x70, 0xba, 0xd4, 0xa8, 0xf4, 0xe9, 0x69, 0x51, 0xd2, 0x97, 0x7d,
-	0xe6, 0x37, 0x50, 0xc4, 0xa4, 0xd2, 0x3e, 0x0a, 0x20, 0xf3, 0x9b, 0x1e, 0x56, 0x1f, 0x8d, 0x64,
-	0xc7, 0x46, 0xb2, 0xaf, 0x46, 0xb2, 0xb7, 0x56, 0x8e, 0x8e, 0xad, 0x1c, 0x7d, 0xb6, 0x72, 0xf4,
-	0x74, 0xdb, 0xd7, 0xfb, 0x3a, 0x68, 0xfa, 0xe0, 0x31, 0x3e, 0x17, 0xd4, 0xf5, 0xea, 0x3b, 0x00,
-	0x00, 0xff, 0xff, 0xc2, 0x3e, 0xe6, 0x01, 0x8b, 0x01, 0x00, 0x00,
+	// 368 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0x92, 0xbd, 0x6e, 0xdb, 0x30,
+	0x10, 0xc7, 0x2d, 0x7f, 0x8b, 0xfe, 0xaa, 0x89, 0xa2, 0xb8, 0x16, 0x86, 0x20, 0x18, 0x1d, 0x34,
+	0xb9, 0x83, 0x9f, 0xa0, 0x9d, 0x3a, 0x75, 0x30, 0xba, 0xb4, 0x1b, 0x2d, 0x1e, 0x12, 0xc2, 0xb4,
+	0x28, 0x90, 0x94, 0x11, 0xbf, 0x45, 0x1e, 0x2b, 0xa3, 0xc7, 0x8c, 0x81, 0xfd, 0x0e, 0x99, 0x03,
+	0x52, 0x1f, 0xb1, 0xb3, 0xdd, 0xef, 0xf7, 0xa7, 0x74, 0xd4, 0xe9, 0xc8, 0xc2, 0x08, 0x8e, 0x52,
+	0x64, 0xf8, 0xa3, 0x29, 0x2c, 0x33, 0xbb, 0x55, 0xae, 0x95, 0x55, 0x74, 0x5e, 0xcb, 0x55, 0x5d,
+	0x2c, 0x5f, 0x3b, 0xa4, 0xfb, 0x97, 0x99, 0x1d, 0x9d, 0x92, 0xb6, 0xe0, 0x10, 0xc4, 0x41, 0xd2,
+	0xdd, 0xb4, 0x05, 0xa7, 0x9f, 0x49, 0xcf, 0x0a, 0x2b, 0x11, 0xda, 0x71, 0x90, 0x84, 0x9b, 0x12,
+	0x68, 0x4c, 0x46, 0x1c, 0x4d, 0xaa, 0x45, 0x6e, 0x85, 0xca, 0xa0, 0xe3, 0xb3, 0x6b, 0x45, 0x97,
+	0x64, 0xac, 0x71, 0x5f, 0x64, 0xa8, 0x99, 0x3f, 0xd2, 0xf5, 0x47, 0x6e, 0x1c, 0x05, 0x32, 0xe0,
+	0x98, 0x2b, 0x23, 0x2c, 0xf4, 0x7c, 0x5c, 0x23, 0x8d, 0x08, 0x49, 0x95, 0x94, 0xcc, 0xa2, 0x66,
+	0x12, 0xfa, 0x3e, 0xbc, 0x32, 0xf4, 0x1b, 0x19, 0xe2, 0x3e, 0x97, 0xea, 0x88, 0x1a, 0x06, 0x3e,
+	0x6d, 0x98, 0x2e, 0x48, 0xc8, 0xf1, 0x80, 0x52, 0xe5, 0xa8, 0x61, 0xe8, 0xc3, 0x77, 0xe1, 0x7a,
+	0xb2, 0x34, 0x2d, 0x0c, 0x6a, 0x08, 0xcb, 0x9e, 0x15, 0xd2, 0x84, 0xcc, 0x98, 0xde, 0x0a, 0xab,
+	0x99, 0xc5, 0xdf, 0x28, 0xee, 0xee, 0x2d, 0x10, 0x3f, 0x86, 0x8f, 0x9a, 0x7e, 0x27, 0x93, 0x83,
+	0xb2, 0xc8, 0x7f, 0xa6, 0xa9, 0x2a, 0x32, 0x6b, 0x60, 0x14, 0x77, 0x92, 0x70, 0x73, 0x2b, 0x5d,
+	0x27, 0x27, 0xfe, 0xa1, 0x81, 0xb1, 0x7f, 0x4f, 0x8d, 0xf4, 0x0b, 0xe9, 0xbb, 0xf2, 0x8f, 0x82,
+	0x89, 0x0f, 0x2a, 0x72, 0x5f, 0xc5, 0x91, 0x71, 0xf7, 0x43, 0x60, 0xea, 0x93, 0x86, 0xcb, 0x59,
+	0x49, 0x71, 0x40, 0x0d, 0xb3, 0x7a, 0x56, 0x1e, 0xdd, 0x6d, 0xaa, 0xb2, 0xba, 0xf5, 0x27, 0xff,
+	0xe8, 0xad, 0x74, 0x3d, 0x8d, 0x65, 0xb6, 0x30, 0x30, 0x2f, 0x7b, 0x96, 0xf4, 0x6b, 0xfd, 0x74,
+	0x8e, 0x82, 0xd3, 0x39, 0x0a, 0x5e, 0xce, 0x51, 0xf0, 0x78, 0x89, 0x5a, 0xa7, 0x4b, 0xd4, 0x7a,
+	0xbe, 0x44, 0xad, 0xff, 0x5f, 0x9b, 0xd5, 0x79, 0xb8, 0xda, 0xa2, 0x63, 0x8e, 0x66, 0xdb, 0xf7,
+	0x7b, 0xb4, 0x7e, 0x0b, 0x00, 0x00, 0xff, 0xff, 0xdc, 0x77, 0xfb, 0x2d, 0x67, 0x02, 0x00, 0x00,
 }
 
 func (m *Task) Marshal() (dAtA []byte, err error) {
@@ -188,12 +250,59 @@ func (m *Task) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.Status != 0 {
 		i = encodeVarintTask(dAtA, i, uint64(m.Status))
 		i--
-		dAtA[i] = 0x50
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.DeliverHeight != 0 {
+		i = encodeVarintTask(dAtA, i, uint64(m.DeliverHeight))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x80
+	}
+	if len(m.Deliver) > 0 {
+		i -= len(m.Deliver)
+		copy(dAtA[i:], m.Deliver)
+		i = encodeVarintTask(dAtA, i, uint64(len(m.Deliver)))
+		i--
+		dAtA[i] = 0x7a
 	}
 	if m.Deadline != 0 {
 		i = encodeVarintTask(dAtA, i, uint64(m.Deadline))
 		i--
-		dAtA[i] = 0x48
+		dAtA[i] = 0x70
+	}
+	if m.VoteNo != 0 {
+		i = encodeVarintTask(dAtA, i, uint64(m.VoteNo))
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.VoteYes != 0 {
+		i = encodeVarintTask(dAtA, i, uint64(m.VoteYes))
+		i--
+		dAtA[i] = 0x60
+	}
+	if len(m.VotedAccounts) > 0 {
+		for iNdEx := len(m.VotedAccounts) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.VotedAccounts[iNdEx])
+			copy(dAtA[i:], m.VotedAccounts[iNdEx])
+			i = encodeVarintTask(dAtA, i, uint64(len(m.VotedAccounts[iNdEx])))
+			i--
+			dAtA[i] = 0x5a
+		}
+	}
+	if m.ArbitrateHeight != 0 {
+		i = encodeVarintTask(dAtA, i, uint64(m.ArbitrateHeight))
+		i--
+		dAtA[i] = 0x50
+	}
+	if len(m.Accuser) > 0 {
+		i -= len(m.Accuser)
+		copy(dAtA[i:], m.Accuser)
+		i = encodeVarintTask(dAtA, i, uint64(len(m.Accuser)))
+		i--
+		dAtA[i] = 0x4a
 	}
 	if len(m.Developer) > 0 {
 		i -= len(m.Developer)
@@ -300,11 +409,37 @@ func (m *Task) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTask(uint64(l))
 	}
+	l = len(m.Accuser)
+	if l > 0 {
+		n += 1 + l + sovTask(uint64(l))
+	}
+	if m.ArbitrateHeight != 0 {
+		n += 1 + sovTask(uint64(m.ArbitrateHeight))
+	}
+	if len(m.VotedAccounts) > 0 {
+		for _, s := range m.VotedAccounts {
+			l = len(s)
+			n += 1 + l + sovTask(uint64(l))
+		}
+	}
+	if m.VoteYes != 0 {
+		n += 1 + sovTask(uint64(m.VoteYes))
+	}
+	if m.VoteNo != 0 {
+		n += 1 + sovTask(uint64(m.VoteNo))
+	}
 	if m.Deadline != 0 {
 		n += 1 + sovTask(uint64(m.Deadline))
 	}
+	l = len(m.Deliver)
+	if l > 0 {
+		n += 1 + l + sovTask(uint64(l))
+	}
+	if m.DeliverHeight != 0 {
+		n += 2 + sovTask(uint64(m.DeliverHeight))
+	}
 	if m.Status != 0 {
-		n += 1 + sovTask(uint64(m.Status))
+		n += 2 + sovTask(uint64(m.Status))
 	}
 	return n
 }
@@ -588,6 +723,127 @@ func (m *Task) Unmarshal(dAtA []byte) error {
 			m.Developer = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Accuser", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Accuser = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ArbitrateHeight", wireType)
+			}
+			m.ArbitrateHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ArbitrateHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VotedAccounts", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.VotedAccounts = append(m.VotedAccounts, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 12:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VoteYes", wireType)
+			}
+			m.VoteYes = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.VoteYes |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 13:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VoteNo", wireType)
+			}
+			m.VoteNo = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.VoteNo |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 14:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Deadline", wireType)
 			}
@@ -606,7 +862,58 @@ func (m *Task) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 10:
+		case 15:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Deliver", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTask
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTask
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Deliver = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 16:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DeliverHeight", wireType)
+			}
+			m.DeliverHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTask
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DeliverHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 17:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}

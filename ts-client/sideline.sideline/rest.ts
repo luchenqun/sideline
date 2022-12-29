@@ -66,6 +66,8 @@ export type SidelineMsgRegistDeveloperResponse = object;
 
 export type SidelineMsgRegistEmployerResponse = object;
 
+export type SidelineMsgSubmitTaskResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
@@ -146,9 +148,24 @@ export interface SidelineTask {
   collateral?: string;
   employer?: string;
   developer?: string;
+  accuser?: string;
+
+  /** @format uint64 */
+  arbitrateHeight?: string;
+  votedAccounts?: string[];
+
+  /** @format uint64 */
+  voteYes?: string;
+
+  /** @format uint64 */
+  voteNo?: string;
 
   /** @format uint64 */
   deadline?: string;
+  deliver?: string;
+
+  /** @format uint64 */
+  deliverHeight?: string;
 
   /** @format uint64 */
   status?: string;

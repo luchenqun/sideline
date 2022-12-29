@@ -13,7 +13,14 @@ export interface Task {
   collateral: string;
   employer: string;
   developer: string;
+  accuser: string;
+  arbitrateHeight: number;
+  votedAccounts: string[];
+  voteYes: number;
+  voteNo: number;
   deadline: number;
+  deliver: string;
+  deliverHeight: number;
   status: number;
 }
 
@@ -27,7 +34,14 @@ function createBaseTask(): Task {
     collateral: "",
     employer: "",
     developer: "",
+    accuser: "",
+    arbitrateHeight: 0,
+    votedAccounts: [],
+    voteYes: 0,
+    voteNo: 0,
     deadline: 0,
+    deliver: "",
+    deliverHeight: 0,
     status: 0,
   };
 }
@@ -58,11 +72,32 @@ export const Task = {
     if (message.developer !== "") {
       writer.uint32(66).string(message.developer);
     }
+    if (message.accuser !== "") {
+      writer.uint32(74).string(message.accuser);
+    }
+    if (message.arbitrateHeight !== 0) {
+      writer.uint32(80).uint64(message.arbitrateHeight);
+    }
+    for (const v of message.votedAccounts) {
+      writer.uint32(90).string(v!);
+    }
+    if (message.voteYes !== 0) {
+      writer.uint32(96).uint64(message.voteYes);
+    }
+    if (message.voteNo !== 0) {
+      writer.uint32(104).uint64(message.voteNo);
+    }
     if (message.deadline !== 0) {
-      writer.uint32(72).uint64(message.deadline);
+      writer.uint32(112).uint64(message.deadline);
+    }
+    if (message.deliver !== "") {
+      writer.uint32(122).string(message.deliver);
+    }
+    if (message.deliverHeight !== 0) {
+      writer.uint32(128).uint64(message.deliverHeight);
     }
     if (message.status !== 0) {
-      writer.uint32(80).uint64(message.status);
+      writer.uint32(136).uint64(message.status);
     }
     return writer;
   },
@@ -99,9 +134,30 @@ export const Task = {
           message.developer = reader.string();
           break;
         case 9:
-          message.deadline = longToNumber(reader.uint64() as Long);
+          message.accuser = reader.string();
           break;
         case 10:
+          message.arbitrateHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 11:
+          message.votedAccounts.push(reader.string());
+          break;
+        case 12:
+          message.voteYes = longToNumber(reader.uint64() as Long);
+          break;
+        case 13:
+          message.voteNo = longToNumber(reader.uint64() as Long);
+          break;
+        case 14:
+          message.deadline = longToNumber(reader.uint64() as Long);
+          break;
+        case 15:
+          message.deliver = reader.string();
+          break;
+        case 16:
+          message.deliverHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 17:
           message.status = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -122,7 +178,14 @@ export const Task = {
       collateral: isSet(object.collateral) ? String(object.collateral) : "",
       employer: isSet(object.employer) ? String(object.employer) : "",
       developer: isSet(object.developer) ? String(object.developer) : "",
+      accuser: isSet(object.accuser) ? String(object.accuser) : "",
+      arbitrateHeight: isSet(object.arbitrateHeight) ? Number(object.arbitrateHeight) : 0,
+      votedAccounts: Array.isArray(object?.votedAccounts) ? object.votedAccounts.map((e: any) => String(e)) : [],
+      voteYes: isSet(object.voteYes) ? Number(object.voteYes) : 0,
+      voteNo: isSet(object.voteNo) ? Number(object.voteNo) : 0,
       deadline: isSet(object.deadline) ? Number(object.deadline) : 0,
+      deliver: isSet(object.deliver) ? String(object.deliver) : "",
+      deliverHeight: isSet(object.deliverHeight) ? Number(object.deliverHeight) : 0,
       status: isSet(object.status) ? Number(object.status) : 0,
     };
   },
@@ -137,7 +200,18 @@ export const Task = {
     message.collateral !== undefined && (obj.collateral = message.collateral);
     message.employer !== undefined && (obj.employer = message.employer);
     message.developer !== undefined && (obj.developer = message.developer);
+    message.accuser !== undefined && (obj.accuser = message.accuser);
+    message.arbitrateHeight !== undefined && (obj.arbitrateHeight = Math.round(message.arbitrateHeight));
+    if (message.votedAccounts) {
+      obj.votedAccounts = message.votedAccounts.map((e) => e);
+    } else {
+      obj.votedAccounts = [];
+    }
+    message.voteYes !== undefined && (obj.voteYes = Math.round(message.voteYes));
+    message.voteNo !== undefined && (obj.voteNo = Math.round(message.voteNo));
     message.deadline !== undefined && (obj.deadline = Math.round(message.deadline));
+    message.deliver !== undefined && (obj.deliver = message.deliver);
+    message.deliverHeight !== undefined && (obj.deliverHeight = Math.round(message.deliverHeight));
     message.status !== undefined && (obj.status = Math.round(message.status));
     return obj;
   },
@@ -152,7 +226,14 @@ export const Task = {
     message.collateral = object.collateral ?? "";
     message.employer = object.employer ?? "";
     message.developer = object.developer ?? "";
+    message.accuser = object.accuser ?? "";
+    message.arbitrateHeight = object.arbitrateHeight ?? 0;
+    message.votedAccounts = object.votedAccounts?.map((e) => e) || [];
+    message.voteYes = object.voteYes ?? 0;
+    message.voteNo = object.voteNo ?? 0;
     message.deadline = object.deadline ?? 0;
+    message.deliver = object.deliver ?? "";
+    message.deliverHeight = object.deliverHeight ?? 0;
     message.status = object.status ?? 0;
     return message;
   },

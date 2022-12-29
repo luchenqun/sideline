@@ -45170,7 +45170,27 @@ paths:
                       type: string
                     developer:
                       type: string
+                    accuser:
+                      type: string
+                    arbitrateHeight:
+                      type: string
+                      format: uint64
+                    votedAccounts:
+                      type: array
+                      items:
+                        type: string
+                    voteYes:
+                      type: string
+                      format: uint64
+                    voteNo:
+                      type: string
+                      format: uint64
                     deadline:
+                      type: string
+                      format: uint64
+                    deliver:
+                      type: string
+                    deliverHeight:
                       type: string
                       format: uint64
                     status:
@@ -45311,7 +45331,27 @@ paths:
                     type: string
                   developer:
                     type: string
+                  accuser:
+                    type: string
+                  arbitrateHeight:
+                    type: string
+                    format: uint64
+                  votedAccounts:
+                    type: array
+                    items:
+                      type: string
+                  voteYes:
+                    type: string
+                    format: uint64
+                  voteNo:
+                    type: string
+                    format: uint64
                   deadline:
+                    type: string
+                    format: uint64
+                  deliver:
+                    type: string
+                  deliverHeight:
                     type: string
                     format: uint64
                   status:
@@ -74966,6 +75006,8 @@ definitions:
     type: object
   sideline.sideline.MsgRegistEmployerResponse:
     type: object
+  sideline.sideline.MsgSubmitTaskResponse:
+    type: object
   sideline.sideline.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -75114,7 +75156,27 @@ definitions:
               type: string
             developer:
               type: string
+            accuser:
+              type: string
+            arbitrateHeight:
+              type: string
+              format: uint64
+            votedAccounts:
+              type: array
+              items:
+                type: string
+            voteYes:
+              type: string
+              format: uint64
+            voteNo:
+              type: string
+              format: uint64
             deadline:
+              type: string
+              format: uint64
+            deliver:
+              type: string
+            deliverHeight:
               type: string
               format: uint64
             status:
@@ -75233,7 +75295,27 @@ definitions:
             type: string
           developer:
             type: string
+          accuser:
+            type: string
+          arbitrateHeight:
+            type: string
+            format: uint64
+          votedAccounts:
+            type: array
+            items:
+              type: string
+          voteYes:
+            type: string
+            format: uint64
+          voteNo:
+            type: string
+            format: uint64
           deadline:
+            type: string
+            format: uint64
+          deliver:
+            type: string
+          deliverHeight:
             type: string
             format: uint64
           status:
@@ -75266,7 +75348,27 @@ definitions:
         type: string
       developer:
         type: string
+      accuser:
+        type: string
+      arbitrateHeight:
+        type: string
+        format: uint64
+      votedAccounts:
+        type: array
+        items:
+          type: string
+      voteYes:
+        type: string
+        format: uint64
+      voteNo:
+        type: string
+        format: uint64
       deadline:
+        type: string
+        format: uint64
+      deliver:
+        type: string
+      deliverHeight:
         type: string
         format: uint64
       status:

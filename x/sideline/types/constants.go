@@ -4,6 +4,7 @@ const (
 	TaskStatusCreated = iota
 	TaskStatusDoing
 	TaskStatusSubmited
+	TaskStatusUndone
 	TaskStatusSuccess
 	TaskStatusFail
 	TaskStatusJudging

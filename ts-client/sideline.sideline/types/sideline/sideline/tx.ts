@@ -51,6 +51,15 @@ export interface MsgDoTask {
 export interface MsgDoTaskResponse {
 }
 
+export interface MsgSubmitTask {
+  creator: string;
+  id: number;
+  deliver: string;
+}
+
+export interface MsgSubmitTaskResponse {
+}
+
 function createBaseMsgRegistEmployer(): MsgRegistEmployer {
   return { creator: "", name: "", introduce: "", email: "", avatar: "" };
 }
@@ -577,13 +586,120 @@ export const MsgDoTaskResponse = {
   },
 };
 
+function createBaseMsgSubmitTask(): MsgSubmitTask {
+  return { creator: "", id: 0, deliver: "" };
+}
+
+export const MsgSubmitTask = {
+  encode(message: MsgSubmitTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.deliver !== "") {
+      writer.uint32(26).string(message.deliver);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitTask {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitTask();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.deliver = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitTask {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+      deliver: isSet(object.deliver) ? String(object.deliver) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitTask): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.deliver !== undefined && (obj.deliver = message.deliver);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitTask>, I>>(object: I): MsgSubmitTask {
+    const message = createBaseMsgSubmitTask();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    message.deliver = object.deliver ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitTaskResponse(): MsgSubmitTaskResponse {
+  return {};
+}
+
+export const MsgSubmitTaskResponse = {
+  encode(_: MsgSubmitTaskResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitTaskResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitTaskResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitTaskResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitTaskResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitTaskResponse>, I>>(_: I): MsgSubmitTaskResponse {
+    const message = createBaseMsgSubmitTaskResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse>;
   RegistDeveloper(request: MsgRegistDeveloper): Promise<MsgRegistDeveloperResponse>;
   CreateTask(request: MsgCreateTask): Promise<MsgCreateTaskResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DoTask(request: MsgDoTask): Promise<MsgDoTaskResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SubmitTask(request: MsgSubmitTask): Promise<MsgSubmitTaskResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -594,6 +710,7 @@ export class MsgClientImpl implements Msg {
     this.RegistDeveloper = this.RegistDeveloper.bind(this);
     this.CreateTask = this.CreateTask.bind(this);
     this.DoTask = this.DoTask.bind(this);
+    this.SubmitTask = this.SubmitTask.bind(this);
   }
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse> {
     const data = MsgRegistEmployer.encode(request).finish();
@@ -617,6 +734,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgDoTask.encode(request).finish();
     const promise = this.rpc.request("sideline.sideline.Msg", "DoTask", data);
     return promise.then((data) => MsgDoTaskResponse.decode(new _m0.Reader(data)));
+  }
+
+  SubmitTask(request: MsgSubmitTask): Promise<MsgSubmitTaskResponse> {
+    const data = MsgSubmitTask.encode(request).finish();
+    const promise = this.rpc.request("sideline.sideline.Msg", "SubmitTask", data);
+    return promise.then((data) => MsgSubmitTaskResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -11,8 +11,15 @@ message Task {
   string deposit = 5;
   string collateral = 6;
   string employer = 7; 
-  string developer = 8; 
-  uint64 deadline = 9; 
-  uint64 status = 10; 
-  
+  string developer = 8;
+  string accuser = 9;
+  uint64 arbitrateHeight = 10;
+  repeated string votedAccounts = 11;
+  uint64 voteYes = 12;
+  uint64 voteNo = 13;
+  uint64 deadline = 14;
+  string deliver = 15;
+  uint64 deliverHeight = 16;
+  uint64 status = 17;
+
 }
