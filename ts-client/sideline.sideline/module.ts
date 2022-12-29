@@ -7,17 +7,18 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgRegistEmployer } from "./types/sideline/sideline/tx";
-import { MsgSubmitTask } from "./types/sideline/sideline/tx";
-import { MsgDoTask } from "./types/sideline/sideline/tx";
 import { MsgCreateTask } from "./types/sideline/sideline/tx";
+import { MsgSubmitTask } from "./types/sideline/sideline/tx";
+import { MsgRegistEmployer } from "./types/sideline/sideline/tx";
+import { MsgUndoneTask } from "./types/sideline/sideline/tx";
+import { MsgDoTask } from "./types/sideline/sideline/tx";
 import { MsgRegistDeveloper } from "./types/sideline/sideline/tx";
 
 
-export { MsgRegistEmployer, MsgSubmitTask, MsgDoTask, MsgCreateTask, MsgRegistDeveloper };
+export { MsgCreateTask, MsgSubmitTask, MsgRegistEmployer, MsgUndoneTask, MsgDoTask, MsgRegistDeveloper };
 
-type sendMsgRegistEmployerParams = {
-  value: MsgRegistEmployer,
+type sendMsgCreateTaskParams = {
+  value: MsgCreateTask,
   fee?: StdFee,
   memo?: string
 };
@@ -28,14 +29,20 @@ type sendMsgSubmitTaskParams = {
   memo?: string
 };
 
-type sendMsgDoTaskParams = {
-  value: MsgDoTask,
+type sendMsgRegistEmployerParams = {
+  value: MsgRegistEmployer,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgCreateTaskParams = {
-  value: MsgCreateTask,
+type sendMsgUndoneTaskParams = {
+  value: MsgUndoneTask,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgDoTaskParams = {
+  value: MsgDoTask,
   fee?: StdFee,
   memo?: string
 };
@@ -47,20 +54,24 @@ type sendMsgRegistDeveloperParams = {
 };
 
 
-type msgRegistEmployerParams = {
-  value: MsgRegistEmployer,
+type msgCreateTaskParams = {
+  value: MsgCreateTask,
 };
 
 type msgSubmitTaskParams = {
   value: MsgSubmitTask,
 };
 
-type msgDoTaskParams = {
-  value: MsgDoTask,
+type msgRegistEmployerParams = {
+  value: MsgRegistEmployer,
 };
 
-type msgCreateTaskParams = {
-  value: MsgCreateTask,
+type msgUndoneTaskParams = {
+  value: MsgUndoneTask,
+};
+
+type msgDoTaskParams = {
+  value: MsgDoTask,
 };
 
 type msgRegistDeveloperParams = {
@@ -85,17 +96,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgRegistEmployer({ value, fee, memo }: sendMsgRegistEmployerParams): Promise<DeliverTxResponse> {
+		async sendMsgCreateTask({ value, fee, memo }: sendMsgCreateTaskParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgRegistEmployer: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateTask: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRegistEmployer({ value: MsgRegistEmployer.fromPartial(value) })
+				let msg = this.msgCreateTask({ value: MsgCreateTask.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegistEmployer: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateTask: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -113,6 +124,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgRegistEmployer({ value, fee, memo }: sendMsgRegistEmployerParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegistEmployer: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRegistEmployer({ value: MsgRegistEmployer.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRegistEmployer: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUndoneTask({ value, fee, memo }: sendMsgUndoneTaskParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUndoneTask: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUndoneTask({ value: MsgUndoneTask.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUndoneTask: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgDoTask({ value, fee, memo }: sendMsgDoTaskParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgDoTask: Unable to sign Tx. Signer is not present.')
@@ -124,20 +163,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgDoTask: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreateTask({ value, fee, memo }: sendMsgCreateTaskParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateTask: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateTask({ value: MsgCreateTask.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateTask: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -156,11 +181,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		},
 		
 		
-		msgRegistEmployer({ value }: msgRegistEmployerParams): EncodeObject {
+		msgCreateTask({ value }: msgCreateTaskParams): EncodeObject {
 			try {
-				return { typeUrl: "/sideline.sideline.MsgRegistEmployer", value: MsgRegistEmployer.fromPartial( value ) }  
+				return { typeUrl: "/sideline.sideline.MsgCreateTask", value: MsgCreateTask.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgRegistEmployer: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateTask: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -172,19 +197,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		msgRegistEmployer({ value }: msgRegistEmployerParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgRegistEmployer", value: MsgRegistEmployer.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRegistEmployer: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUndoneTask({ value }: msgUndoneTaskParams): EncodeObject {
+			try {
+				return { typeUrl: "/sideline.sideline.MsgUndoneTask", value: MsgUndoneTask.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUndoneTask: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgDoTask({ value }: msgDoTaskParams): EncodeObject {
 			try {
 				return { typeUrl: "/sideline.sideline.MsgDoTask", value: MsgDoTask.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgDoTask: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreateTask({ value }: msgCreateTaskParams): EncodeObject {
-			try {
-				return { typeUrl: "/sideline.sideline.MsgCreateTask", value: MsgCreateTask.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateTask: Could not create message: ' + e.message)
 			}
 		},
 		
