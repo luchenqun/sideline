@@ -320,19 +320,6 @@ export default {
 		},
 		
 		
-		async sendMsgRegistEmployer({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRegistEmployer:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgCreateTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -359,20 +346,20 @@ export default {
 				}
 			}
 		},
-		
-		async MsgRegistEmployer({ rootGetters }, { value }) {
+		async sendMsgRegistEmployer({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.SidelineSideline.tx.msgRegistEmployer({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRegistEmployer:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgRegistEmployer:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgCreateTask({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -396,6 +383,19 @@ export default {
 					throw new Error('TxClient:MsgRegistDeveloper:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgRegistDeveloper:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegistEmployer({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.SidelineSideline.tx.msgRegistEmployer({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegistEmployer:Create Could not create message: ' + e.message)
 				}
 			}
 		},

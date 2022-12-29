@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"errors"
+	"github.com/cosmos/cosmos-sdk/types/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"sideline/x/sideline/types"
@@ -20,13 +20,13 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 		Employer:     msg.Creator,
 		Developer:    "",
 		Deadline:     msg.Deadline,
-		Status:       0,
+		Status:       types.TaskStatusCreated,
 	}
 
 	// 只有雇主才能发布任务
 	_, found := k.GetEmployer(ctx, msg.Creator)
 	if !found {
-		return &types.MsgCreateTaskResponse{Id: 0}, errors.New("you are not regist for a employer")
+		return &types.MsgCreateTaskResponse{Id: 0}, errors.Wrap(types.ErrNotRegistForEmployer, "forbid create task")
 	}
 	// @todo 任务结束快高不能低于现在的快高
 

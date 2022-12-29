@@ -8,5 +8,5 @@ import (
 
 // x/sideline module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrNotRegistForEmployer = sdkerrors.Register(ModuleName, 1100, "not regist for a employer")
 )
