@@ -10,6 +10,7 @@ service Msg {
       rpc RegistEmployer(MsgRegistEmployer) returns (MsgRegistEmployerResponse);
   rpc RegistDeveloper(MsgRegistDeveloper) returns (MsgRegistDeveloperResponse);
   rpc CreateTask(MsgCreateTask) returns (MsgCreateTaskResponse);
+  rpc DoTask(MsgDoTask) returns (MsgDoTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -50,6 +51,14 @@ message MsgCreateTask {
 
 message MsgCreateTaskResponse {
   uint64 id = 1;
+}
+
+message MsgDoTask {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDoTaskResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

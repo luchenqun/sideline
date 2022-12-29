@@ -60,6 +60,8 @@ export interface SidelineMsgCreateTaskResponse {
   id?: string;
 }
 
+export type SidelineMsgDoTaskResponse = object;
+
 export type SidelineMsgRegistDeveloperResponse = object;
 
 export type SidelineMsgRegistEmployerResponse = object;
