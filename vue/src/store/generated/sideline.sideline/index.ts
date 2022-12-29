@@ -320,29 +320,29 @@ export default {
 		},
 		
 		
-		async sendMsgRegistEmployer({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgSubmitTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgSubmitTask({ value, fee: {amount: fee, gas: "200000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSubmitTask:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgRegistEmployer:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgSubmitTask:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgUndoneTask({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgSuccessTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgUndoneTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgSuccessTask({ value, fee: {amount: fee, gas: "200000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUndoneTask:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSuccessTask:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgUndoneTask:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgSuccessTask:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -359,6 +359,19 @@ export default {
 				}
 			}
 		},
+		async sendMsgRegistEmployer({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRegistEmployer:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgRegistDeveloper({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -372,16 +385,16 @@ export default {
 				}
 			}
 		},
-		async sendMsgSubmitTask({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgUndoneTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgSubmitTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgUndoneTask({ value, fee: {amount: fee, gas: "200000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitTask:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUndoneTask:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgSubmitTask:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgUndoneTask:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -399,29 +412,29 @@ export default {
 			}
 		},
 		
-		async MsgRegistEmployer({ rootGetters }, { value }) {
+		async MsgSubmitTask({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.SidelineSideline.tx.msgRegistEmployer({value})
+				const msg = await client.SidelineSideline.tx.msgSubmitTask({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSubmitTask:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgRegistEmployer:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgSubmitTask:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgUndoneTask({ rootGetters }, { value }) {
+		async MsgSuccessTask({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.SidelineSideline.tx.msgUndoneTask({value})
+				const msg = await client.SidelineSideline.tx.msgSuccessTask({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUndoneTask:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSuccessTask:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgUndoneTask:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgSuccessTask:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -438,6 +451,19 @@ export default {
 				}
 			}
 		},
+		async MsgRegistEmployer({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.SidelineSideline.tx.msgRegistEmployer({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegistEmployer:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegistEmployer:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgRegistDeveloper({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -451,16 +477,16 @@ export default {
 				}
 			}
 		},
-		async MsgSubmitTask({ rootGetters }, { value }) {
+		async MsgUndoneTask({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.SidelineSideline.tx.msgSubmitTask({value})
+				const msg = await client.SidelineSideline.tx.msgUndoneTask({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitTask:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUndoneTask:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgSubmitTask:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgUndoneTask:Create Could not create message: ' + e.message)
 				}
 			}
 		},

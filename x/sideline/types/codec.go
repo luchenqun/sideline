@@ -14,6 +14,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgDoTask{}, "sideline/DoTask", nil)
 	cdc.RegisterConcrete(&MsgSubmitTask{}, "sideline/SubmitTask", nil)
 	cdc.RegisterConcrete(&MsgUndoneTask{}, "sideline/UndoneTask", nil)
+	cdc.RegisterConcrete(&MsgSuccessTask{}, "sideline/SuccessTask", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -35,6 +36,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUndoneTask{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSuccessTask{},
 	)
 	// this line is used by starport scaffolding # 3
 

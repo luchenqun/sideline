@@ -68,6 +68,8 @@ export type SidelineMsgRegistEmployerResponse = object;
 
 export type SidelineMsgSubmitTaskResponse = object;
 
+export type SidelineMsgSuccessTaskResponse = object;
+
 export type SidelineMsgUndoneTaskResponse = object;
 
 /**

@@ -75008,6 +75008,8 @@ definitions:
     type: object
   sideline.sideline.MsgSubmitTaskResponse:
     type: object
+  sideline.sideline.MsgSuccessTaskResponse:
+    type: object
   sideline.sideline.MsgUndoneTaskResponse:
     type: object
   sideline.sideline.Params:

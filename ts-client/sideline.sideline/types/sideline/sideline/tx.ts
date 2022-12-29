@@ -68,6 +68,14 @@ export interface MsgUndoneTask {
 export interface MsgUndoneTaskResponse {
 }
 
+export interface MsgSuccessTask {
+  creator: string;
+  id: number;
+}
+
+export interface MsgSuccessTaskResponse {
+}
+
 function createBaseMsgRegistEmployer(): MsgRegistEmployer {
   return { creator: "", name: "", introduce: "", email: "", avatar: "" };
 }
@@ -797,6 +805,103 @@ export const MsgUndoneTaskResponse = {
   },
 };
 
+function createBaseMsgSuccessTask(): MsgSuccessTask {
+  return { creator: "", id: 0 };
+}
+
+export const MsgSuccessTask = {
+  encode(message: MsgSuccessTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSuccessTask {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSuccessTask();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSuccessTask {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+    };
+  },
+
+  toJSON(message: MsgSuccessTask): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSuccessTask>, I>>(object: I): MsgSuccessTask {
+    const message = createBaseMsgSuccessTask();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgSuccessTaskResponse(): MsgSuccessTaskResponse {
+  return {};
+}
+
+export const MsgSuccessTaskResponse = {
+  encode(_: MsgSuccessTaskResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSuccessTaskResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSuccessTaskResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSuccessTaskResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSuccessTaskResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSuccessTaskResponse>, I>>(_: I): MsgSuccessTaskResponse {
+    const message = createBaseMsgSuccessTaskResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse>;
@@ -804,8 +909,9 @@ export interface Msg {
   CreateTask(request: MsgCreateTask): Promise<MsgCreateTaskResponse>;
   DoTask(request: MsgDoTask): Promise<MsgDoTaskResponse>;
   SubmitTask(request: MsgSubmitTask): Promise<MsgSubmitTaskResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UndoneTask(request: MsgUndoneTask): Promise<MsgUndoneTaskResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SuccessTask(request: MsgSuccessTask): Promise<MsgSuccessTaskResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -818,6 +924,7 @@ export class MsgClientImpl implements Msg {
     this.DoTask = this.DoTask.bind(this);
     this.SubmitTask = this.SubmitTask.bind(this);
     this.UndoneTask = this.UndoneTask.bind(this);
+    this.SuccessTask = this.SuccessTask.bind(this);
   }
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse> {
     const data = MsgRegistEmployer.encode(request).finish();
@@ -853,6 +960,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUndoneTask.encode(request).finish();
     const promise = this.rpc.request("sideline.sideline.Msg", "UndoneTask", data);
     return promise.then((data) => MsgUndoneTaskResponse.decode(new _m0.Reader(data)));
+  }
+
+  SuccessTask(request: MsgSuccessTask): Promise<MsgSuccessTaskResponse> {
+    const data = MsgSuccessTask.encode(request).finish();
+    const promise = this.rpc.request("sideline.sideline.Msg", "SuccessTask", data);
+    return promise.then((data) => MsgSuccessTaskResponse.decode(new _m0.Reader(data)));
   }
 }
 
