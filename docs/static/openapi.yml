@@ -74994,6 +74994,8 @@ definitions:
         type: array
         items:
           type: string
+  sideline.sideline.MsgCancelTaskResponse:
+    type: object
   sideline.sideline.MsgCreateTaskResponse:
     type: object
     properties:

@@ -16,6 +16,7 @@ service Msg {
   rpc SuccessTask(MsgSuccessTask) returns (MsgSuccessTaskResponse);
   rpc FailTask(MsgFailTask) returns (MsgFailTaskResponse);
   rpc StartJudgeTask(MsgStartJudgeTask) returns (MsgStartJudgeTaskResponse);
+  rpc CancelTask(MsgCancelTask) returns (MsgCancelTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -105,6 +106,14 @@ message MsgStartJudgeTask {
 }
 
 message MsgStartJudgeTaskResponse {
+}
+
+message MsgCancelTask {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgCancelTaskResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

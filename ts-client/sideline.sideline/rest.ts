@@ -55,6 +55,8 @@ export interface SidelineEmployer {
   feedbacks?: string[];
 }
 
+export type SidelineMsgCancelTaskResponse = object;
+
 export interface SidelineMsgCreateTaskResponse {
   /** @format uint64 */
   id?: string;
