@@ -510,6 +510,7 @@ func New(
 		app.GetSubspace(sidelinemoduletypes.ModuleName),
 
 		app.BankKeeper,
+		app.StakingKeeper,
 	)
 	sidelineModule := sidelinemodule.NewAppModule(appCodec, app.SidelineKeeper, app.AccountKeeper, app.BankKeeper)
 
