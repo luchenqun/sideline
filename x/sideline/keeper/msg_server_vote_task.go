@@ -52,5 +52,16 @@ func (k msgServer) VoteTask(goCtx context.Context, msg *types.MsgVoteTask) (*typ
 
 	k.SetTask(ctx, task)
 
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeVoteTask,
+			sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
+
 	return &types.MsgVoteTaskResponse{}, nil
 }

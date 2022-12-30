@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"cosmossdk.io/errors"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"sideline/x/sideline/types"
@@ -31,6 +32,19 @@ func (k msgServer) StartJudgeTask(goCtx context.Context, msg *types.MsgStartJudg
 	task.Accuser = msg.Creator
 	task.Status = types.TaskStatusJudging
 	task.JudgeHeight = uint64(ctx.BlockHeight())
+
+	k.SetTask(ctx, task)
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeStartJudgeTask,
+			sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
 
 	return &types.MsgStartJudgeTaskResponse{}, nil
 }

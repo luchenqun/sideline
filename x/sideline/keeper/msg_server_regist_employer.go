@@ -30,5 +30,16 @@ func (k msgServer) RegistEmployer(goCtx context.Context, msg *types.MsgRegistEmp
 
 	k.SetEmployer(ctx, employer)
 
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeRegistEmployer,
+			sdk.NewAttribute(types.AttributeKeyEmployer, msg.Creator),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
+
 	return &types.MsgRegistEmployerResponse{}, nil
 }

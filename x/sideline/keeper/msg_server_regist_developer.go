@@ -33,5 +33,16 @@ func (k msgServer) RegistDeveloper(goCtx context.Context, msg *types.MsgRegistDe
 
 	k.SetDeveloper(ctx, developer)
 
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeRegistDeveloper,
+			sdk.NewAttribute(types.AttributeKeyDeveloper, msg.Creator),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
+
 	return &types.MsgRegistDeveloperResponse{}, nil
 }

@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"cosmossdk.io/errors"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"sideline/x/sideline/types"
@@ -57,6 +58,17 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 	task.Status = types.TaskStatusFail
 
 	k.SetTask(ctx, task)
+
+	ctx.EventManager().EmitEvents(sdk.Events{
+		sdk.NewEvent(
+			types.EventTypeDoTask,
+			sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+		),
+		sdk.NewEvent(
+			sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+		),
+	})
 
 	return &types.MsgFailTaskResponse{}, nil
 }
