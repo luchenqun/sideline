@@ -14,3 +14,4 @@ const (
 )
 
 const MinConfirmSubmitHeight = 100 // 最小确认提交高度
+const MinConfirmJudgeHeight = 600  // 最小确认仲裁高度

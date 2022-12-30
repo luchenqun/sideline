@@ -66,6 +66,8 @@ export type SidelineMsgDoTaskResponse = object;
 
 export type SidelineMsgFailTaskResponse = object;
 
+export type SidelineMsgJudgeTaskResponse = object;
+
 export type SidelineMsgRegistDeveloperResponse = object;
 
 export type SidelineMsgRegistEmployerResponse = object;

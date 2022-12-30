@@ -64,6 +64,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCancelTask int = 100
 
+	opWeightMsgJudgeTask = "op_weight_msg_judge_task"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgJudgeTask int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -206,6 +210,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCancelTask,
 		sidelinesimulation.SimulateMsgCancelTask(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgJudgeTask int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgJudgeTask, &weightMsgJudgeTask, nil,
+		func(_ *rand.Rand) {
+			weightMsgJudgeTask = defaultWeightMsgJudgeTask
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgJudgeTask,
+		sidelinesimulation.SimulateMsgJudgeTask(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
