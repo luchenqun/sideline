@@ -28,7 +28,7 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 	} else if task.Developer == msg.Creator {
 		// 开发者提交了任务结果，但是雇佣者不确认，超过一定高度，我们就可以发起交易确认任务已经做完了
 		// 当然，如果超过任务交付高度，也不允许成功
-		if !(task.Status == types.TaskStatusSubmited && uint64(ctx.BlockHeight()) > task.DeliverHeight+types.MinConfirmSubmitHeight && uint64(ctx.BlockHeight()) < task.Deadline) {
+		if !(task.Status == types.TaskStatusSubmited && uint64(ctx.BlockHeight()) > task.DeliverHeight+types.MinConfirmSubmitHeight) {
 			return nil, errors.Wrapf(types.ErrTaskStatus, "It's too early to confirm")
 		}
 	} else {

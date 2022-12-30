@@ -15,7 +15,7 @@ func (k msgServer) SubmitTask(goCtx context.Context, msg *types.MsgSubmitTask) (
 	if !found {
 		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
 	}
-	if task.Deadline < uint64(ctx.BlockHeight())+types.MinConfirmSubmitHeight {
+	if uint64(ctx.BlockHeight()) < task.Deadline {
 		return nil, errors.Wrapf(types.ErrTaskStatus, "you submit to later")
 	}
 
