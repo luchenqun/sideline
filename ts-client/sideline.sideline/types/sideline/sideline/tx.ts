@@ -108,6 +108,15 @@ export interface MsgJudgeTask {
 export interface MsgJudgeTaskResponse {
 }
 
+export interface MsgVoteTask {
+  creator: string;
+  id: number;
+  option: number;
+}
+
+export interface MsgVoteTaskResponse {
+}
+
 function createBaseMsgRegistEmployer(): MsgRegistEmployer {
   return { creator: "", name: "", introduce: "", email: "", avatar: "" };
 }
@@ -1322,6 +1331,112 @@ export const MsgJudgeTaskResponse = {
   },
 };
 
+function createBaseMsgVoteTask(): MsgVoteTask {
+  return { creator: "", id: 0, option: 0 };
+}
+
+export const MsgVoteTask = {
+  encode(message: MsgVoteTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.option !== 0) {
+      writer.uint32(24).uint64(message.option);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgVoteTask {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgVoteTask();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.option = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgVoteTask {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+      option: isSet(object.option) ? Number(object.option) : 0,
+    };
+  },
+
+  toJSON(message: MsgVoteTask): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.option !== undefined && (obj.option = Math.round(message.option));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgVoteTask>, I>>(object: I): MsgVoteTask {
+    const message = createBaseMsgVoteTask();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    message.option = object.option ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgVoteTaskResponse(): MsgVoteTaskResponse {
+  return {};
+}
+
+export const MsgVoteTaskResponse = {
+  encode(_: MsgVoteTaskResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgVoteTaskResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgVoteTaskResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgVoteTaskResponse {
+    return {};
+  },
+
+  toJSON(_: MsgVoteTaskResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgVoteTaskResponse>, I>>(_: I): MsgVoteTaskResponse {
+    const message = createBaseMsgVoteTaskResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse>;
@@ -1334,8 +1449,9 @@ export interface Msg {
   FailTask(request: MsgFailTask): Promise<MsgFailTaskResponse>;
   StartJudgeTask(request: MsgStartJudgeTask): Promise<MsgStartJudgeTaskResponse>;
   CancelTask(request: MsgCancelTask): Promise<MsgCancelTaskResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   JudgeTask(request: MsgJudgeTask): Promise<MsgJudgeTaskResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  VoteTask(request: MsgVoteTask): Promise<MsgVoteTaskResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1353,6 +1469,7 @@ export class MsgClientImpl implements Msg {
     this.StartJudgeTask = this.StartJudgeTask.bind(this);
     this.CancelTask = this.CancelTask.bind(this);
     this.JudgeTask = this.JudgeTask.bind(this);
+    this.VoteTask = this.VoteTask.bind(this);
   }
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse> {
     const data = MsgRegistEmployer.encode(request).finish();
@@ -1418,6 +1535,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgJudgeTask.encode(request).finish();
     const promise = this.rpc.request("sideline.sideline.Msg", "JudgeTask", data);
     return promise.then((data) => MsgJudgeTaskResponse.decode(new _m0.Reader(data)));
+  }
+
+  VoteTask(request: MsgVoteTask): Promise<MsgVoteTaskResponse> {
+    const data = MsgVoteTask.encode(request).finish();
+    const promise = this.rpc.request("sideline.sideline.Msg", "VoteTask", data);
+    return promise.then((data) => MsgVoteTaskResponse.decode(new _m0.Reader(data)));
   }
 }
 

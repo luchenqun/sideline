@@ -80,6 +80,8 @@ export type SidelineMsgSuccessTaskResponse = object;
 
 export type SidelineMsgUndoneTaskResponse = object;
 
+export type SidelineMsgVoteTaskResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

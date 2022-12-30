@@ -18,6 +18,7 @@ service Msg {
   rpc StartJudgeTask(MsgStartJudgeTask) returns (MsgStartJudgeTaskResponse);
   rpc CancelTask(MsgCancelTask) returns (MsgCancelTaskResponse);
   rpc JudgeTask(MsgJudgeTask) returns (MsgJudgeTaskResponse);
+  rpc VoteTask(MsgVoteTask) returns (MsgVoteTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -123,6 +124,15 @@ message MsgJudgeTask {
 }
 
 message MsgJudgeTaskResponse {
+}
+
+message MsgVoteTask {
+  string creator = 1;
+  uint64 id = 2;
+  uint64 option = 3;
+}
+
+message MsgVoteTaskResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
