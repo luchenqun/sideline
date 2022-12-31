@@ -1,0 +1,27 @@
+#app {
+  background: #eee;
+  height: 100vh;
+  overflow: hidden;
+  font-weight: 400 !important;
+}
+
+.container {
+  padding: 15px;
+  margin-top: -45px;
+  margin-left: 10%;
+  width: 80%;
+  max-width: 80%;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.gva-table-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+.gva-btn-list {
+  margin-bottom: 12px;
+  display: flex;
+}

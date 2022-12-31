@@ -1,13 +1,16 @@
 {
-  "author": "Tendermint, Inc \u003chello@tendermint.com\u003e",
+  "author": "Tendermint, Inc <hello@tendermint.com>",
   "dependencies": {
     "@cosmjs/launchpad": "0.27.0",
     "@cosmjs/proto-signing": "0.27.0",
     "@cosmjs/stargate": "0.27.0",
+    "@element-plus/icons-vue": "^2.0.10",
+    "@kangc/v-md-editor": "^2.3.15",
     "@starport/vue": "^0.3.10",
     "@starport/vuex": "^0.3.10",
     "buffer": "^6.0.3",
     "core-js": "^3.18.2",
+    "element-plus": "^2.2.28",
     "sideline-client-ts": "file:../ts-client",
     "vue": "^3.2.6",
     "vue-router": "^4.0.3",

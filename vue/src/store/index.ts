@@ -1,13 +1,13 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
 
-import init from './config'
+import init from "./config";
 
 const store = createStore({
   state() {
-    return {}
+    return {};
   },
   mutations: {},
-  actions: {}
-})
-init(store)
-export default store
+  actions: {},
+});
+init(store);
+export default store;

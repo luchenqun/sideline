@@ -1,0 +1,176 @@
+<template>
+  <div class="container">
+    <div class="gva-btn-list">
+      <el-button type="primary" :icon="Plus" :disabled="!address" @click="dialogVisible = true;">Regist Employer</el-button>
+    </div>
+    <!-- <el-divider /> -->
+    <el-table :data="employers">
+      <el-table-column align="left" min-width="100" label="avatar">
+        <template #default="scope">
+          <el-avatar :src="scope.row.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+          </el-avatar>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="left" show-overflow-tooltip label="name" min-width="100" prop="name">
+        <template #default="scope">
+          <div class="nowrap">
+            <router-link show-overflow-tooltip :to="('/layout/projectDetail/'+scope.row.projectId)">{{scope.row.name}}</router-link>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" label="introduce" show-overflow-tooltip min-width="100" prop="introduce" />
+      <el-table-column align="left" label="email" show-overflow-tooltip min-width="100" prop="email" />
+      <el-table-column align="left" label="address" show-overflow-tooltip min-width="180" prop="address" />
+      <el-table-column align="left" min-width="80" label="task total">
+        <template #default="scope">{{ scope.row.taskIds.length }}</template>
+      </el-table-column>
+      <el-table-column align="left" min-width="100" label="feedback total">
+        <template #default="scope">{{ scope.row.feedbacks.length }}</template>
+      </el-table-column>
+      <el-table-column align="right" label="action" width="88">
+        <template #default="scope">
+          <el-button icon="tickets" size="small" type="primary" link @click="submitDetailProject(scope.row)">DETAIL</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Regist Employer">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
+        <el-form-item label="creator" prop="creator">
+          <el-input v-model="form.creator" disabled autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="name" prop="name">
+          <el-input v-model="form.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="avatar" prop="avatar">
+          <el-input v-model="form.avatar" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="email" prop="email">
+          <el-input v-model="form.email" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="introduce" prop="introduce">
+          <v-md-editor v-model="form.introduce" height="400px"></v-md-editor>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="closeDialog">取 消</el-button>
+          <el-button type="primary" @click="submitRegistEmployer">确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+  </div>
+</template>
+
+<script>
+import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
+import { useStore } from 'vuex'
+import { Plus } from '@element-plus/icons-vue'
+import { ElMessage, ElLoading } from 'element-plus';
+
+export default {
+  name: 'Employers',
+
+  setup() {
+    // store
+    const $s = useStore()
+    const address = computed(() => $s.getters['common/wallet/address'])
+    const employers = ref([])
+    const form = ref({ name: "luke", avatar: "https://b.lucq.fun/images/admin.jpg", email: "luke@qq.com", introduce: "" })
+    const formRef = ref(null);
+    const dialogVisible = ref(false)
+    const rules = ref({
+      creator: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      name: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      introduce: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      email: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      avatar: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+    });
+
+    onBeforeMount(async () => {
+      getData()
+    });
+
+    watch(() => address.value, async () => {
+      console.log('地址改变了，搞一下逻辑呗.........', address.value)
+      form.value.creator = address.value
+    })
+
+    const getData = async () => {
+      let reply = await $s.dispatch('sideline.sideline/QueryEmployerAll', {});
+      console.log("QueryEmployerAll", reply)
+      employers.value = reply.employer
+    }
+
+    const initForm = () => {
+      formRef.value.resetFields();
+      form.value = { creator: address.value, introduce: '' };
+    };
+
+    const closeDialog = () => {
+      dialogVisible.value = false;
+      initForm()
+    }
+
+    const submitRegistEmployer = () => {
+      formRef.value.validate(async (valid) => {
+
+        if (valid && form.value.introduce != "") {
+          const { value } = form
+          console.log("value", value)
+          const loading = ElLoading.service({ lock: true, text: 'registing employer...' });
+          try {
+            const fee = [{ denom: "wrmb", amount: "20000000" }]
+            const reply = await $s.dispatch("sideline.sideline/sendMsgRegistEmployer", { value, fee });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({
+                type: 'success',
+                message: 'regist employer success',
+              })
+              await getData()
+              closeDialog()
+            } else {
+              ElMessage({
+                type: 'error',
+                message: reply.rawLog,
+              })
+            }
+          } catch (error) {
+            console.log("regist employer error", error)
+            ElMessage({
+              type: 'error',
+              message: error,
+            })
+          }
+          loading.close()
+        } else {
+          ElMessage({
+            type: 'warning',
+            message: 'please check you input',
+          })
+        }
+      });
+    }
+
+    return {
+      address,
+      employers,
+      dialogVisible,
+      rules,
+      form,
+      formRef,
+      Plus,
+      getData,
+      initForm,
+      closeDialog,
+      submitRegistEmployer,
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>
