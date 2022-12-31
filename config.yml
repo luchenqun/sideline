@@ -4,9 +4,9 @@ accounts:
     coins: ["1001000000wrmb"]
   - name: bob
     coins: ["5000000000wrmb"]
-  - name: luke
+  - name: employer
     coins: ["6000000000wrmb"]
-  - name: faucet
+  - name: developer
     coins: ["8000000000wrmb"]
 validators:
   - name: alice
