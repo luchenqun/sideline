@@ -23,8 +23,7 @@ func (k msgServer) RegistEmployer(goCtx context.Context, msg *types.MsgRegistEmp
 		Email:     msg.Email,
 		Avatar:    msg.Avatar,
 		Address:   msg.Creator,
-		TaskCount: 0,
-		TaskFail:  0,
+		TaskIds:   nil,
 		Feedbacks: nil,
 	}
 

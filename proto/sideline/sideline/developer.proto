@@ -13,9 +13,8 @@ message Developer {
   string education = 7;
   string major = 8;
   repeated string skills = 9;
-  uint64 taskSuccess = 10;
-  uint64 taskFail = 11;
-  repeated string feedbacks = 12;
+  repeated uint64 taskIds = 10;
+  repeated string feedbacks = 11;
   
 }
 

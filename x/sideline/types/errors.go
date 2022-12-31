@@ -8,9 +8,10 @@ import (
 
 // x/sideline module sentinel errors
 var (
-	ErrNotRegistForEmployer = sdkerrors.Register(ModuleName, 1100, "not regist for a employer")
-	ErrTaskID               = sdkerrors.Register(ModuleName, 1101, "task id is not exist")
-	ErrTaskStatus           = sdkerrors.Register(ModuleName, 1102, "task status is forbid do this")
-	ErrPermission           = sdkerrors.Register(ModuleName, 1103, "no permission do this")
-	ErrTime                 = sdkerrors.Register(ModuleName, 1104, "this operation is not allowed at this moment")
+	ErrNotRegistForEmployer  = sdkerrors.Register(ModuleName, 1100, "not regist for a employer")
+	ErrNotRegistForDeveloper = sdkerrors.Register(ModuleName, 1101, "not regist for a developer")
+	ErrTaskID                = sdkerrors.Register(ModuleName, 1102, "task id is not exist")
+	ErrTaskStatus            = sdkerrors.Register(ModuleName, 1103, "task status is forbid do this")
+	ErrPermission            = sdkerrors.Register(ModuleName, 1104, "no permission do this")
+	ErrTime                  = sdkerrors.Register(ModuleName, 1105, "this operation is not allowed at this moment")
 )

@@ -10,9 +10,8 @@ message Employer {
   string email = 4; 
   string avatar = 5;
   string address = 6;
-  uint64 taskCount = 7;
-  uint64 taskFail = 8;
-  repeated string feedbacks = 9;
+  repeated uint64 taskIds = 7;
+  repeated string feedbacks = 8;
   
 }
 

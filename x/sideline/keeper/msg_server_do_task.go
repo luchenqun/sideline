@@ -20,22 +20,32 @@ func (k msgServer) DoTask(goCtx context.Context, msg *types.MsgDoTask) (*types.M
 		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %s, forbid do this task", task.Status)
 	}
 
-	developer, _ := sdk.AccAddressFromBech32(msg.Creator)
+	// 只有开发者才能发布任务
+	developer, found := k.GetDeveloper(ctx, msg.Creator)
+	if !found {
+		return nil, errors.Wrap(types.ErrNotRegistForDeveloper, "forbid do task")
+	}
+
+	// 抵押物
+	developerAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
 	if err != nil {
 		panic(err)
 	}
 
-	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, developer, types.ModuleName, sdk.Coins{collateral})
+	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, developerAddress, types.ModuleName, sdk.Coins{collateral})
 	if sdkError != nil {
 		return nil, sdkError
 	}
+
+	developer.TaskIds = append(developer.TaskIds, task.Id)
 
 	task.Developer = msg.Creator
 	task.Status = types.TaskStatusDoing
 
 	k.SetTask(ctx, task)
+	k.SetDeveloper(ctx, developer)
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(

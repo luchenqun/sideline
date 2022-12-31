@@ -44717,12 +44717,11 @@ paths:
                       type: array
                       items:
                         type: string
-                    taskSuccess:
-                      type: string
-                      format: uint64
-                    taskFail:
-                      type: string
-                      format: uint64
+                    taskIds:
+                      type: array
+                      items:
+                        type: string
+                        format: uint64
                     feedbacks:
                       type: array
                       items:
@@ -44865,12 +44864,11 @@ paths:
                     type: array
                     items:
                       type: string
-                  taskSuccess:
-                    type: string
-                    format: uint64
-                  taskFail:
-                    type: string
-                    format: uint64
+                  taskIds:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
                   feedbacks:
                     type: array
                     items:
@@ -44927,12 +44925,11 @@ paths:
                       type: string
                     address:
                       type: string
-                    taskCount:
-                      type: string
-                      format: uint64
-                    taskFail:
-                      type: string
-                      format: uint64
+                    taskIds:
+                      type: array
+                      items:
+                        type: string
+                        format: uint64
                     feedbacks:
                       type: array
                       items:
@@ -45067,12 +45064,11 @@ paths:
                     type: string
                   address:
                     type: string
-                  taskCount:
-                    type: string
-                    format: uint64
-                  taskFail:
-                    type: string
-                    format: uint64
+                  taskIds:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
                   feedbacks:
                     type: array
                     items:
@@ -74959,12 +74955,11 @@ definitions:
         type: array
         items:
           type: string
-      taskSuccess:
-        type: string
-        format: uint64
-      taskFail:
-        type: string
-        format: uint64
+      taskIds:
+        type: array
+        items:
+          type: string
+          format: uint64
       feedbacks:
         type: array
         items:
@@ -74984,12 +74979,11 @@ definitions:
         type: string
       address:
         type: string
-      taskCount:
-        type: string
-        format: uint64
-      taskFail:
-        type: string
-        format: uint64
+      taskIds:
+        type: array
+        items:
+          type: string
+          format: uint64
       feedbacks:
         type: array
         items:
@@ -75053,12 +75047,11 @@ definitions:
               type: array
               items:
                 type: string
-            taskSuccess:
-              type: string
-              format: uint64
-            taskFail:
-              type: string
-              format: uint64
+            taskIds:
+              type: array
+              items:
+                type: string
+                format: uint64
             feedbacks:
               type: array
               items:
@@ -75109,12 +75102,11 @@ definitions:
               type: string
             address:
               type: string
-            taskCount:
-              type: string
-              format: uint64
-            taskFail:
-              type: string
-              format: uint64
+            taskIds:
+              type: array
+              items:
+                type: string
+                format: uint64
             feedbacks:
               type: array
               items:
@@ -75248,12 +75240,11 @@ definitions:
             type: array
             items:
               type: string
-          taskSuccess:
-            type: string
-            format: uint64
-          taskFail:
-            type: string
-            format: uint64
+          taskIds:
+            type: array
+            items:
+              type: string
+              format: uint64
           feedbacks:
             type: array
             items:
@@ -75276,12 +75267,11 @@ definitions:
             type: string
           address:
             type: string
-          taskCount:
-            type: string
-            format: uint64
-          taskFail:
-            type: string
-            format: uint64
+          taskIds:
+            type: array
+            items:
+              type: string
+              format: uint64
           feedbacks:
             type: array
             items:

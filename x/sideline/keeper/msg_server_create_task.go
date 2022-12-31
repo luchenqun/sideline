@@ -19,19 +19,21 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 		Deposit:      msg.Deposit,
 		Collateral:   msg.Collateral,
 		Employer:     msg.Creator,
-		Developer:    "",
 		Deadline:     msg.Deadline,
 		Status:       types.TaskStatusCreated,
 	}
 
 	// 只有雇主才能发布任务
-	_, found := k.GetEmployer(ctx, msg.Creator)
+	employer, found := k.GetEmployer(ctx, msg.Creator)
 	if !found {
 		return nil, errors.Wrap(types.ErrNotRegistForEmployer, "forbid create task")
 	}
-	// @todo 任务结束快高不能低于现在的快高
+	// 任务结束快高不能低于现在的快高
+	if uint64(ctx.BlockHeight()) >= msg.Deadline {
+		return nil, errors.Wrapf(types.ErrTime, "current height = %d, deadline height = %d", ctx.BlockHeight(), msg.Deadline)
+	}
 
-	employer, _ := sdk.AccAddressFromBech32(msg.Creator)
+	employerAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	remuneration, err := sdk.ParseCoinNormalized(msg.Remuneration)
 	if err != nil {
@@ -43,12 +45,15 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 	}
 	coin := remuneration.Add(deposit)
 
-	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, employer, types.ModuleName, sdk.Coins{coin})
+	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, employerAddress, types.ModuleName, sdk.Coins{coin})
 	if sdkError != nil {
 		return nil, sdkError
 	}
 
 	Id := k.AppendTask(ctx, task)
+
+	employer.TaskIds = append(employer.TaskIds, Id)
+	k.SetEmployer(ctx, employer)
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(

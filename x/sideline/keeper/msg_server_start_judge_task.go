@@ -17,14 +17,17 @@ func (k msgServer) StartJudgeTask(goCtx context.Context, msg *types.MsgStartJudg
 		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
 	}
 
+	// 只有开发者或者雇佣者才能发起仲裁
 	if !(task.Employer == msg.Creator || task.Developer == msg.Creator) {
 		return nil, errors.Wrapf(types.ErrPermission, "you are not a stakeholder, employer = %s, developer = %s, creator = %s", task.Employer, task.Developer, msg.Creator)
 	}
 
+	// 雇佣者可以在开发者提交任务之后，可以发起仲裁
 	if !(task.Employer == msg.Creator && (task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusSubmited)) {
 		return nil, errors.Wrapf(types.ErrTaskStatus, "employer = %s status = %s forbid start judge task", msg.Creator, task.Status)
 	}
 
+	// 雇佣者不认可开发者结果，可以发起仲裁
 	if !(task.Developer == msg.Creator && task.Status == types.TaskStatusUndone) {
 		return nil, errors.Wrapf(types.ErrTaskStatus, "developer = %s status = %s forbid start judge task", msg.Creator, task.Status)
 	}
