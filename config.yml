@@ -1,19 +1,42 @@
 version: 1
 accounts:
   - name: alice
-    coins: ["20000token", "200000000stake"]
+    coins: ["1001000000wrmb"]
   - name: bob
-    coins: ["10000token", "100000000stake"]
+    coins: ["5000000000wrmb"]
+  - name: luke
+    coins: ["6000000000wrmb"]
+  - name: faucet
+    coins: ["8000000000wrmb"]
 validators:
   - name: alice
-    bonded: "100000000stake"
+    bonded: "1000000wrmb"
 client:
   openapi:
     path: "docs/static/openapi.yml"
-  typescript:
-    path: "ts-client"
-  vuex:
-    path: "vue/src/store"
+#  typescript:
+#    path: "ts-client"
+#  vuex:
+#    path: "vue/src/store"
 faucet:
   name: bob
-  coins: ["5token", "100000stake"]
+  coins: ["10000wrmb"]
+genesis:
+  app_state:
+    staking:
+      params:
+        bond_denom: "wrmb"
+    crisis:
+      constant_fee:
+        denom: "wrmb"
+    gov:
+      deposit_params:
+        min_deposit:
+          -
+            denom: "wrmb"
+            amount: "1000"
+    mint:
+      params:
+        mint_denom: "wrmb"
+        inflation_max: "0.000000000000000000"
+        inflation_min: "0.000000000000000000"
