@@ -30,12 +30,7 @@ export interface SidelineDeveloper {
   education?: string;
   major?: string;
   skills?: string[];
-
-  /** @format uint64 */
-  taskSuccess?: string;
-
-  /** @format uint64 */
-  taskFail?: string;
+  taskIds?: string[];
   feedbacks?: string[];
 }
 
@@ -46,12 +41,7 @@ export interface SidelineEmployer {
   email?: string;
   avatar?: string;
   address?: string;
-
-  /** @format uint64 */
-  taskCount?: string;
-
-  /** @format uint64 */
-  taskFail?: string;
+  taskIds?: string[];
   feedbacks?: string[];
 }
 

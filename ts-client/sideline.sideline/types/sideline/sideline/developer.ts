@@ -14,8 +14,7 @@ export interface Developer {
   education: string;
   major: string;
   skills: string[];
-  taskSuccess: number;
-  taskFail: number;
+  taskIds: number[];
   feedbacks: string[];
 }
 
@@ -30,8 +29,7 @@ function createBaseDeveloper(): Developer {
     education: "",
     major: "",
     skills: [],
-    taskSuccess: 0,
-    taskFail: 0,
+    taskIds: [],
     feedbacks: [],
   };
 }
@@ -65,14 +63,13 @@ export const Developer = {
     for (const v of message.skills) {
       writer.uint32(74).string(v!);
     }
-    if (message.taskSuccess !== 0) {
-      writer.uint32(80).uint64(message.taskSuccess);
+    writer.uint32(82).fork();
+    for (const v of message.taskIds) {
+      writer.uint64(v);
     }
-    if (message.taskFail !== 0) {
-      writer.uint32(88).uint64(message.taskFail);
-    }
+    writer.ldelim();
     for (const v of message.feedbacks) {
-      writer.uint32(98).string(v!);
+      writer.uint32(90).string(v!);
     }
     return writer;
   },
@@ -112,12 +109,16 @@ export const Developer = {
           message.skills.push(reader.string());
           break;
         case 10:
-          message.taskSuccess = longToNumber(reader.uint64() as Long);
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.taskIds.push(longToNumber(reader.uint64() as Long));
+            }
+          } else {
+            message.taskIds.push(longToNumber(reader.uint64() as Long));
+          }
           break;
         case 11:
-          message.taskFail = longToNumber(reader.uint64() as Long);
-          break;
-        case 12:
           message.feedbacks.push(reader.string());
           break;
         default:
@@ -139,8 +140,7 @@ export const Developer = {
       education: isSet(object.education) ? String(object.education) : "",
       major: isSet(object.major) ? String(object.major) : "",
       skills: Array.isArray(object?.skills) ? object.skills.map((e: any) => String(e)) : [],
-      taskSuccess: isSet(object.taskSuccess) ? Number(object.taskSuccess) : 0,
-      taskFail: isSet(object.taskFail) ? Number(object.taskFail) : 0,
+      taskIds: Array.isArray(object?.taskIds) ? object.taskIds.map((e: any) => Number(e)) : [],
       feedbacks: Array.isArray(object?.feedbacks) ? object.feedbacks.map((e: any) => String(e)) : [],
     };
   },
@@ -160,8 +160,11 @@ export const Developer = {
     } else {
       obj.skills = [];
     }
-    message.taskSuccess !== undefined && (obj.taskSuccess = Math.round(message.taskSuccess));
-    message.taskFail !== undefined && (obj.taskFail = Math.round(message.taskFail));
+    if (message.taskIds) {
+      obj.taskIds = message.taskIds.map((e) => Math.round(e));
+    } else {
+      obj.taskIds = [];
+    }
     if (message.feedbacks) {
       obj.feedbacks = message.feedbacks.map((e) => e);
     } else {
@@ -181,8 +184,7 @@ export const Developer = {
     message.education = object.education ?? "";
     message.major = object.major ?? "";
     message.skills = object.skills?.map((e) => e) || [];
-    message.taskSuccess = object.taskSuccess ?? 0;
-    message.taskFail = object.taskFail ?? 0;
+    message.taskIds = object.taskIds?.map((e) => e) || [];
     message.feedbacks = object.feedbacks?.map((e) => e) || [];
     return message;
   },
