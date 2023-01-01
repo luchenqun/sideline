@@ -32,9 +32,38 @@
         </div>
       </div>
 
-      <div class="key" style="margin-top:15px;">developer introduce</div>
+      <el-divider class="detail-divider" style="margin-top:20px;" />
+      <div class="detail3" style="padding-bottom:0px;">
+        <el-row :gutter="0">
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">education</div>
+              <div class="value nowrap">{{developer.education}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">major</div>
+              <div class="value nowrap">{{developer.major}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <div class="data">
+              <div class="key">skills</div>
+              <div class="value nowrap">
+                <el-tag style="margin-right:8px;" v-for="skill of developer.skills" :key="skill">{{ skill }}</el-tag>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="detail-box">
+      <div class="key">developer introduce</div>
       <v-md-preview :text="developer.introduce" ref="preview"></v-md-preview>
-      <el-divider class="detail-divider" />
     </div>
   </div>
 
