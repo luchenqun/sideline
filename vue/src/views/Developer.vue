@@ -15,10 +15,16 @@
                   <div class="value">{{developer.address}}</div>
                 </div>
               </el-col>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <div class="data">
                   <div class="key">email</div>
                   <div class="value">{{developer.email}}</div>
+                </div>
+              </el-col>
+              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                <div class="data">
+                  <div class="key">task</div>
+                  <div class="value">{{developer?.taskIds?.length}}</div>
                 </div>
               </el-col>
             </el-row>
@@ -26,31 +32,6 @@
         </div>
       </div>
 
-      <div class="detail2">
-        <el-divider class="detail-divider" />
-        <div class="items">
-          <div class="item">
-            <div class="left">
-              <img src="@/assets/project_total.png" alt />
-            </div>
-            <div class="right">
-              <div class="value-special"><span class="c1">{{developer?.taskIds?.length}}</span></div>
-              <div class="key">Task Total</div>
-            </div>
-          </div>
-          <el-divider direction="vertical" class="divider" />
-          <div class="item">
-            <div class="left">
-              <img src="@/assets/project_success.png" alt />
-            </div>
-            <div class="right">
-              <div class="value-special"><span class="c2">{{developer?.feedbacks?.length}}</span></div>
-              <div class="key">Feedback Total</div>
-            </div>
-          </div>
-        </div>
-        <el-divider class="detail-divider" />
-      </div>
       <div class="key" style="margin-top:15px;">developer introduce</div>
       <v-md-preview :text="developer.introduce" ref="preview"></v-md-preview>
       <el-divider class="detail-divider" />

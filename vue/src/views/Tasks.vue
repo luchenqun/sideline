@@ -29,27 +29,39 @@
     </el-table>
 
     <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Add Task">
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="115px">
         <el-form-item label="creator" prop="creator">
           <el-input v-model="form.creator" disabled autocomplete="off" />
         </el-form-item>
-        <el-form-item label="name" prop="name">
-          <el-input v-model="form.name" autocomplete="off" />
+        <el-form-item label="title" prop="title">
+          <el-input v-model="form.title" autocomplete="off" placeholder="task title" />
         </el-form-item>
-        <el-form-item label="avatar" prop="avatar">
-          <el-input v-model="form.avatar" placeholder="please input you avatar http url" autocomplete="off" />
+        <el-form-item label="remuneration" prop="remuneration">
+          <el-input v-model="form.remuneration" @input="form.remuneration = form.remuneration.replace(/[^\d]/g, '')" placeholder="remuneration for developer">
+            <template #append>WRMB</template>
+          </el-input>
         </el-form-item>
-        <el-form-item label="email" prop="email">
-          <el-input v-model="form.email" autocomplete="off" />
+        <el-form-item label="deposit" prop="deposit">
+          <el-input v-model="form.deposit" @input="form.deposit = form.deposit.replace(/[^\d]/g, '')" placeholder="deposit for this task">
+            <template #append>WRMB</template>
+          </el-input>
         </el-form-item>
-        <el-form-item label="introduce" prop="introduce">
-          <v-md-editor v-model="form.introduce" height="400px"></v-md-editor>
+        <el-form-item label="collateral" prop="collateral">
+          <el-input v-model="form.collateral" @input="form.collateral = form.collateral.replace(/[^\d]/g, '')" placeholder="collateral that developer are required to pay for tasks">
+            <template #append>WRMB</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="deadline" prop="deadline">
+          <el-input v-model="form.deadline" placeholder="the latest block height for task submission" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="description" prop="description">
+          <v-md-editor v-model="form.description" height="400px"></v-md-editor>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="closeDialog">Cancel</el-button>
-          <el-button type="primary" @click="submitRegistEmployer">OK</el-button>
+          <el-button type="primary" @click="submitCreateTask">OK</el-button>
         </div>
       </template>
     </el-dialog>
@@ -78,14 +90,17 @@ export default {
     const dialogVisible = ref(false)
     const rules = ref({
       creator: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      name: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      introduce: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      email: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      avatar: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      title: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      description: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      remuneration: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      deposit: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      collateral: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
+      deadline: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
     });
 
     onBeforeMount(async () => {
       getData()
+      form.value.creator = address.value
     });
 
     watch(() => address.value, async () => {
@@ -108,21 +123,22 @@ export default {
       initForm()
     }
 
-    const submitRegistEmployer = () => {
+    const submitCreateTask = () => {
       formRef.value.validate(async (valid) => {
+        const denom = "wrmb"
+        const { value } = form
+        if (valid && value?.introduce != "") {
 
-        if (valid && form.value.introduce != "") {
-          const { value } = form
           console.log("value", value)
-          const loading = ElLoading.service({ lock: true, text: 'registing employer...' });
+          const loading = ElLoading.service({ lock: true, text: 'create task...' });
           try {
             const fee = [{ denom: "wrmb", amount: "20000000" }]
-            const reply = await $s.dispatch("sideline.sideline/sendMsgRegistEmployer", { value, fee });
+            const reply = await $s.dispatch("sideline.sideline/sendMsgCreateTask", { value: { ...value, remuneration: value.remuneration + denom, deposit: value.deposit + denom, collateral: value.collateral + denom }, fee });
             console.log("reply", reply)
             if (reply.code == 0) {
               ElMessage({
                 type: 'success',
-                message: 'regist employer success',
+                message: 'create task success',
               })
               await getData()
               closeDialog()
@@ -133,7 +149,7 @@ export default {
               })
             }
           } catch (error) {
-            console.log("regist employer error", error)
+            console.log("create task error", error)
             ElMessage({
               type: 'error',
               message: error,
@@ -166,7 +182,7 @@ export default {
       getData,
       initForm,
       closeDialog,
-      submitRegistEmployer,
+      submitCreateTask,
       toDetailTask,
       formatTaskStatus
     }

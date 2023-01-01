@@ -15,10 +15,16 @@
                   <div class="value">{{employer.address}}</div>
                 </div>
               </el-col>
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <div class="data">
                   <div class="key">email</div>
                   <div class="value">{{employer.email}}</div>
+                </div>
+              </el-col>
+              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                <div class="data">
+                  <div class="key">task</div>
+                  <div class="value">{{employer?.taskIds?.length}}</div>
                 </div>
               </el-col>
             </el-row>
@@ -26,31 +32,6 @@
         </div>
       </div>
 
-      <div class="detail2">
-        <el-divider class="detail-divider" />
-        <div class="items">
-          <div class="item">
-            <div class="left">
-              <img src="@/assets/project_total.png" alt />
-            </div>
-            <div class="right">
-              <div class="value-special"><span class="c1">{{employer?.taskIds?.length}}</span></div>
-              <div class="key">Task Total</div>
-            </div>
-          </div>
-          <el-divider direction="vertical" class="divider" />
-          <div class="item">
-            <div class="left">
-              <img src="@/assets/project_success.png" alt />
-            </div>
-            <div class="right">
-              <div class="value-special"><span class="c2">{{employer?.feedbacks?.length}}</span></div>
-              <div class="key">Feedback Total</div>
-            </div>
-          </div>
-        </div>
-        <el-divider class="detail-divider" />
-      </div>
       <div class="key" style="margin-top:15px;">employer introduce</div>
       <v-md-preview :text="employer.introduce" ref="preview"></v-md-preview>
       <el-divider class="detail-divider" />
@@ -80,7 +61,7 @@
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
-          <el-button icon="tickets" size="small" type="primary" link @click="toDetailEmployer(scope.row)">DETAIL</el-button>
+          <el-button icon="tickets" size="small" type="primary" link @click="toDetailTask(scope.row)">DETAIL</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -131,7 +112,7 @@
 import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElLoading } from 'element-plus';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { formatTaskStatus } from '@/utils/sideline';
 
 export default {
@@ -141,6 +122,7 @@ export default {
     // store
     const $s = useStore()
     const route = useRoute();
+    const router = useRouter();
     const { address } = route.params
     const walletAddress = computed(() => $s.getters['common/wallet/address'])
     const tasks = ref([])
@@ -162,6 +144,7 @@ export default {
 
     onBeforeMount(async () => {
       getData()
+      form.value.creator = walletAddress.value
     });
 
     watch(() => walletAddress.value, async () => {
@@ -232,6 +215,13 @@ export default {
       });
     }
 
+    const toDetailTask = (row) => {
+      router.push({
+        name: 'task',
+        params: row,
+      });
+    }
+
     return {
       address,
       walletAddress,
@@ -246,7 +236,8 @@ export default {
       initForm,
       closeDialog,
       submitCreateTask,
-      formatTaskStatus
+      formatTaskStatus,
+      toDetailTask,
     }
   }
 }

@@ -323,7 +323,7 @@ export default {
 		async sendMsgRegistDeveloper({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgRegistDeveloper({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgRegistDeveloper({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -336,7 +336,7 @@ export default {
 		async sendMsgSuccessTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgSuccessTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgSuccessTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -349,7 +349,7 @@ export default {
 		async sendMsgDoTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgDoTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgDoTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -362,7 +362,7 @@ export default {
 		async sendMsgVoteTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgVoteTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgVoteTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -375,7 +375,7 @@ export default {
 		async sendMsgCreateTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgCreateTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgCreateTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -388,7 +388,7 @@ export default {
 		async sendMsgFailTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgFailTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgFailTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -401,7 +401,7 @@ export default {
 		async sendMsgJudgeTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgJudgeTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgJudgeTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -414,7 +414,7 @@ export default {
 		async sendMsgStartJudgeTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgStartJudgeTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgStartJudgeTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -427,7 +427,7 @@ export default {
 		async sendMsgCancelTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgCancelTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgCancelTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -440,7 +440,7 @@ export default {
 		async sendMsgFeedbackTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgFeedbackTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgFeedbackTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -453,7 +453,7 @@ export default {
 		async sendMsgRegistEmployer({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgRegistEmployer({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -466,7 +466,7 @@ export default {
 		async sendMsgUndoneTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgUndoneTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgUndoneTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -479,7 +479,7 @@ export default {
 		async sendMsgSubmitTask({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.SidelineSideline.tx.sendMsgSubmitTask({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const result = await client.SidelineSideline.tx.sendMsgSubmitTask({ value, fee: {amount: fee, gas: "2000000"}, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {

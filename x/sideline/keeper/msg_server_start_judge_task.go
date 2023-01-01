@@ -23,13 +23,17 @@ func (k msgServer) StartJudgeTask(goCtx context.Context, msg *types.MsgStartJudg
 	}
 
 	// 雇佣者可以在开发者提交任务之后，可以发起仲裁
-	if !(task.Employer == msg.Creator && (task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusSubmited)) {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "employer = %s status = %s forbid start judge task", msg.Creator, task.Status)
+	if task.Employer == msg.Creator {
+		if !(task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusSubmited) {
+			return nil, errors.Wrapf(types.ErrTaskStatus, "employer = %s status = %d forbid start judge task", msg.Creator, task.Status)
+		}
 	}
 
-	// 雇佣者不认可开发者结果，可以发起仲裁
-	if !(task.Developer == msg.Creator && task.Status == types.TaskStatusUndone) {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "developer = %s status = %s forbid start judge task", msg.Creator, task.Status)
+	// 开发者在提交任务之后，如果雇佣者不认可开发者结果，可以发起仲裁
+	if task.Developer == msg.Creator {
+		if task.Status != types.TaskStatusUndone {
+			return nil, errors.Wrapf(types.ErrTaskStatus, "developer = %s status = %d forbid start judge task", msg.Creator, task.Status)
+		}
 	}
 
 	task.Accuser = msg.Creator

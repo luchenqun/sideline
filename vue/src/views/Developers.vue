@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="gva-btn-list">
-      <el-button type="primary" :icon="Plus" :disabled="!address" @click="dialogVisible = true;">Regist Developer</el-button>
+      <el-button type="primary" :disabled="!address" @click="dialogVisible = true;">Regist Developer</el-button>
     </div>
     <!-- <el-divider /> -->
     <el-table :data="developers">
@@ -25,13 +25,9 @@
       <el-table-column align="left" width="80" label="task">
         <template #default="scope">{{ scope.row.taskIds.length }}</template>
       </el-table-column>
-      <el-table-column align="left" width="90" label="feedback">
-        <template #default="scope">{{ scope.row.feedbacks.length }}</template>
-      </el-table-column>
       <el-table-column align="left" show-overflow-tooltip min-width="150" label="skills">
         <template #default="scope">
           <el-tag style="margin-right:3px;" v-for="skill of scope.row.skills" :key="skill">{{ skill }}</el-tag>
-          <!-- {{ scope.row.feedbacks.length }} -->
         </template>
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
@@ -82,9 +78,8 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus';
 import { useRouter } from 'vue-router';
 
@@ -93,11 +88,11 @@ export default {
 
   setup() {
     // store
-    const init = { name: "luke", avatar: "https://b.lucq.fun/images/admin.jpg", email: "luke@qq.com", introduce: "", education: "长沙理工大学", major: "计算机科学与技术", skills: ["React"] }
     const $s = useStore()
     const router = useRouter();
     const address = computed(() => $s.getters['common/wallet/address'])
     const developers = ref([])
+    const init = { name: "luke", avatar: "https://b.lucq.fun/images/admin.jpg", email: "luke@qq.com", introduce: "", education: "长沙理工大学", major: "计算机科学与技术", skills: ["React"] }
     const form = ref(init)
     const formRef = ref(null);
     const dialogVisible = ref(false)
@@ -132,6 +127,7 @@ export default {
 
     onBeforeMount(async () => {
       getData()
+      form.value.creator = address.value
     });
 
     watch(() => address.value, async () => {
@@ -209,7 +205,6 @@ export default {
       rules,
       form,
       formRef,
-      Plus,
       skillOptions,
       getData,
       initForm,

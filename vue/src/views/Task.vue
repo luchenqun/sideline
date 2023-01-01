@@ -1,15 +1,16 @@
 <template>
-  <div class="container" v-if="task.status == 0 || task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6">
+  <div class="container" v-if="task.status == 0 || task.status == 1 || task.status == 2 || task.status == 3 || task.status == 4 || task.status == 5 || task.status == 6 || task.status == 7 || task.status == 8">
     <div class="gva-btn-list" style="margin-bottom:0px;">
       <el-button type="primary" v-if="task.status == 0" @click="submitCancelTask">Cancel Task</el-button>
       <el-button type="primary" v-if="task.status == 0" @click="submitDoTask">Apply Task</el-button>
       <el-button type="primary" v-if="task.status == 1 || task.status == 3" @click="dialogVisible=true">Submit Task</el-button>
       <el-button type="primary" v-if="task.status == 2" @click="submitUndoneTask">Undone Task</el-button>
-      <el-button type="primary" v-if="task.status == 2 || task.status == 3" @click="xxx">Start Judge Task</el-button>
-      <el-button type="primary" v-if="task.status == 6" @click="xxx">Vote Task</el-button>
-      <el-button type="primary" v-if="task.status == 6" @click="xxx">Judge Task</el-button>
-      <el-button type="primary" v-if="task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6" @click="xxx">Fail Task</el-button>
+      <el-button type="primary" v-if="task.status == 2 || task.status == 3" @click="submitStartJudgeTask">Start Judge Task</el-button>
+      <el-button type="primary" v-if="task.status == 6" @click="submitVoteTask">Vote Task</el-button>
+      <el-button type="primary" v-if="task.status == 6" @click="submitJudgeTask">Judge Task</el-button>
+      <el-button type="primary" v-if="task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6" @click="submitFailTask">Fail Task</el-button>
       <el-button type="primary" v-if="task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6" @click="submitSuccessTask">Success Task</el-button>
+      <el-button type="primary" v-if="task.status == 4 || task.status == 5 || task.status == 7 || task.status == 8" @click="submitFeedbackTask">Feedback Task</el-button>
     </div>
   </div>
   <div class="container">
@@ -113,6 +114,18 @@
             <div class="data">
               <div class="key">deliverHeight</div>
               <div class="value nowrap">{{task.deliverHeight}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <div class="data">
+              <div class="key">feedbackByDeveloper</div>
+              <div class="value nowrap">{{task.feedbackByDeveloper}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <div class="data">
+              <div class="key">feedbackByEmployer</div>
+              <div class="value nowrap">{{task.feedbackByEmployer}}</div>
             </div>
           </el-col>
         </el-row>
@@ -364,7 +377,7 @@ export default {
       if (task.value.employer != address.value && task.value.developer != address.value) {
         ElMessage({
           type: 'warning',
-          message: 'You have no permission to success this task, connect keplr or switch to right employer',
+          message: 'You have no permission to success this task, connect keplr or switch to right employer or right developer',
         })
         return;
       }
@@ -392,6 +405,162 @@ export default {
         })
     }
 
+    const submitFailTask = async () => {
+      if (task.value.employer != address.value && task.value.developer != address.value) {
+        ElMessage({
+          type: 'warning',
+          message: 'You have no permission to fail this task, connect keplr or switch to right employer or right developer',
+        })
+        return;
+      }
+      ElMessageBox.confirm(`if you are employer, it will send back you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) and transfer developer's collateral(${task.value.collateral}) to you, it succeed only after developer delivery exceeds the deadline! if you are a developer, the system will send your collateral(${task.value.collateral}) to the employer! continue?`, 'Fail Task', vnode)
+        .then(async () => {
+          const loading = ElLoading.service({ lock: true, text: 'fail task...' });
+          try {
+            const value = { creator: address.value, id: task.value.id }
+            const reply = await $s.dispatch("sideline.sideline/sendMsgFailTask", { value });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({ type: 'success', message: 'fail task completed', })
+              await getData()
+            } else {
+              ElMessage({ type: 'error', message: reply.rawLog, })
+            }
+          } catch (error) {
+            console.log("cancel task error", error)
+            ElMessage({ type: 'error', message: error, })
+          }
+          loading.close()
+        })
+        .catch(() => {
+          ElMessage({ type: 'info', message: 'cancel task canceled', })
+        })
+    }
+
+    const submitFeedbackTask = async () => {
+      if (task.value.employer != address.value && task.value.developer != address.value) {
+        ElMessage({
+          type: 'warning',
+          message: 'You have no permission to feedback this task, connect keplr or switch to right employer or right developer',
+        })
+        return;
+      }
+
+      ElMessageBox.prompt('you only have one chance to give feedback', 'Feedback Task', { confirmButtonText: 'OK', cancelButtonText: 'Cancel' })
+        .then(async ({ value }) => {
+          const loading = ElLoading.service({ lock: true, text: 'feedback task...' });
+          try {
+            const data = { creator: address.value, id: task.value.id, feedback: value }
+            const reply = await $s.dispatch("sideline.sideline/sendMsgFeedbackTask", { value: data });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({ type: 'success', message: 'feedback task completed', })
+              await getData()
+            } else {
+              ElMessage({ type: 'error', message: reply.rawLog, })
+            }
+          } catch (error) {
+            console.log("cancel task error", error)
+            ElMessage({ type: 'error', message: error, })
+          }
+          loading.close()
+        })
+        .catch(() => {
+          ElMessage({ type: 'info', message: 'feedback task canceled', })
+        })
+    }
+
+    const submitStartJudgeTask = async () => {
+      if (task.value.employer != address.value && task.value.developer != address.value) {
+        ElMessage({
+          type: 'warning',
+          message: 'You have no permission to start judge this task, connect keplr or switch to right employer or right developer',
+        })
+        return;
+      }
+      ElMessageBox.confirm(`After start judge task, the validator will vote. the result for employer, win: it will send back you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) and transfer developer's collateral(${task.value.collateral}) to you, lose: send you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) to developer. the result for developer are the same! continue?`, 'Fail Task', vnode)
+        .then(async () => {
+          const loading = ElLoading.service({ lock: true, text: 'start judge task...' });
+          try {
+            const value = { creator: address.value, id: task.value.id }
+            const reply = await $s.dispatch("sideline.sideline/sendMsgStartJudgeTask", { value });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({ type: 'success', message: 'start judge task completed', })
+              await getData()
+            } else {
+              ElMessage({ type: 'error', message: reply.rawLog, })
+            }
+          } catch (error) {
+            console.log("start judge task error", error)
+            ElMessage({ type: 'error', message: error, })
+          }
+          loading.close()
+        })
+        .catch(() => {
+          ElMessage({ type: 'info', message: 'start judge task canceled', })
+        })
+    }
+
+    const submitVoteTask = async () => {
+      ElMessageBox.prompt('only validator can vote and only have one chance to vote, input "yes" support accuser, input "no" oppose accuser', 'Vote Task', { confirmButtonText: 'OK', cancelButtonText: 'Cancel' })
+        .then(async ({ value }) => {
+          let option = 0;
+          if (value == "yes") {
+            option = 0
+          } else if (value == "no") {
+            option = 1
+          } else {
+            ElMessage({ type: 'error', message: "Your input is incorrect" })
+            return
+          }
+
+          const loading = ElLoading.service({ lock: true, text: 'vote task...' });
+          try {
+            const data = { creator: address.value, id: task.value.id, option }
+            const reply = await $s.dispatch("sideline.sideline/sendMsgVoteTask", { value: data });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({ type: 'success', message: 'vote task completed', })
+              await getData()
+            } else {
+              ElMessage({ type: 'error', message: reply.rawLog, })
+            }
+          } catch (error) {
+            console.log("vote task error", error)
+            ElMessage({ type: 'error', message: error, })
+          }
+          loading.close()
+        })
+        .catch(() => {
+          ElMessage({ type: 'info', message: 'vote task canceled', })
+        })
+    }
+    const submitJudgeTask = async () => {
+      ElMessageBox.confirm(`Excute judge results, continue?`, 'Apply Task', vnode)
+        .then(async () => {
+          const loading = ElLoading.service({ lock: true, text: 'judge task...' });
+          try {
+            const value = { creator: address.value, id: task.value.id }
+            const reply = await $s.dispatch("sideline.sideline/sendMsgJudgeTask", { value });
+            console.log("reply", reply)
+            if (reply.code == 0) {
+              ElMessage({ type: 'success', message: 'judge task completed', })
+              await getData()
+            } else {
+              ElMessage({ type: 'error', message: reply.rawLog, })
+            }
+          } catch (error) {
+            console.log("judge task error", error)
+            ElMessage({ type: 'error', message: error, })
+          }
+          loading.close()
+        })
+        .catch(() => {
+          ElMessage({ type: 'info', message: 'judge task canceled', })
+        })
+    }
+
     return {
       id,
       address,
@@ -411,6 +580,11 @@ export default {
       submitSubmitTask,
       submitUndoneTask,
       submitSuccessTask,
+      submitFailTask,
+      submitFeedbackTask,
+      submitStartJudgeTask,
+      submitVoteTask,
+      submitJudgeTask,
     }
   }
 }

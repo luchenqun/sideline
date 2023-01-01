@@ -23,9 +23,6 @@
       <el-table-column align="left" width="80" label="task">
         <template #default="scope">{{ scope.row.taskIds.length }}</template>
       </el-table-column>
-      <el-table-column align="left" width="90" label="feedback">
-        <template #default="scope">{{ scope.row.feedbacks.length }}</template>
-      </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
           <el-button icon="tickets" size="small" type="primary" link @click="toDetailEmployer(scope.row)">DETAIL</el-button>
@@ -90,6 +87,7 @@ export default {
 
     onBeforeMount(async () => {
       getData()
+      form.value.creator = address.value
     });
 
     watch(() => address.value, async () => {

@@ -23,7 +23,7 @@ func (k msgServer) VoteTask(goCtx context.Context, msg *types.MsgVoteTask) (*typ
 	}
 
 	// 必须在仲裁周期内
-	if task.JudgeHeight+types.MinConfirmJudgeHeight > uint64(ctx.BlockHeight()) {
+	if task.JudgeHeight+types.MinConfirmJudgeHeight < uint64(ctx.BlockHeight()) {
 		return nil, errors.Wrapf(types.ErrTime, "current height = %d, right height = %d", ctx.BlockHeight(), task.JudgeHeight+types.MinConfirmJudgeHeight)
 	}
 
