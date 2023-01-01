@@ -31,10 +31,13 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="key" style="margin-top:15px;">employer introduce</div>
+  <div class="container">
+    <div class="detail-box">
+      <div class="key">employer introduce</div>
       <v-md-preview :text="employer.introduce" ref="preview"></v-md-preview>
-      <el-divider class="detail-divider" />
     </div>
   </div>
 
