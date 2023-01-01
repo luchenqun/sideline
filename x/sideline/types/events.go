@@ -14,6 +14,7 @@ const (
 	EventTypeSuccessTask     = "success_task"
 	EventTypeUndoneTask      = "undone_task"
 	EventTypeVoteTask        = "vote_task"
+	EventTypeFeedbackTask    = "feedback_task"
 
 	AttributeKeyDeveloper = "developer"
 	AttributeKeyEmployer  = "employer"

@@ -14,7 +14,7 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 
 	if task.Employer == msg.Creator {

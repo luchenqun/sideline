@@ -14,12 +14,12 @@ func (k msgServer) VoteTask(goCtx context.Context, msg *types.MsgVoteTask) (*typ
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 
 	// 只有进入仲裁状态的才允许投票
 	if !(task.Status == types.TaskStatusJudging) {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %s, forbid undone this task", task.Status)
+		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %d, forbid undone this task", task.Status)
 	}
 
 	// 必须在仲裁周期内

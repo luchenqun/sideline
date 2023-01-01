@@ -16,6 +16,11 @@ func (k msgServer) RegistDeveloper(goCtx context.Context, msg *types.MsgRegistDe
 		return &types.MsgRegistDeveloperResponse{}, errors.New("you have regist")
 	}
 
+	_, found = k.GetEmployer(ctx, msg.Creator)
+	if found {
+		return &types.MsgRegistDeveloperResponse{}, errors.New("you have regist for a employer")
+	}
+
 	developer := types.Developer{
 		Index:     msg.Creator, // 以开发者地址为map的索引
 		Name:      msg.Name,

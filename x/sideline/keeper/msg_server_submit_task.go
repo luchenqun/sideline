@@ -14,7 +14,7 @@ func (k msgServer) SubmitTask(goCtx context.Context, msg *types.MsgSubmitTask) (
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 
 	// 截止日禁止提交任务

@@ -74984,6 +74984,8 @@ definitions:
     type: object
   sideline.sideline.MsgFailTaskResponse:
     type: object
+  sideline.sideline.MsgFeedbackTaskResponse:
+    type: object
   sideline.sideline.MsgJudgeTaskResponse:
     type: object
   sideline.sideline.MsgRegistDeveloperResponse:

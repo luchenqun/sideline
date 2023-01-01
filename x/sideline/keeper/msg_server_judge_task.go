@@ -14,12 +14,12 @@ func (k msgServer) JudgeTask(goCtx context.Context, msg *types.MsgJudgeTask) (*t
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 	// 任何人都可以结束仲裁
 	// 只有进入仲裁的任务，才有可能给仲裁结果
 	if task.Status != types.TaskStatusJudging {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "status = %s forbid success task", task.Status)
+		return nil, errors.Wrapf(types.ErrTaskStatus, "status = %d forbid success task", task.Status)
 	}
 
 	// 时间未到
@@ -29,7 +29,7 @@ func (k msgServer) JudgeTask(goCtx context.Context, msg *types.MsgJudgeTask) (*t
 
 	// 默认开发者赢
 	winner, _ := sdk.AccAddressFromBech32(task.Developer)
-	task.Status = types.TaskStatusEmployerWin
+	task.Status = types.TaskStatusDeveloperWin
 
 	// 因为默认是开发者赢，所以我们只要判断什么情况下雇佣者赢就完事了
 	// 情况1: 原告是雇佣者，且赞同投票大（默认投票数一样时，原告赢）。情况2: 原告是开发者，给开发者投反对票多
@@ -64,7 +64,7 @@ func (k msgServer) JudgeTask(goCtx context.Context, msg *types.MsgJudgeTask) (*t
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
-			types.EventTypeDoTask,
+			types.EventTypeJudgeTask,
 			sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
 		),
 		sdk.NewEvent(

@@ -14,11 +14,11 @@ func (k msgServer) CancelTask(goCtx context.Context, msg *types.MsgCancelTask) (
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 	// 没人接任务才能取消任务
 	if task.Status != types.TaskStatusCreated {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %s, forbid cancel task", task.Status)
+		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %d, forbid cancel task", task.Status)
 	}
 
 	// 只允许自己取消任务

@@ -14,7 +14,7 @@ func (k msgServer) StartJudgeTask(goCtx context.Context, msg *types.MsgStartJudg
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 
 	// 只有开发者或者雇佣者才能发起仲裁

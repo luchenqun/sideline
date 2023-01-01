@@ -14,10 +14,10 @@ func (k msgServer) UndoneTask(goCtx context.Context, msg *types.MsgUndoneTask) (
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 	if !(task.Status == types.TaskStatusSubmited) {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %s, forbid undone this task", task.Status)
+		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %d, forbid undone this task", task.Status)
 	}
 
 	if !(task.Employer == msg.Creator) {

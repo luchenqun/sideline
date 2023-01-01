@@ -14,10 +14,10 @@ func (k msgServer) DoTask(goCtx context.Context, msg *types.MsgDoTask) (*types.M
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 	if task.Status != types.TaskStatusCreated {
-		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %s, forbid do this task", task.Status)
+		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %d, forbid do this task", task.Status)
 	}
 
 	// 只有开发者才能发布任务

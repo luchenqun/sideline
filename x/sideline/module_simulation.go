@@ -72,6 +72,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgVoteTask int = 100
 
+	opWeightMsgFeedbackTask = "op_weight_msg_feedback_task"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgFeedbackTask int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -236,6 +240,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgVoteTask,
 		sidelinesimulation.SimulateMsgVoteTask(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgFeedbackTask int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFeedbackTask, &weightMsgFeedbackTask, nil,
+		func(_ *rand.Rand) {
+			weightMsgFeedbackTask = defaultWeightMsgFeedbackTask
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgFeedbackTask,
+		sidelinesimulation.SimulateMsgFeedbackTask(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

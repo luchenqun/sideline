@@ -14,7 +14,7 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 
 	task, found := k.GetTask(ctx, msg.Id)
 	if !found {
-		return nil, errors.Wrapf(types.ErrTaskID, "task id = %s is not exist", msg.Id)
+		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
 
 	if task.Employer == msg.Creator {
@@ -25,7 +25,7 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 	} else if task.Developer == msg.Creator {
 		// 开发者能置为失败的状态
 		if !(task.Status == types.TaskStatusDoing || task.Status == types.TaskStatusSubmited || task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusJudging) {
-			return nil, errors.Wrapf(types.ErrTaskStatus, "status = %s forbid fail task", task.Status)
+			return nil, errors.Wrapf(types.ErrTaskStatus, "status = %d forbid fail task", task.Status)
 		}
 	} else {
 		return nil, errors.Wrapf(types.ErrPermission, "employer = %s, developer = %s, creator = %s", task.Employer, task.Developer, msg.Creator)
@@ -59,7 +59,7 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
-			types.EventTypeDoTask,
+			types.EventTypeFailTask,
 			sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
 		),
 		sdk.NewEvent(

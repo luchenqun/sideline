@@ -19,6 +19,7 @@ service Msg {
   rpc CancelTask(MsgCancelTask) returns (MsgCancelTaskResponse);
   rpc JudgeTask(MsgJudgeTask) returns (MsgJudgeTaskResponse);
   rpc VoteTask(MsgVoteTask) returns (MsgVoteTaskResponse);
+  rpc FeedbackTask(MsgFeedbackTask) returns (MsgFeedbackTaskResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -133,6 +134,15 @@ message MsgVoteTask {
 }
 
 message MsgVoteTaskResponse {
+}
+
+message MsgFeedbackTask {
+  string creator = 1;
+  uint64 id = 2;
+  string feedback = 3;
+}
+
+message MsgFeedbackTaskResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
