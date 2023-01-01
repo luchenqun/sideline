@@ -22,6 +22,8 @@ export interface Task {
   deliver: string;
   deliverHeight: number;
   status: number;
+  feedbackByEmployer: string;
+  feedbackByDeveloper: string;
 }
 
 function createBaseTask(): Task {
@@ -43,6 +45,8 @@ function createBaseTask(): Task {
     deliver: "",
     deliverHeight: 0,
     status: 0,
+    feedbackByEmployer: "",
+    feedbackByDeveloper: "",
   };
 }
 
@@ -98,6 +102,12 @@ export const Task = {
     }
     if (message.status !== 0) {
       writer.uint32(136).uint64(message.status);
+    }
+    if (message.feedbackByEmployer !== "") {
+      writer.uint32(146).string(message.feedbackByEmployer);
+    }
+    if (message.feedbackByDeveloper !== "") {
+      writer.uint32(154).string(message.feedbackByDeveloper);
     }
     return writer;
   },
@@ -160,6 +170,12 @@ export const Task = {
         case 17:
           message.status = longToNumber(reader.uint64() as Long);
           break;
+        case 18:
+          message.feedbackByEmployer = reader.string();
+          break;
+        case 19:
+          message.feedbackByDeveloper = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -187,6 +203,8 @@ export const Task = {
       deliver: isSet(object.deliver) ? String(object.deliver) : "",
       deliverHeight: isSet(object.deliverHeight) ? Number(object.deliverHeight) : 0,
       status: isSet(object.status) ? Number(object.status) : 0,
+      feedbackByEmployer: isSet(object.feedbackByEmployer) ? String(object.feedbackByEmployer) : "",
+      feedbackByDeveloper: isSet(object.feedbackByDeveloper) ? String(object.feedbackByDeveloper) : "",
     };
   },
 
@@ -213,6 +231,8 @@ export const Task = {
     message.deliver !== undefined && (obj.deliver = message.deliver);
     message.deliverHeight !== undefined && (obj.deliverHeight = Math.round(message.deliverHeight));
     message.status !== undefined && (obj.status = Math.round(message.status));
+    message.feedbackByEmployer !== undefined && (obj.feedbackByEmployer = message.feedbackByEmployer);
+    message.feedbackByDeveloper !== undefined && (obj.feedbackByDeveloper = message.feedbackByDeveloper);
     return obj;
   },
 
@@ -235,6 +255,8 @@ export const Task = {
     message.deliver = object.deliver ?? "";
     message.deliverHeight = object.deliverHeight ?? 0;
     message.status = object.status ?? 0;
+    message.feedbackByEmployer = object.feedbackByEmployer ?? "";
+    message.feedbackByDeveloper = object.feedbackByDeveloper ?? "";
     return message;
   },
 };

@@ -117,6 +117,15 @@ export interface MsgVoteTask {
 export interface MsgVoteTaskResponse {
 }
 
+export interface MsgFeedbackTask {
+  creator: string;
+  id: number;
+  feedback: string;
+}
+
+export interface MsgFeedbackTaskResponse {
+}
+
 function createBaseMsgRegistEmployer(): MsgRegistEmployer {
   return { creator: "", name: "", introduce: "", email: "", avatar: "" };
 }
@@ -1437,6 +1446,112 @@ export const MsgVoteTaskResponse = {
   },
 };
 
+function createBaseMsgFeedbackTask(): MsgFeedbackTask {
+  return { creator: "", id: 0, feedback: "" };
+}
+
+export const MsgFeedbackTask = {
+  encode(message: MsgFeedbackTask, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.feedback !== "") {
+      writer.uint32(26).string(message.feedback);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFeedbackTask {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgFeedbackTask();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.feedback = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgFeedbackTask {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+      feedback: isSet(object.feedback) ? String(object.feedback) : "",
+    };
+  },
+
+  toJSON(message: MsgFeedbackTask): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.feedback !== undefined && (obj.feedback = message.feedback);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgFeedbackTask>, I>>(object: I): MsgFeedbackTask {
+    const message = createBaseMsgFeedbackTask();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    message.feedback = object.feedback ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgFeedbackTaskResponse(): MsgFeedbackTaskResponse {
+  return {};
+}
+
+export const MsgFeedbackTaskResponse = {
+  encode(_: MsgFeedbackTaskResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFeedbackTaskResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgFeedbackTaskResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgFeedbackTaskResponse {
+    return {};
+  },
+
+  toJSON(_: MsgFeedbackTaskResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgFeedbackTaskResponse>, I>>(_: I): MsgFeedbackTaskResponse {
+    const message = createBaseMsgFeedbackTaskResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse>;
@@ -1450,8 +1565,9 @@ export interface Msg {
   StartJudgeTask(request: MsgStartJudgeTask): Promise<MsgStartJudgeTaskResponse>;
   CancelTask(request: MsgCancelTask): Promise<MsgCancelTaskResponse>;
   JudgeTask(request: MsgJudgeTask): Promise<MsgJudgeTaskResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   VoteTask(request: MsgVoteTask): Promise<MsgVoteTaskResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  FeedbackTask(request: MsgFeedbackTask): Promise<MsgFeedbackTaskResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1470,6 +1586,7 @@ export class MsgClientImpl implements Msg {
     this.CancelTask = this.CancelTask.bind(this);
     this.JudgeTask = this.JudgeTask.bind(this);
     this.VoteTask = this.VoteTask.bind(this);
+    this.FeedbackTask = this.FeedbackTask.bind(this);
   }
   RegistEmployer(request: MsgRegistEmployer): Promise<MsgRegistEmployerResponse> {
     const data = MsgRegistEmployer.encode(request).finish();
@@ -1541,6 +1658,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgVoteTask.encode(request).finish();
     const promise = this.rpc.request("sideline.sideline.Msg", "VoteTask", data);
     return promise.then((data) => MsgVoteTaskResponse.decode(new _m0.Reader(data)));
+  }
+
+  FeedbackTask(request: MsgFeedbackTask): Promise<MsgFeedbackTaskResponse> {
+    const data = MsgFeedbackTask.encode(request).finish();
+    const promise = this.rpc.request("sideline.sideline.Msg", "FeedbackTask", data);
+    return promise.then((data) => MsgFeedbackTaskResponse.decode(new _m0.Reader(data)));
   }
 }
 

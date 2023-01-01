@@ -15,7 +15,6 @@ export interface Developer {
   major: string;
   skills: string[];
   taskIds: number[];
-  feedbacks: string[];
 }
 
 function createBaseDeveloper(): Developer {
@@ -30,7 +29,6 @@ function createBaseDeveloper(): Developer {
     major: "",
     skills: [],
     taskIds: [],
-    feedbacks: [],
   };
 }
 
@@ -68,9 +66,6 @@ export const Developer = {
       writer.uint64(v);
     }
     writer.ldelim();
-    for (const v of message.feedbacks) {
-      writer.uint32(90).string(v!);
-    }
     return writer;
   },
 
@@ -118,9 +113,6 @@ export const Developer = {
             message.taskIds.push(longToNumber(reader.uint64() as Long));
           }
           break;
-        case 11:
-          message.feedbacks.push(reader.string());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -141,7 +133,6 @@ export const Developer = {
       major: isSet(object.major) ? String(object.major) : "",
       skills: Array.isArray(object?.skills) ? object.skills.map((e: any) => String(e)) : [],
       taskIds: Array.isArray(object?.taskIds) ? object.taskIds.map((e: any) => Number(e)) : [],
-      feedbacks: Array.isArray(object?.feedbacks) ? object.feedbacks.map((e: any) => String(e)) : [],
     };
   },
 
@@ -165,11 +156,6 @@ export const Developer = {
     } else {
       obj.taskIds = [];
     }
-    if (message.feedbacks) {
-      obj.feedbacks = message.feedbacks.map((e) => e);
-    } else {
-      obj.feedbacks = [];
-    }
     return obj;
   },
 
@@ -185,7 +171,6 @@ export const Developer = {
     message.major = object.major ?? "";
     message.skills = object.skills?.map((e) => e) || [];
     message.taskIds = object.taskIds?.map((e) => e) || [];
-    message.feedbacks = object.feedbacks?.map((e) => e) || [];
     return message;
   },
 };

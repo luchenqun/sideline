@@ -31,7 +31,6 @@ export interface SidelineDeveloper {
   major?: string;
   skills?: string[];
   taskIds?: string[];
-  feedbacks?: string[];
 }
 
 export interface SidelineEmployer {
@@ -42,7 +41,6 @@ export interface SidelineEmployer {
   avatar?: string;
   address?: string;
   taskIds?: string[];
-  feedbacks?: string[];
 }
 
 export type SidelineMsgCancelTaskResponse = object;
@@ -55,6 +53,8 @@ export interface SidelineMsgCreateTaskResponse {
 export type SidelineMsgDoTaskResponse = object;
 
 export type SidelineMsgFailTaskResponse = object;
+
+export type SidelineMsgFeedbackTaskResponse = object;
 
 export type SidelineMsgJudgeTaskResponse = object;
 
@@ -173,6 +173,8 @@ export interface SidelineTask {
 
   /** @format uint64 */
   status?: string;
+  feedbackByEmployer?: string;
+  feedbackByDeveloper?: string;
 }
 
 /**

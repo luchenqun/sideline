@@ -12,11 +12,10 @@ export interface Employer {
   avatar: string;
   address: string;
   taskIds: number[];
-  feedbacks: string[];
 }
 
 function createBaseEmployer(): Employer {
-  return { index: "", name: "", introduce: "", email: "", avatar: "", address: "", taskIds: [], feedbacks: [] };
+  return { index: "", name: "", introduce: "", email: "", avatar: "", address: "", taskIds: [] };
 }
 
 export const Employer = {
@@ -44,9 +43,6 @@ export const Employer = {
       writer.uint64(v);
     }
     writer.ldelim();
-    for (const v of message.feedbacks) {
-      writer.uint32(66).string(v!);
-    }
     return writer;
   },
 
@@ -85,9 +81,6 @@ export const Employer = {
             message.taskIds.push(longToNumber(reader.uint64() as Long));
           }
           break;
-        case 8:
-          message.feedbacks.push(reader.string());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -105,7 +98,6 @@ export const Employer = {
       avatar: isSet(object.avatar) ? String(object.avatar) : "",
       address: isSet(object.address) ? String(object.address) : "",
       taskIds: Array.isArray(object?.taskIds) ? object.taskIds.map((e: any) => Number(e)) : [],
-      feedbacks: Array.isArray(object?.feedbacks) ? object.feedbacks.map((e: any) => String(e)) : [],
     };
   },
 
@@ -122,11 +114,6 @@ export const Employer = {
     } else {
       obj.taskIds = [];
     }
-    if (message.feedbacks) {
-      obj.feedbacks = message.feedbacks.map((e) => e);
-    } else {
-      obj.feedbacks = [];
-    }
     return obj;
   },
 
@@ -139,7 +126,6 @@ export const Employer = {
     message.avatar = object.avatar ?? "";
     message.address = object.address ?? "";
     message.taskIds = object.taskIds?.map((e) => e) || [];
-    message.feedbacks = object.feedbacks?.map((e) => e) || [];
     return message;
   },
 };
