@@ -1,0 +1,204 @@
+.detail-box {
+  // padding: 10px;
+  padding-bottom: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  margin-bottom: 10px;
+
+  .detail1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .left {
+      width: 88px;
+      height: 88px;
+      .el-avatar {
+        width: 88px;
+        height: 88px;
+      }
+    }
+    .right {
+      width: 100%;
+      height: 88px;
+      padding-top: 10px;
+      margin-left: 10px;
+      .name {
+        font-family: "Microsoft YaHei UI";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 26px;
+        line-height: 33px;
+        color: #455777;
+      }
+    }
+  }
+
+  .detail2 {
+    margin-top: 10px;
+    .items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      .divider {
+        height: 105px;
+      }
+      .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        padding: 20px;
+        .left {
+          width: 42px;
+          height: 42px;
+          img {
+            width: 42px;
+            height: 42px;
+          }
+        }
+        .right {
+          margin-left: 8px;
+          .key {
+            font-family: "Microsoft YaHei UI";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            color: #8ea0c1;
+          }
+        }
+      }
+      .item2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25%;
+        padding: 20px;
+        .left {
+          width: 42px;
+          height: 42px;
+          img {
+            width: 42px;
+            height: 42px;
+          }
+        }
+        .right {
+          margin-left: 8px;
+          .key {
+            font-family: "Microsoft YaHei UI";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            color: #8ea0c1;
+          }
+        }
+      }
+      .item3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20%;
+        padding: 20px;
+        .left {
+          width: 42px;
+          height: 42px;
+          img {
+            width: 42px;
+            height: 42px;
+          }
+        }
+        .right {
+          margin-left: 8px;
+          .key {
+            font-family: "Microsoft YaHei UI";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            color: #8ea0c1;
+          }
+        }
+      }
+    }
+  }
+
+  .detail3 {
+    padding: 20px;
+  }
+
+  .detail4 {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .heart {
+      width: 45px;
+      height: 45px;
+      margin: 5px 5px 0px 0px;
+    }
+    .normal {
+      background: #0f0;
+    }
+    .abnormal {
+      background: #f00;
+    }
+  }
+
+  .detail-divider {
+    margin: 0px;
+  }
+
+  .data {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 10px 0px;
+  }
+
+  .key {
+    font-family: "Microsoft YaHei UI";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8ea0c1;
+    white-space: nowrap;
+  }
+  .value {
+    font-family: "Microsoft YaHei UI";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #3b4a65;
+    margin-left: 10px;
+  }
+
+  .value-special {
+    font-family: "Microsoft YaHei UI";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    margin-top: -8px;
+    .c1 {
+      color: #03b3ff;
+    }
+    .c2 {
+      color: #12c770;
+    }
+    .c3 {
+      color: #f19c1d;
+    }
+    .c4 {
+      color: #f417de;
+    }
+    .c5 {
+      color: #f56c6c;
+    }
+    .c6 {
+      color: #409eff;
+    }
+  }
+}

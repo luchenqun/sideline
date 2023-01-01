@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="margin-bottom:10px">
     <SpTheme>
-      <SpNavbar :links="navbarLinks" :active-route="router.currentRoute.value.path" />
+      <SpNavbar class="navbar" :links="navbarLinks" :active-route="router.currentRoute.value.path" />
       <router-view />
     </SpTheme>
   </div>
@@ -55,3 +55,19 @@ body {
   margin: 0;
 }
 </style>
+
+<style lang="scss">
+#app {
+  .navbar-wrapper[data-v-6b5cb40d] {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #ffffff;
+    margin-bottom: 0px;
+  }
+}
+</style>
+

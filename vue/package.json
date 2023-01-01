@@ -22,7 +22,10 @@
     "@rollup/plugin-dynamic-import-vars": "^1.4.1",
     "@rollup/plugin-node-resolve": "^13.1.1",
     "@vitejs/plugin-vue": "^2.0.1",
+    "node-sass": "^8.0.0",
     "sass": "^1.47.0",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
     "vite": "^2.7.6",
     "vite-plugin-dynamic-import": "^0.1.1",
     "vite-plugin-env-compatible": "^1.1.1"

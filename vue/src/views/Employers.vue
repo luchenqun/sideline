@@ -7,15 +7,13 @@
     <el-table :data="employers">
       <el-table-column align="left" min-width="100" label="avatar">
         <template #default="scope">
-          <el-avatar :src="scope.row.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-          </el-avatar>
+          <el-avatar :src="scope.row.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" /> </el-avatar>
         </template>
       </el-table-column>
-
       <el-table-column align="left" show-overflow-tooltip label="name" min-width="100" prop="name">
         <template #default="scope">
           <div class="nowrap">
-            <router-link show-overflow-tooltip :to="('/layout/projectDetail/'+scope.row.projectId)">{{scope.row.name}}</router-link>
+            <router-link show-overflow-tooltip :to="('/employer/'+scope.row.address)">{{scope.row.name}}</router-link>
           </div>
         </template>
       </el-table-column>
@@ -30,7 +28,7 @@
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
-          <el-button icon="tickets" size="small" type="primary" link @click="submitDetailProject(scope.row)">DETAIL</el-button>
+          <el-button icon="tickets" size="small" type="primary" link @click="toDetailEmployer(scope.row)">DETAIL</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +42,7 @@
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
         <el-form-item label="avatar" prop="avatar">
-          <el-input v-model="form.avatar" autocomplete="off" />
+          <el-input v-model="form.avatar" placeholder="please input you avatar http url" autocomplete="off" />
         </el-form-item>
         <el-form-item label="email" prop="email">
           <el-input v-model="form.email" autocomplete="off" />
@@ -69,6 +67,7 @@ import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'Employers',
@@ -76,9 +75,10 @@ export default {
   setup() {
     // store
     const $s = useStore()
+    const router = useRouter();
     const address = computed(() => $s.getters['common/wallet/address'])
     const employers = ref([])
-    const form = ref({ name: "luke", avatar: "https://b.lucq.fun/images/admin.jpg", email: "luke@qq.com", introduce: "" })
+    const form = ref({})
     const formRef = ref(null);
     const dialogVisible = ref(false)
     const rules = ref({
@@ -106,7 +106,7 @@ export default {
 
     const initForm = () => {
       formRef.value.resetFields();
-      form.value = { creator: address.value, introduce: '' };
+      form.value = { creator: address.value };
     };
 
     const closeDialog = () => {
@@ -155,6 +155,13 @@ export default {
       });
     }
 
+    const toDetailEmployer = (row) => {
+      router.push({
+        name: 'employer',
+        params: row,
+      });
+    }
+
     return {
       address,
       employers,
@@ -167,6 +174,7 @@ export default {
       initForm,
       closeDialog,
       submitRegistEmployer,
+      toDetailEmployer
     }
   }
 }
