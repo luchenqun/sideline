@@ -24,7 +24,6 @@ func (k msgServer) RegistEmployer(goCtx context.Context, msg *types.MsgRegistEmp
 		Avatar:    msg.Avatar,
 		Address:   msg.Creator,
 		TaskIds:   nil,
-		Feedbacks: nil,
 	}
 
 	k.SetEmployer(ctx, employer)

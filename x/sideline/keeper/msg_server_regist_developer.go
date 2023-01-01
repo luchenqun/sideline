@@ -27,7 +27,6 @@ func (k msgServer) RegistDeveloper(goCtx context.Context, msg *types.MsgRegistDe
 		Major:     msg.Major,
 		Skills:    msg.Skills,
 		TaskIds:   nil,
-		Feedbacks: nil,
 	}
 
 	k.SetDeveloper(ctx, developer)

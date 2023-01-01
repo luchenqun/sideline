@@ -21,5 +21,6 @@ message Task {
   string deliver = 15;
   uint64 deliverHeight = 16;
   uint64 status = 17;
-
+  string feedbackByEmployer = 18;
+  string feedbackByDeveloper = 19;
 }

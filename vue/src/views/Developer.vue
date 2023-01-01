@@ -3,22 +3,22 @@
     <div class="detail-box">
       <div class="detail1">
         <div class="left">
-          <el-avatar :src="employer.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" /> </el-avatar>
+          <el-avatar :src="developer.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" /> </el-avatar>
         </div>
         <div class="right">
-          <div class="name">{{employer.name}}</div>
+          <div class="name">{{developer.name}}</div>
           <div>
             <el-row :gutter="0">
               <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                 <div class="data">
                   <div class="key">address</div>
-                  <div class="value">{{employer.address}}</div>
+                  <div class="value">{{developer.address}}</div>
                 </div>
               </el-col>
               <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                 <div class="data">
                   <div class="key">email</div>
-                  <div class="value">{{employer.email}}</div>
+                  <div class="value">{{developer.email}}</div>
                 </div>
               </el-col>
             </el-row>
@@ -34,7 +34,7 @@
               <img src="@/assets/project_total.png" alt />
             </div>
             <div class="right">
-              <div class="value-special"><span class="c1">{{employer?.taskIds?.length}}</span></div>
+              <div class="value-special"><span class="c1">{{developer?.taskIds?.length}}</span></div>
               <div class="key">Task Total</div>
             </div>
           </div>
@@ -44,23 +44,20 @@
               <img src="@/assets/project_success.png" alt />
             </div>
             <div class="right">
-              <div class="value-special"><span class="c2">{{employer?.feedbacks?.length}}</span></div>
+              <div class="value-special"><span class="c2">{{developer?.feedbacks?.length}}</span></div>
               <div class="key">Feedback Total</div>
             </div>
           </div>
         </div>
         <el-divider class="detail-divider" />
       </div>
-      <div class="key" style="margin-top:15px;">employer introduce</div>
-      <v-md-preview :text="employer.introduce" ref="preview"></v-md-preview>
+      <div class="key" style="margin-top:15px;">developer introduce</div>
+      <v-md-preview :text="developer.introduce" ref="preview"></v-md-preview>
       <el-divider class="detail-divider" />
     </div>
   </div>
 
   <div class="container">
-    <div class="gva-btn-list">
-      <el-button :disabled="!(walletAddress && walletAddress == address)" type="primary" @click="dialogVisible = true;">Add Task</el-button>
-    </div>
     <el-table :data="tasks">
       <el-table-column align="left" show-overflow-tooltip label="title" min-width="100" prop="title">
         <template #default="scope">
@@ -84,58 +81,19 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Add Task">
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="115px">
-        <el-form-item label="creator" prop="creator">
-          <el-input v-model="form.creator" disabled autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="title" prop="title">
-          <el-input v-model="form.title" autocomplete="off" placeholder="task title" />
-        </el-form-item>
-        <el-form-item label="remuneration" prop="remuneration">
-          <el-input v-model="form.remuneration" @input="form.remuneration = form.remuneration.replace(/[^\d]/g, '')" placeholder="remuneration for developer">
-            <template #append>WRMB</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="deposit" prop="deposit">
-          <el-input v-model="form.deposit" @input="form.deposit = form.deposit.replace(/[^\d]/g, '')" placeholder="deposit for this task">
-            <template #append>WRMB</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="collateral" prop="collateral">
-          <el-input v-model="form.collateral" @input="form.collateral = form.collateral.replace(/[^\d]/g, '')" placeholder="collateral that developer are required to pay for tasks">
-            <template #append>WRMB</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="deadline" prop="deadline">
-          <el-input v-model="form.deadline" placeholder="the latest block height for task submission" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="description" prop="description">
-          <v-md-editor v-model="form.description" height="400px"></v-md-editor>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="closeDialog">Cancel</el-button>
-          <el-button type="primary" @click="submitCreateTask">OK</el-button>
-        </div>
-      </template>
-    </el-dialog>
-
   </div>
-
 </template>
 
 <script>
 import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
+import { Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus';
 import { useRoute } from 'vue-router';
 import { formatTaskStatus } from '@/utils/sideline';
 
 export default {
-  name: 'Employer',
+  name: 'Developer',
 
   setup() {
     // store
@@ -144,36 +102,24 @@ export default {
     const { address } = route.params
     const walletAddress = computed(() => $s.getters['common/wallet/address'])
     const tasks = ref([])
-    const employer = ref({})
+    const developer = ref({})
     const preview = ref();
-    const init = { title: "php task", description: "simple task", remuneration: "100", deposit: "200", collateral: "0", deadline: "88888888" }
-    const form = ref({ creator: address })
-    const formRef = ref(null);
-    const dialogVisible = ref(false)
-    const rules = ref({
-      creator: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      title: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      description: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      remuneration: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      deposit: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      collateral: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-      deadline: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
-    });
 
     onBeforeMount(async () => {
       getData()
     });
 
     watch(() => walletAddress.value, async () => {
-      form.value.creator = walletAddress.value
+      developer.value.creator = address.value
     })
 
     const getData = async () => {
-      let reply = await $s.dispatch('sideline.sideline/QueryEmployer', { params: { index: address } });
-      employer.value = reply.employer
+      let reply = await $s.dispatch('sideline.sideline/QueryDeveloper', { params: { index: address } });
+      developer.value = reply.developer
+      console.log(reply.developer)
 
       let items = []
-      for (const id of reply.employer.taskIds) {
+      for (const id of reply.developer.taskIds) {
         let reply = await $s.dispatch('sideline.sideline/QueryTask', { params: { id } });
         items.push(reply.Task)
       }
@@ -182,30 +128,28 @@ export default {
 
     const initForm = () => {
       formRef.value.resetFields();
-      form.value.creator = walletAddress.value;
-      dialogVisible.value = false;
+      developer.value = { creator: address.value, introduce: '' };
     };
 
     const closeDialog = () => {
       initForm()
     }
 
-    const submitCreateTask = () => {
+    const submitRegistDeveloper = () => {
       formRef.value.validate(async (valid) => {
-        const denom = "wrmb"
-        const { value } = form
-        if (valid && value?.introduce != "") {
 
+        if (valid && developer.value.introduce != "") {
+          const { value } = developer
           console.log("value", value)
-          const loading = ElLoading.service({ lock: true, text: 'create task...' });
+          const loading = ElLoading.service({ lock: true, text: 'registing developer...' });
           try {
             const fee = [{ denom: "wrmb", amount: "20000000" }]
-            const reply = await $s.dispatch("sideline.sideline/sendMsgCreateTask", { value: { ...value, remuneration: value.remuneration + denom, deposit: value.deposit + denom, collateral: value.collateral + denom }, fee });
+            const reply = await $s.dispatch("sideline.sideline/sendMsgRegistDeveloper", { value, fee });
             console.log("reply", reply)
             if (reply.code == 0) {
               ElMessage({
                 type: 'success',
-                message: 'create task success',
+                message: 'regist developer success',
               })
               await getData()
               closeDialog()
@@ -216,7 +160,7 @@ export default {
               })
             }
           } catch (error) {
-            console.log("create task error", error)
+            console.log("regist developer error", error)
             ElMessage({
               type: 'error',
               message: error,
@@ -234,19 +178,15 @@ export default {
 
     return {
       address,
-      walletAddress,
       tasks,
       preview,
-      employer,
-      dialogVisible,
-      rules,
-      form,
-      formRef,
+      developer,
+      Plus,
       getData,
       initForm,
       closeDialog,
-      submitCreateTask,
-      formatTaskStatus
+      formatTaskStatus,
+      submitRegistDeveloper,
     }
   }
 }

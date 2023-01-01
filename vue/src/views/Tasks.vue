@@ -1,39 +1,34 @@
 <template>
   <div class="container">
     <div class="gva-btn-list">
-      <el-button type="primary" :disabled="!address" @click="dialogVisible = true;">Regist Employer</el-button>
+      <el-button type="primary" :disabled="!address" @click="dialogVisible = true;">Create Task</el-button>
     </div>
     <!-- <el-divider /> -->
-    <el-table :data="employers">
-      <el-table-column align="left" min-width="100" label="avatar">
-        <template #default="scope">
-          <el-avatar :src="scope.row.avatar"> <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" /> </el-avatar>
-        </template>
-      </el-table-column>
-      <el-table-column align="left" show-overflow-tooltip label="name" min-width="100" prop="name">
+    <el-table :data="tasks">
+      <el-table-column align="left" show-overflow-tooltip label="title" min-width="100" prop="title">
         <template #default="scope">
           <div class="nowrap">
-            <router-link show-overflow-tooltip :to="('/employer/'+scope.row.address)">{{scope.row.name}}</router-link>
+            <router-link show-overflow-tooltip :to="('/task/'+scope.row.id)">{{scope.row.title}}</router-link>
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="introduce" show-overflow-tooltip min-width="100" prop="introduce" />
-      <el-table-column align="left" label="email" show-overflow-tooltip min-width="100" prop="email" />
-      <el-table-column align="left" label="address" show-overflow-tooltip min-width="180" prop="address" />
-      <el-table-column align="left" width="80" label="task">
-        <template #default="scope">{{ scope.row.taskIds.length }}</template>
-      </el-table-column>
-      <el-table-column align="left" width="90" label="feedback">
-        <template #default="scope">{{ scope.row.feedbacks.length }}</template>
+      <el-table-column align="left" label="description" show-overflow-tooltip min-width="100" prop="description" />
+      <el-table-column align="left" label="employer" show-overflow-tooltip min-width="100" prop="employer" />
+      <el-table-column align="left" label="remuneration" show-overflow-tooltip min-width="100" prop="remuneration" />
+      <el-table-column align="left" label="deposit" show-overflow-tooltip min-width="100" prop="deposit" />
+      <el-table-column align="left" label="collateral" show-overflow-tooltip min-width="100" prop="collateral" />
+      <el-table-column align="left" label="deadline" show-overflow-tooltip min-width="100" prop="deadline" />
+      <el-table-column align="left" min-width="100" label="status">
+        <template #default="scope">{{ formatTaskStatus(scope.row.status) }}</template>
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
-          <el-button icon="tickets" size="small" type="primary" link @click="toDetailEmployer(scope.row)">DETAIL</el-button>
+          <el-button icon="tickets" size="small" type="primary" link @click="toDetailTask(scope.row)">DETAIL</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Regist Employer">
+    <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Add Task">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
         <el-form-item label="creator" prop="creator">
           <el-input v-model="form.creator" disabled autocomplete="off" />
@@ -67,17 +62,18 @@ import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElLoading } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { formatTaskStatus } from '@/utils/sideline';
 
 export default {
-  name: 'Employers',
+  name: 'Tasks',
 
   setup() {
     // store
     const $s = useStore()
     const router = useRouter();
     const address = computed(() => $s.getters['common/wallet/address'])
-    const employers = ref([])
-    const form = ref({})
+    const tasks = ref([])
+    const form = ref({ creator: address.value })
     const formRef = ref(null);
     const dialogVisible = ref(false)
     const rules = ref({
@@ -97,9 +93,9 @@ export default {
     })
 
     const getData = async () => {
-      let reply = await $s.dispatch('sideline.sideline/QueryEmployerAll', {});
-      console.log("QueryEmployerAll", reply)
-      employers.value = reply.employer
+      let reply = await $s.dispatch('sideline.sideline/QueryTaskAll', {});
+      console.log("QueryTaskAll", reply)
+      tasks.value = reply.Task
     }
 
     const initForm = () => {
@@ -153,16 +149,16 @@ export default {
       });
     }
 
-    const toDetailEmployer = (row) => {
+    const toDetailTask = (row) => {
       router.push({
-        name: 'employer',
+        name: 'task',
         params: row,
       });
     }
 
     return {
       address,
-      employers,
+      tasks,
       dialogVisible,
       rules,
       form,
@@ -171,7 +167,8 @@ export default {
       initForm,
       closeDialog,
       submitRegistEmployer,
-      toDetailEmployer
+      toDetailTask,
+      formatTaskStatus
     }
   }
 }

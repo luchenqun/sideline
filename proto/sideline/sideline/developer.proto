@@ -14,7 +14,6 @@ message Developer {
   string major = 8;
   repeated string skills = 9;
   repeated uint64 taskIds = 10;
-  repeated string feedbacks = 11;
   
 }
 

@@ -44722,10 +44722,6 @@ paths:
                       items:
                         type: string
                         format: uint64
-                    feedbacks:
-                      type: array
-                      items:
-                        type: string
               pagination:
                 type: object
                 properties:
@@ -44869,10 +44865,6 @@ paths:
                     items:
                       type: string
                       format: uint64
-                  feedbacks:
-                    type: array
-                    items:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -44930,10 +44922,6 @@ paths:
                       items:
                         type: string
                         format: uint64
-                    feedbacks:
-                      type: array
-                      items:
-                        type: string
               pagination:
                 type: object
                 properties:
@@ -45069,10 +45057,6 @@ paths:
                     items:
                       type: string
                       format: uint64
-                  feedbacks:
-                    type: array
-                    items:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -45192,6 +45176,10 @@ paths:
                     status:
                       type: string
                       format: uint64
+                    feedbackByEmployer:
+                      type: string
+                    feedbackByDeveloper:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -45353,6 +45341,10 @@ paths:
                   status:
                     type: string
                     format: uint64
+                  feedbackByEmployer:
+                    type: string
+                  feedbackByDeveloper:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -74960,10 +74952,6 @@ definitions:
         items:
           type: string
           format: uint64
-      feedbacks:
-        type: array
-        items:
-          type: string
   sideline.sideline.Employer:
     type: object
     properties:
@@ -74984,10 +74972,6 @@ definitions:
         items:
           type: string
           format: uint64
-      feedbacks:
-        type: array
-        items:
-          type: string
   sideline.sideline.MsgCancelTaskResponse:
     type: object
   sideline.sideline.MsgCreateTaskResponse:
@@ -75052,10 +75036,6 @@ definitions:
               items:
                 type: string
                 format: uint64
-            feedbacks:
-              type: array
-              items:
-                type: string
       pagination:
         type: object
         properties:
@@ -75107,10 +75087,6 @@ definitions:
               items:
                 type: string
                 format: uint64
-            feedbacks:
-              type: array
-              items:
-                type: string
       pagination:
         type: object
         properties:
@@ -75188,6 +75164,10 @@ definitions:
             status:
               type: string
               format: uint64
+            feedbackByEmployer:
+              type: string
+            feedbackByDeveloper:
+              type: string
       pagination:
         type: object
         properties:
@@ -75245,10 +75225,6 @@ definitions:
             items:
               type: string
               format: uint64
-          feedbacks:
-            type: array
-            items:
-              type: string
   sideline.sideline.QueryGetEmployerResponse:
     type: object
     properties:
@@ -75272,10 +75248,6 @@ definitions:
             items:
               type: string
               format: uint64
-          feedbacks:
-            type: array
-            items:
-              type: string
   sideline.sideline.QueryGetTaskResponse:
     type: object
     properties:
@@ -75325,6 +75297,10 @@ definitions:
           status:
             type: string
             format: uint64
+          feedbackByEmployer:
+            type: string
+          feedbackByDeveloper:
+            type: string
   sideline.sideline.QueryParamsResponse:
     type: object
     properties:
@@ -75378,3 +75354,7 @@ definitions:
       status:
         type: string
         format: uint64
+      feedbackByEmployer:
+        type: string
+      feedbackByDeveloper:
+        type: string

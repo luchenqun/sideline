@@ -43,6 +43,16 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 	if err != nil {
 		panic(err)
 	}
+	collateral, err := sdk.ParseCoinNormalized(msg.Collateral)
+	if err != nil {
+		panic(err)
+	}
+
+	// 金额都必须大于0
+	if remuneration.Amount.IsZero() || deposit.Amount.IsZero() || collateral.Amount.IsZero() {
+		return nil, errors.Wrapf(types.ErrCoinAmount, "coin remuneration = %s, deposit = %s, collateral = %s", msg.Remuneration, msg.Deposit, msg.Collateral)
+	}
+
 	coin := remuneration.Add(deposit)
 
 	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, employerAddress, types.ModuleName, sdk.Coins{coin})

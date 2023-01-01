@@ -11,7 +11,6 @@ message Employer {
   string avatar = 5;
   string address = 6;
   repeated uint64 taskIds = 7;
-  repeated string feedbacks = 8;
   
 }
 

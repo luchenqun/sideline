@@ -27,6 +27,8 @@ export default {
     let navbarLinks = [
       { name: "Portfolio", url: "/portfolio" },
       { name: "Employers", url: "/employers" },
+      { name: "Developers", url: "/developers" },
+      { name: "Tasks", url: "/tasks" },
     ];
 
     // computed
