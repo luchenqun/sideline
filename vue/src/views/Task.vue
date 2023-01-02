@@ -375,7 +375,7 @@ export default {
         })
         return;
       }
-      ElMessageBox.confirm(`Please ensure that developer not completed the task before submit undone. Otherwise, the developer have rights initiate arbitration. If you fail, you will lose your deposit(${task.value.deposit}) and remuneration(${task.value.remuneration}) , continue?`, 'Apply Task', vnode)
+      ElMessageBox.confirm(`Please ensure that developer not completed the task before submit undone. Otherwise, the developer have rights initiate arbitration. If you fail, you will lose your deposit(${task.value.deposit}) and remuneration(${task.value.remuneration}) , continue?`, 'Undone Task', vnode)
         .then(async () => {
           const loading = ElLoading.service({ lock: true, text: 'undonging task...' });
           try {
@@ -504,7 +504,7 @@ export default {
         })
         return;
       }
-      ElMessageBox.confirm(`After start judge task, the validator will vote. the result for employer, win: it will send back you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) and transfer developer's collateral(${task.value.collateral}) to you, lose: send you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) to developer. the result for developer are the same! continue?`, 'Fail Task', vnode)
+      ElMessageBox.confirm(`After start judge task, the validator will vote. the result for employer, win: it will send back you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) and transfer developer's collateral(${task.value.collateral}) to you, lose: send you remuneration(${task.value.remuneration}) and deposit(${task.value.deposit}) to developer. the result for developer are the same! continue?`, 'Start Judge Task', vnode)
         .then(async () => {
           const loading = ElLoading.service({ lock: true, text: 'start judge task...' });
           try {
@@ -563,7 +563,7 @@ export default {
         })
     }
     const submitJudgeTask = async () => {
-      ElMessageBox.confirm(`Excute judge results, continue?`, 'Apply Task', vnode)
+      ElMessageBox.confirm(`Excute judge results, continue?`, 'Judge Task', vnode)
         .then(async () => {
           const loading = ElLoading.service({ lock: true, text: 'judge task...' });
           try {
