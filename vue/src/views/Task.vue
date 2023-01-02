@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="container">
-    <!-- <el-divider class="detail-divider" /> -->
+    <el-alert v-if="msg" style="margin:0px 0px 15px 0px;" :title="msg" effect="dark" :closable="false" type="warning" />
     <div class="detail-box">
       <div class="detail1">
         <div class="left">
@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, ref, watch } from 'vue'
+import { computed, onBeforeMount, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import { useRoute } from 'vue-router';
@@ -190,10 +190,31 @@ export default {
     const rules = ref({
       deliver: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
     });
-
+    const blockHeight = ref(0)
+    const tid = ref(undefined)
+    const msg = ref("")
+    const params = ref({})
 
     onBeforeMount(async () => {
       getData()
+      tid.value = setInterval(() => {
+        const block = $s?.state?.common?.blocks?.blocks?.at(-1)
+        blockHeight.value = parseInt(block?.height || 0)
+        msg.value = `A new block is generated in about 1s, The current block height is ${blockHeight.value}.`
+        if (task.value.status == 1 || task.value.status == 3) {
+          msg.value = msg.value + ` The task must be submitted before generate ${task.value.deadline - blockHeight.value} new blocks.`
+        }
+        if (task.value.status == 2) {
+          msg.value = msg.value + ` After the developer submit task, the number of confirm blocks to employees is ${params.value.minConfirmSubmitHeight}。So there are only have ${parseInt(task.value.deliverHeight) + params.value.minConfirmSubmitHeight - blockHeight.value} blocks left for employees to confirm.`
+        }
+        if (task.value.status == 6) {
+          msg.value = msg.value + ` After the developer or employer start judge task, the number of vote blocks to validators is ${params.value.minConfirmJudgeHeight}。So there are only have ${parseInt(task.value.judgeHeight) + params.value.minConfirmJudgeHeight - blockHeight.value} blocks left for validator to vote.`
+        }
+      }, 1000)
+    });
+
+    onUnmounted(async () => {
+      clearInterval(tid.value)
     });
 
     watch(() => address.value, async () => {
@@ -204,6 +225,11 @@ export default {
       let reply = await $s.dispatch('sideline.sideline/QueryTask', { params: { id } });
       task.value = reply.Task
       form.value.deliver = task.value.deliver;
+
+      reply = await $s.dispatch('sideline.sideline/QueryParams', {});
+      // params.value = reply.params
+      params.value.minConfirmJudgeHeight = parseInt(reply?.params?.minConfirmJudgeHeight || 0)
+      params.value.minConfirmSubmitHeight = parseInt(reply?.params?.minConfirmSubmitHeight || 0)
     }
 
     const initForm = () => {
@@ -562,6 +588,8 @@ export default {
     }
 
     return {
+      blockHeight,
+      msg,
       id,
       address,
       preview,

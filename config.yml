@@ -42,6 +42,6 @@ genesis:
         inflation_min: "0.000000000000000000"
     sideline:
       params:
-        minConfirmJudgeHeight: 601
-        minConfirmSubmitHeight: 301
+        minConfirmJudgeHeight: 600
+        minConfirmSubmitHeight: 300
 

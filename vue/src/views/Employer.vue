@@ -70,6 +70,7 @@
     </el-table>
 
     <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Add Task">
+      <el-alert style="margin:-20px 0px 10px 0px;" :title="'A new block is generated in about 1s, The current block height is ' + blockHeight" effect="dark" :closable="false" type="warning" />
       <el-form ref="formRef" :model="form" :rules="rules" label-width="115px">
         <el-form-item label="creator" prop="creator">
           <el-input v-model="form.creator" disabled autocomplete="off" />
@@ -112,7 +113,7 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
+import { computed, onBeforeMount, ref, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElLoading } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
@@ -144,10 +145,20 @@ export default {
       collateral: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
       deadline: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
     });
+    const blockHeight = ref(0)
+    const tid = ref(undefined)
 
     onBeforeMount(async () => {
       getData()
       form.value.creator = walletAddress.value
+      tid.value = setInterval(() => {
+        const block = $s?.state?.common?.blocks?.blocks?.at(-1)
+        blockHeight.value = block?.height || 0
+      }, 1000)
+    });
+
+    onUnmounted(async () => {
+      clearInterval(tid.value)
     });
 
     watch(() => walletAddress.value, async () => {
@@ -226,6 +237,7 @@ export default {
     }
 
     return {
+      blockHeight,
       address,
       walletAddress,
       tasks,

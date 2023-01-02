@@ -93,7 +93,7 @@ export default {
     const address = computed(() => $s.getters['common/wallet/address'])
     const developers = ref([])
     const init = { name: "luke", avatar: "https://b.lucq.fun/images/admin.jpg", email: "luke@qq.com", introduce: "", education: "长沙理工大学", major: "计算机科学与技术", skills: ["React"] }
-    const form = ref(init)
+    const form = ref({})
     const formRef = ref(null);
     const dialogVisible = ref(false)
     const rules = ref({
