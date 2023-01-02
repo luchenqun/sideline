@@ -33,7 +33,7 @@ func (k msgServer) SubmitTask(goCtx context.Context, msg *types.MsgSubmitTask) (
 	}
 
 	task.Deliver = msg.Deliver
-	task.Status = types.TaskStatusSubmited
+	task.Status = types.TaskStatusSubmitted
 	task.DeliverHeight = uint64(ctx.BlockHeight())
 
 	k.SetTask(ctx, task)

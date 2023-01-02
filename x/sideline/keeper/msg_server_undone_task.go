@@ -16,7 +16,7 @@ func (k msgServer) UndoneTask(goCtx context.Context, msg *types.MsgUndoneTask) (
 	if !found {
 		return nil, errors.Wrapf(types.ErrTaskID, "task id = %d is not exist", msg.Id)
 	}
-	if !(task.Status == types.TaskStatusSubmited) {
+	if !(task.Status == types.TaskStatusSubmitted) {
 		return nil, errors.Wrapf(types.ErrTaskStatus, "task status = %d, forbid undone this task", task.Status)
 	}
 

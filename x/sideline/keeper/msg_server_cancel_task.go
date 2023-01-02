@@ -42,7 +42,7 @@ func (k msgServer) CancelTask(goCtx context.Context, msg *types.MsgCancelTask) (
 		return nil, sdkError
 	}
 
-	task.Status = types.TaskStatusCanced
+	task.Status = types.TaskStatusCanceled
 
 	k.SetTask(ctx, task)
 

@@ -15,4 +15,6 @@ func TestGetParams(t *testing.T) {
 	k.SetParams(ctx, params)
 
 	require.EqualValues(t, params, k.GetParams(ctx))
+	require.EqualValues(t, params.MinConfirmSubmitHeight, k.MinConfirmSubmitHeight(ctx))
+	require.EqualValues(t, params.MinConfirmJudgeHeight, k.MinConfirmJudgeHeight(ctx))
 }

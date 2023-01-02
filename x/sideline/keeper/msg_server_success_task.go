@@ -19,12 +19,12 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 
 	if task.Employer == msg.Creator {
 		// 只要有开发者提交过任务，雇佣者就可以标记为成功
-		if !(task.Status == types.TaskStatusSubmited || task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusJudging) {
+		if !(task.Status == types.TaskStatusSubmitted || task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusJudging) {
 			return nil, errors.Wrapf(types.ErrTaskStatus, "nobody's doing your task")
 		}
 	} else if task.Developer == msg.Creator {
 		// 开发者提交了任务结果，但是雇佣者不确认，超过一定高度，我们就可以发起交易确认任务已经做完了
-		if !(task.Status == types.TaskStatusSubmited && uint64(ctx.BlockHeight()) > task.DeliverHeight+types.MinConfirmSubmitHeight) {
+		if !(task.Status == types.TaskStatusSubmitted && uint64(ctx.BlockHeight()) > task.DeliverHeight+k.MinConfirmSubmitHeight(ctx)) {
 			return nil, errors.Wrapf(types.ErrTaskStatus, "It's too early to confirm")
 		}
 	} else {

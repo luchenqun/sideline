@@ -24,7 +24,7 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 		}
 	} else if task.Developer == msg.Creator {
 		// 开发者能置为失败的状态
-		if !(task.Status == types.TaskStatusDoing || task.Status == types.TaskStatusSubmited || task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusJudging) {
+		if !(task.Status == types.TaskStatusDoing || task.Status == types.TaskStatusSubmitted || task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusJudging) {
 			return nil, errors.Wrapf(types.ErrTaskStatus, "status = %d forbid fail task", task.Status)
 		}
 	} else {

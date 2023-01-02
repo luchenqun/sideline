@@ -23,8 +23,8 @@ func (k msgServer) JudgeTask(goCtx context.Context, msg *types.MsgJudgeTask) (*t
 	}
 
 	// 时间未到
-	if uint64(ctx.BlockHeight()) < task.JudgeHeight+types.MinConfirmJudgeHeight {
-		return nil, errors.Wrapf(types.ErrTime, "current height = %d, right height = %d", ctx.BlockHeight(), task.JudgeHeight+types.MinConfirmJudgeHeight)
+	if uint64(ctx.BlockHeight()) < task.JudgeHeight+k.MinConfirmJudgeHeight(ctx) {
+		return nil, errors.Wrapf(types.ErrTime, "current height = %d, right height = %d", ctx.BlockHeight(), task.JudgeHeight+k.MinConfirmJudgeHeight(ctx))
 	}
 
 	// 默认开发者赢

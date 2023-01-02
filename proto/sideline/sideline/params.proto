@@ -8,5 +8,7 @@ option go_package = "sideline/x/sideline/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+
+  uint64 minConfirmSubmitHeight = 1 [(gogoproto.moretags) = "yaml:\"min_confirm_submit_height\""];
+  uint64 minConfirmJudgeHeight = 2 [(gogoproto.moretags) = "yaml:\"min_confirm_judge_height\""];
 }

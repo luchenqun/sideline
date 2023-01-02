@@ -24,7 +24,7 @@ func (k msgServer) StartJudgeTask(goCtx context.Context, msg *types.MsgStartJudg
 
 	// 雇佣者可以在开发者提交任务之后，可以发起仲裁
 	if task.Employer == msg.Creator {
-		if !(task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusSubmited) {
+		if !(task.Status == types.TaskStatusUndone || task.Status == types.TaskStatusSubmitted) {
 			return nil, errors.Wrapf(types.ErrTaskStatus, "employer = %s status = %d forbid start judge task", msg.Creator, task.Status)
 		}
 	}

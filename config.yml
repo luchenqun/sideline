@@ -1,13 +1,13 @@
 version: 1
 accounts:
   - name: alice
-    coins: ["1001000000wrmb"]
+    coins: ["10000000000001000000wrmb"]
   - name: bob
-    coins: ["5000000000wrmb"]
+    coins: ["5000000000000000000wrmb"]
   - name: employer
-    coins: ["6000000000wrmb"]
+    coins: ["6000000000000000000wrmb"]
   - name: developer
-    coins: ["8000000000wrmb"]
+    coins: ["8000000000000000000wrmb"]
 validators:
   - name: alice
     bonded: "1000000wrmb"
@@ -40,3 +40,8 @@ genesis:
         mint_denom: "wrmb"
         inflation_max: "0.000000000000000000"
         inflation_min: "0.000000000000000000"
+    sideline:
+      params:
+        minConfirmJudgeHeight: 601
+        minConfirmSubmitHeight: 301
+

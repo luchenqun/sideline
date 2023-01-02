@@ -45095,6 +45095,13 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  minConfirmSubmitHeight:
+                    type: string
+                    format: uint64
+                  minConfirmJudgeHeight:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -75004,6 +75011,13 @@ definitions:
     type: object
   sideline.sideline.Params:
     type: object
+    properties:
+      minConfirmSubmitHeight:
+        type: string
+        format: uint64
+      minConfirmJudgeHeight:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   sideline.sideline.QueryAllDeveloperResponse:
     type: object
@@ -75309,6 +75323,13 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          minConfirmSubmitHeight:
+            type: string
+            format: uint64
+          minConfirmJudgeHeight:
+            type: string
+            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   sideline.sideline.Task:
     type: object
