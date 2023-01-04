@@ -252,7 +252,7 @@ export default {
           console.log("value", value)
           const loading = ElLoading.service({ lock: true, text: 'create task...' });
           try {
-            const fee = [{ denom: "wrmb", amount: "20000000" }]
+            const fee = [{ denom: "wrmb", amount: "0" }]
             const reply = await $s.dispatch("sideline.sideline/sendMsgCreateTask", { value: { ...value, remuneration: value.remuneration + denom, deposit: value.deposit + denom, collateral: value.collateral + denom }, fee });
             console.log("reply", reply)
             if (reply.code == 0) {
@@ -348,7 +348,7 @@ export default {
           console.log("value", value)
           const loading = ElLoading.service({ lock: true, text: 'submiting task...' });
           try {
-            const fee = [{ denom: "wrmb", amount: "20000000" }]
+            const fee = [{ denom: "wrmb", amount: "0" }]
             const reply = await $s.dispatch("sideline.sideline/sendMsgSubmitTask", { value });
             console.log("reply", reply)
             if (reply.code == 0) {

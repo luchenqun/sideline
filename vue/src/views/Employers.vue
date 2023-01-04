@@ -100,7 +100,7 @@ export default {
       let reply = await $s.dispatch('sideline.sideline/QueryEmployerAll', {});
       console.log("QueryEmployerAll", reply)
       employers.value = reply.employer
-      
+
       reply = await $s.dispatch('sideline.sideline/QueryParams', {});
       registrationFee.value = reply?.params?.registrationFee || ""
     }
@@ -123,7 +123,7 @@ export default {
           console.log("value", value)
           const loading = ElLoading.service({ lock: true, text: 'registing employer...' });
           try {
-            const fee = [{ denom: "wrmb", amount: "20000000" }]
+            const fee = [{ denom: "wrmb", amount: "0" }]
             const reply = await $s.dispatch("sideline.sideline/sendMsgRegistEmployer", { value, fee });
             console.log("reply", reply)
             if (reply.code == 0) {

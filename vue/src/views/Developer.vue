@@ -153,7 +153,7 @@ export default {
           console.log("value", value)
           const loading = ElLoading.service({ lock: true, text: 'registing developer...' });
           try {
-            const fee = [{ denom: "wrmb", amount: "20000000" }]
+            const fee = [{ denom: "wrmb", amount: "0" }]
             const reply = await $s.dispatch("sideline.sideline/sendMsgRegistDeveloper", { value, fee });
             console.log("reply", reply)
             if (reply.code == 0) {
