@@ -7,7 +7,7 @@ import store from "./store";
 
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-import "./style/global.css";
+import "@/style/app.css";
 
 import VMdPreview from "@kangc/v-md-editor/lib/preview";
 import "@kangc/v-md-editor/lib/style/preview.css";

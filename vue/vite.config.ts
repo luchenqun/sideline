@@ -21,6 +21,8 @@ export default defineConfig({
     alias,
   },
   server: {
+    host: "0.0.0.0",
+    port: 5000,
     watch: {
       ignored: ["!**/node_modules/@starport/vue/src/**", "!**/node_modules/@starport/vuex/src/**"],
     },
@@ -28,6 +30,13 @@ export default defineConfig({
   plugins: [vue(), nodeResolve(), dynamicImport(), envCompatible()],
   optimizeDeps: {
     include: ["gradient-avatar", "crypto-js", "axios", "qrcode", "@cosmjs/encoding"],
+  },
+  build: {
+    rollupOptions: {
+      external: [
+        "element-plus",
+      ],
+    },
   },
   pluginOptions: {
     "style-resources-loader": {

@@ -24,34 +24,22 @@
           <div class="name">{{task.title}}</div>
           <div>
             <el-row :gutter="0">
-              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <div class="data">
                   <div class="key">remuneration</div>
                   <div class="value">{{task.remuneration}}</div>
                 </div>
               </el-col>
-              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <div class="data">
                   <div class="key">deposit</div>
                   <div class="value">{{task.deposit}}</div>
                 </div>
               </el-col>
-              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <div class="data">
                   <div class="key">collateral</div>
                   <div class="value">{{task.collateral}}</div>
-                </div>
-              </el-col>
-              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
-                <div class="data">
-                  <div class="key">deadline</div>
-                  <div class="value">{{task.deadline}}</div>
-                </div>
-              </el-col>
-              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-                <div class="data">
-                  <div class="key">status</div>
-                  <div class="value">{{formatTaskStatus(task.status)}}</div>
                 </div>
               </el-col>
             </el-row>
@@ -61,6 +49,19 @@
       <el-divider class="detail-divider" />
       <div class="detail3" style="padding-bottom:0px;">
         <el-row :gutter="0">
+                      <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                <div class="data">
+                  <div class="key">deadline</div>
+                  <div class="value">{{task.deadline}}</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                <div class="data">
+                  <div class="key">status</div>
+                  <div class="value">{{formatTaskStatus(task.status)}}</div>
+                </div>
+              </el-col>
+
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="data">
               <div class="key">employer</div>
