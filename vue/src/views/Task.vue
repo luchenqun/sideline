@@ -201,7 +201,7 @@ export default {
       tid.value = setInterval(() => {
         const block = $s?.state?.common?.blocks?.blocks?.at(-1)
         blockHeight.value = parseInt(block?.height || 0)
-        msg.value = `A new block is generated in about 1s, The current block height is ${blockHeight.value}.`
+        msg.value = `A new block is generated in about 1s, The current block height is ${blockHeight.value}.If the task is successful, ${params.value.validatorCommission}% of the remuneration will be given to the validator as a commission`
         if (task.value.status == 1 || task.value.status == 3) {
           msg.value = msg.value + ` The task must be submitted before generate ${task.value.deadline - blockHeight.value} new blocks.`
         }
@@ -231,6 +231,7 @@ export default {
       // params.value = reply.params
       params.value.minConfirmJudgeHeight = parseInt(reply?.params?.minConfirmJudgeHeight || 0)
       params.value.minConfirmSubmitHeight = parseInt(reply?.params?.minConfirmSubmitHeight || 0)
+      params.value.validatorCommission = parseInt(reply?.params?.validatorCommission || 0)
     }
 
     const initForm = () => {

@@ -38,6 +38,7 @@
     </el-table>
 
     <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Regist Developer">
+      <el-alert :title="'It takes ' + registrationFee + ' to regist and give the validator as a reward'" type="warning" effect="dark" style="margin:-20px 0px 20px 0px" />
       <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
         <el-form-item label="creator" prop="creator">
           <el-input v-model="form.creator" disabled autocomplete="off" />
@@ -106,6 +107,7 @@ export default {
       major: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
       skills: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
     });
+    const registrationFee = ref("");
     const skillOptions = [
       {
         value: 'JavaScript',
@@ -138,6 +140,9 @@ export default {
       let reply = await $s.dispatch('sideline.sideline/QueryDeveloperAll', {});
       console.log("QueryDeveloperAll", reply)
       developers.value = reply.developer
+      reply = await $s.dispatch('sideline.sideline/QueryParams', {});
+      // params.value = reply.params
+      registrationFee.value = reply?.params?.registrationFee || ""
     }
 
     const initForm = () => {
@@ -205,6 +210,7 @@ export default {
       rules,
       form,
       formRef,
+      registrationFee,
       skillOptions,
       getData,
       initForm,

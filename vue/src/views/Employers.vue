@@ -31,6 +31,7 @@
     </el-table>
 
     <el-dialog v-model="dialogVisible" :before-close="closeDialog" title="Regist Employer">
+      <el-alert :title="'It takes ' + registrationFee + ' to regist and give the validator as a reward'" type="warning" effect="dark" style="margin:-20px 0px 20px 0px" />
       <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
         <el-form-item label="creator" prop="creator">
           <el-input v-model="form.creator" disabled autocomplete="off" />
@@ -77,6 +78,7 @@ export default {
     const form = ref({})
     const formRef = ref(null);
     const dialogVisible = ref(false)
+    const registrationFee = ref("");
     const rules = ref({
       creator: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
       name: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
@@ -98,6 +100,9 @@ export default {
       let reply = await $s.dispatch('sideline.sideline/QueryEmployerAll', {});
       console.log("QueryEmployerAll", reply)
       employers.value = reply.employer
+      
+      reply = await $s.dispatch('sideline.sideline/QueryParams', {});
+      registrationFee.value = reply?.params?.registrationFee || ""
     }
 
     const initForm = () => {
@@ -165,6 +170,7 @@ export default {
       rules,
       form,
       formRef,
+      registrationFee,
       getData,
       initForm,
       closeDialog,
