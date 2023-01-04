@@ -16,7 +16,9 @@ const (
 	EventTypeVoteTask        = "vote_task"
 	EventTypeFeedbackTask    = "feedback_task"
 
-	AttributeKeyDeveloper = "developer"
-	AttributeKeyEmployer  = "employer"
-	AttributeKeyTaskId    = "task_id"
+	AttributeKeyDeveloper              = "developer"
+	AttributeKeyEmployer               = "employer"
+	AttributeKeyRegistrationFee        = "registration_fee"
+	AttributeKeyRegistrationAverageFee = "registration_average_fee"
+	AttributeKeyTaskId                 = "task_id"
 )

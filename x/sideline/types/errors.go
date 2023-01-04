@@ -14,6 +14,7 @@ var (
 	ErrTaskStatus            = sdkerrors.Register(ModuleName, 1103, "task status is forbid do this")
 	ErrPermission            = sdkerrors.Register(ModuleName, 1104, "no permission do this")
 	ErrTime                  = sdkerrors.Register(ModuleName, 1105, "this operation is not allowed at this moment")
-	ErrCoinAmount            = sdkerrors.Register(ModuleName, 1106, "coin amount must more than 0")
+	ErrCoinAmount            = sdkerrors.Register(ModuleName, 1106, "coin amount error")
 	ErrFeedback              = sdkerrors.Register(ModuleName, 1107, "You can only give feedback once")
+	ErrCoinNormalized        = sdkerrors.Register(ModuleName, 1108, "coin normalized error")
 )

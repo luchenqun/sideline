@@ -44,4 +44,5 @@ genesis:
       params:
         minConfirmJudgeHeight: 600
         minConfirmSubmitHeight: 300
-
+        registrationFee: "100wrmb"
+        validatorCommission: 10

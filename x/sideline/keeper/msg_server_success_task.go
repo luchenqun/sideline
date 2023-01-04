@@ -48,6 +48,24 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 		return nil, sdkError
 	}
 
+	// 把酬金的部分作为手续费分发给验证者，奖励验证者维护节点、参与仲裁
+	commission := sdk.NewCoin(types.SidelineDenom, remuneration.Amount.QuoRaw(100).MulRaw(int64(k.ValidatorCommission(ctx))))
+	validators := k.stakingKeeper.GetLastValidators(ctx)
+	average := sdk.NewCoin(types.SidelineDenom, commission.Amount.QuoRaw(int64(len(validators)))) // 每个验证人能分到多少
+	for i, validator := range validators {
+		validatorAddress := sdk.AccAddress(validator.GetOperator())
+		curCoin := average // 默认分平均的
+		if i == len(validators)-1 {
+			curCoin = commission // 处理除不完的情况，除不完就把剩下的给最后一个
+		} else {
+			commission = commission.Sub(average)
+		}
+		sdkError := k.bankKeeper.SendCoins(ctx, developer, validatorAddress, sdk.Coins{curCoin})
+		if sdkError != nil {
+			return nil, sdkError
+		}
+	}
+
 	// 把保证金返回给雇佣者
 	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
 	if err != nil {

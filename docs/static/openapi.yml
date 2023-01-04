@@ -45102,6 +45102,11 @@ paths:
                   minConfirmJudgeHeight:
                     type: string
                     format: uint64
+                  registrationFee:
+                    type: string
+                  validatorCommission:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -75018,6 +75023,11 @@ definitions:
       minConfirmJudgeHeight:
         type: string
         format: uint64
+      registrationFee:
+        type: string
+      validatorCommission:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   sideline.sideline.QueryAllDeveloperResponse:
     type: object
@@ -75328,6 +75338,11 @@ definitions:
             type: string
             format: uint64
           minConfirmJudgeHeight:
+            type: string
+            format: uint64
+          registrationFee:
+            type: string
+          validatorCommission:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.

@@ -11,4 +11,6 @@ message Params {
 
   uint64 minConfirmSubmitHeight = 1 [(gogoproto.moretags) = "yaml:\"min_confirm_submit_height\""];
   uint64 minConfirmJudgeHeight = 2 [(gogoproto.moretags) = "yaml:\"min_confirm_judge_height\""];
+  string registrationFee = 3 [(gogoproto.moretags) = "yaml:\"registration_fee\""];
+  uint64 validatorCommission = 4 [(gogoproto.moretags) = "yaml:\"validator_commission\""];
 }

@@ -10,15 +10,23 @@ import (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
-	KeyMinConfirmSubmitHeight = []byte("MinConfirmSubmitHeight")
-	// TODO: Determine the default value
+	KeyMinConfirmSubmitHeight            = []byte("MinConfirmSubmitHeight")
 	DefaultMinConfirmSubmitHeight uint64 = 300
 )
 
 var (
-	KeyMinConfirmJudgeHeight = []byte("MinConfirmJudgeHeight")
-	// TODO: Determine the default value
+	KeyMinConfirmJudgeHeight            = []byte("MinConfirmJudgeHeight")
 	DefaultMinConfirmJudgeHeight uint64 = 600
+)
+
+var (
+	KeyRegistrationFee     = []byte("RegistrationFee")
+	DefaultRegistrationFee = "100wrmb"
+)
+
+var (
+	KeyValidatorCommission            = []byte("ValidatorCommission")
+	DefaultValidatorCommission uint64 = 10
 )
 
 // ParamKeyTable the param key table for launch module
@@ -30,10 +38,14 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	minConfirmSubmitHeight uint64,
 	minConfirmJudgeHeight uint64,
+	registrationFee string,
+	validatorCommission uint64,
 ) Params {
 	return Params{
 		MinConfirmSubmitHeight: minConfirmSubmitHeight,
 		MinConfirmJudgeHeight:  minConfirmJudgeHeight,
+		RegistrationFee:        registrationFee,
+		ValidatorCommission:    validatorCommission,
 	}
 }
 
@@ -42,6 +54,8 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultMinConfirmSubmitHeight,
 		DefaultMinConfirmJudgeHeight,
+		DefaultRegistrationFee,
+		DefaultValidatorCommission,
 	)
 }
 
@@ -50,6 +64,8 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyMinConfirmSubmitHeight, &p.MinConfirmSubmitHeight, validateMinConfirmSubmitHeight),
 		paramtypes.NewParamSetPair(KeyMinConfirmJudgeHeight, &p.MinConfirmJudgeHeight, validateMinConfirmJudgeHeight),
+		paramtypes.NewParamSetPair(KeyRegistrationFee, &p.RegistrationFee, validateRegistrationFee),
+		paramtypes.NewParamSetPair(KeyValidatorCommission, &p.ValidatorCommission, validateValidatorCommission),
 	}
 }
 
@@ -60,6 +76,14 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateMinConfirmJudgeHeight(p.MinConfirmJudgeHeight); err != nil {
+		return err
+	}
+
+	if err := validateRegistrationFee(p.RegistrationFee); err != nil {
+		return err
+	}
+
+	if err := validateValidatorCommission(p.ValidatorCommission); err != nil {
 		return err
 	}
 
@@ -94,6 +118,32 @@ func validateMinConfirmJudgeHeight(v interface{}) error {
 
 	// TODO implement validation
 	_ = minConfirmJudgeHeight
+
+	return nil
+}
+
+// validateRegistrationFee validates the RegistrationFee param
+func validateRegistrationFee(v interface{}) error {
+	registrationFee, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	// TODO implement validation
+	_ = registrationFee
+
+	return nil
+}
+
+// validateValidatorCommission validates the ValidatorCommission param
+func validateValidatorCommission(v interface{}) error {
+	validatorCommission, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	// TODO implement validation
+	_ = validatorCommission
 
 	return nil
 }

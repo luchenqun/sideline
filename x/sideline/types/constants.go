@@ -12,3 +12,5 @@ const (
 	TaskStatusDeveloperWin
 	TaskStatusCanceled
 )
+
+const SidelineDenom = "wrmb"
