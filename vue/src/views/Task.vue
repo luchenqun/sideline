@@ -5,9 +5,9 @@
       <el-button type="primary" v-if="task.status == 0" @click="submitDoTask">Apply Task</el-button>
       <el-button type="primary" v-if="task.status == 1 || task.status == 3" @click="dialogVisible=true">Submit Task</el-button>
       <el-button type="primary" v-if="task.status == 2" @click="submitUndoneTask">Undone Task</el-button>
-      <el-button type="primary" v-if="task.status == 2 || task.status == 3" @click="submitStartJudgeTask">Start Judge Task</el-button>
+      <el-button type="primary" v-if="task.status == 2 || task.status == 3" @click="submitStartJudgeTask">Judge Task</el-button>
       <el-button type="primary" v-if="task.status == 6" @click="submitVoteTask">Vote Task</el-button>
-      <el-button type="primary" v-if="task.status == 6" @click="submitJudgeTask">Judge Task</el-button>
+      <el-button type="primary" v-if="task.status == 6 && false" @click="submitJudgeTask">Judge Task</el-button>
       <el-button type="primary" v-if="task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6" @click="submitFailTask">Fail Task</el-button>
       <el-button type="primary" v-if="task.status == 1 || task.status == 2 || task.status == 3 || task.status == 6" @click="submitSuccessTask">Success Task</el-button>
       <el-button type="primary" v-if="task.status == 4 || task.status == 5 || task.status == 7 || task.status == 8" @click="submitFeedbackTask">Feedback Task</el-button>
@@ -206,7 +206,7 @@ export default {
           msg.value = msg.value + ` The task must be submitted before generate ${task.value.deadline - blockHeight.value} new blocks.`
         }
         if (task.value.status == 2) {
-          msg.value = msg.value + ` After the developer submit task, the number of confirm blocks to employees is ${params.value.minConfirmSubmitHeight}。So there are only have ${parseInt(task.value.deliverHeight) + params.value.minConfirmSubmitHeight - blockHeight.value} blocks left for employees to confirm.`
+          msg.value = msg.value + ` After the developer submit task, the number of confirm blocks to employer is ${params.value.minConfirmSubmitHeight}。So there are only have ${parseInt(task.value.deliverHeight) + params.value.minConfirmSubmitHeight - blockHeight.value} blocks left for employer to confirm.`
         }
         if (task.value.status == 6) {
           msg.value = msg.value + ` After the developer or employer start judge task, the number of vote blocks to validators is ${params.value.minConfirmJudgeHeight}。So there are only have ${parseInt(task.value.judgeHeight) + params.value.minConfirmJudgeHeight - blockHeight.value} blocks left for validator to vote.`
