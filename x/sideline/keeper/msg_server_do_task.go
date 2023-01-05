@@ -29,10 +29,7 @@ func (k msgServer) DoTask(goCtx context.Context, msg *types.MsgDoTask) (*types.M
 	// 抵押物
 	developerAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
 
-	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
-	if err != nil {
-		panic(err)
-	}
+	collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
 
 	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, developerAddress, types.ModuleName, sdk.Coins{collateral})
 	if sdkError != nil {

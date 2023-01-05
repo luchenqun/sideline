@@ -32,20 +32,9 @@ func (k msgServer) FailTask(goCtx context.Context, msg *types.MsgFailTask) (*typ
 	}
 
 	// 扣除开发者抵押物，把保证金以及酬金返回给雇佣者
-	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
-	if err != nil {
-		panic(err)
-	}
-
-	remuneration, err := sdk.ParseCoinNormalized(task.Remuneration)
-	if err != nil {
-		panic(err)
-	}
-
-	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
-	if err != nil {
-		panic(err)
-	}
+	collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+	remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+	deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
 
 	employer, _ := sdk.AccAddressFromBech32(task.Employer)
 	sdkError := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{collateral.Add(remuneration).Add(deposit)})

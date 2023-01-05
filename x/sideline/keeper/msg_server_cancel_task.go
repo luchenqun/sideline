@@ -28,14 +28,8 @@ func (k msgServer) CancelTask(goCtx context.Context, msg *types.MsgCancelTask) (
 
 	// 退回所有的金额
 	employer, _ := sdk.AccAddressFromBech32(msg.Creator)
-	remuneration, err := sdk.ParseCoinNormalized(task.Remuneration)
-	if err != nil {
-		panic(err)
-	}
-	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
-	if err != nil {
-		panic(err)
-	}
+	remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+	deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
 	coin := remuneration.Add(deposit)
 	sdkError := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{coin})
 	if sdkError != nil {

@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"github.com/cosmos/cosmos-sdk/types/errors"
+	"cosmossdk.io/errors"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -37,15 +37,15 @@ func (k msgServer) CreateTask(goCtx context.Context, msg *types.MsgCreateTask) (
 
 	remuneration, err := sdk.ParseCoinNormalized(msg.Remuneration)
 	if err != nil {
-		panic(err)
+		return nil, errors.Wrapf(types.ErrCoinNormalized, "coin = %s", msg.Remuneration)
 	}
 	deposit, err := sdk.ParseCoinNormalized(msg.Deposit)
 	if err != nil {
-		panic(err)
+		return nil, errors.Wrapf(types.ErrCoinNormalized, "coin = %s", msg.Deposit)
 	}
 	collateral, err := sdk.ParseCoinNormalized(msg.Collateral)
 	if err != nil {
-		panic(err)
+		return nil, errors.Wrapf(types.ErrCoinNormalized, "coin = %s", msg.Collateral)
 	}
 
 	// 金额都必须大于0

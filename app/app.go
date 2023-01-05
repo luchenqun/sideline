@@ -512,7 +512,7 @@ func New(
 		app.BankKeeper,
 		app.StakingKeeper,
 	)
-	sidelineModule := sidelinemodule.NewAppModule(appCodec, app.SidelineKeeper, app.AccountKeeper, app.BankKeeper)
+	sidelineModule := sidelinemodule.NewAppModule(appCodec, app.SidelineKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

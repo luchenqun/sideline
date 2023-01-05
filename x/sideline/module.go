@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -94,6 +96,7 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
+	stakingKeeper types.StakingKeeper
 }
 
 func NewAppModule(
@@ -101,12 +104,14 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	stakingKeeper types.StakingKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
+		stakingKeeper:  stakingKeeper,
 	}
 }
 
@@ -154,6 +159,105 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
-func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	k := am.keeper
+	tasks := k.GetAllTask(ctx)
+	blockHeight := uint64(ctx.BlockHeight())
+	for _, task := range tasks {
+		// 开发者失败了
+		if task.Status == types.TaskStatusDoing && blockHeight > task.Deadline {
+			// 扣除开发者抵押物，把保证金以及酬金返回给雇佣者
+			collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+			remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+			deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
+
+			employer, _ := sdk.AccAddressFromBech32(task.Employer)
+			am.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{collateral.Add(remuneration).Add(deposit)})
+
+			task.Status = types.TaskStatusFail
+
+			k.SetTask(ctx, task)
+
+			ctx.EventManager().EmitEvents(sdk.Events{
+				sdk.NewEvent(
+					types.EventTypeFailTask,
+					sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+				),
+			})
+		}
+
+		// 超过规定高度雇佣者未确认，直接成功
+		if task.Status == types.TaskStatusSubmitted && blockHeight > task.DeliverHeight+k.MinConfirmSubmitHeight(ctx) {
+			// 把酬金给到开发者，抵押物返回给开发者
+			collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+			remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+
+			developer, _ := sdk.AccAddressFromBech32(task.Developer)
+
+			am.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, developer, sdk.Coins{collateral.Add(remuneration)})
+
+			// 把酬金的部分作为手续费分发给验证者，奖励验证者维护节点、参与仲裁
+			commission := sdk.NewCoin(types.SidelineDenom, remuneration.Amount.QuoRaw(100).MulRaw(int64(k.ValidatorCommission(ctx))))
+			validators := am.stakingKeeper.GetLastValidators(ctx)
+			average := sdk.NewCoin(types.SidelineDenom, commission.Amount.QuoRaw(int64(len(validators)))) // 每个验证人能分到多少
+			for i, validator := range validators {
+				validatorAddress := sdk.AccAddress(validator.GetOperator())
+				curCoin := average // 默认分平均的
+				if i == len(validators)-1 {
+					curCoin = commission // 处理除不完的情况，除不完就把剩下的给最后一个
+				} else {
+					commission = commission.Sub(average)
+				}
+				am.bankKeeper.SendCoins(ctx, developer, validatorAddress, sdk.Coins{curCoin})
+			}
+
+			// 把保证金返回给雇佣者
+			deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
+			employer, _ := sdk.AccAddressFromBech32(task.Employer)
+			am.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{deposit})
+
+			task.Status = types.TaskStatusSuccess
+
+			k.SetTask(ctx, task)
+
+			ctx.EventManager().EmitEvents(sdk.Events{
+				sdk.NewEvent(
+					types.EventTypeSuccessTask,
+					sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+				),
+			})
+		}
+
+		// 投票结束啦
+		if task.Status == types.TaskStatusJudging && blockHeight > task.JudgeHeight+k.MinConfirmJudgeHeight(ctx) {
+			// 默认开发者赢
+			winner, _ := sdk.AccAddressFromBech32(task.Developer)
+			task.Status = types.TaskStatusDeveloperWin
+
+			// 因为默认是开发者赢，所以我们只要判断什么情况下雇佣者赢就完事了
+			// 情况1: 原告是雇佣者，且赞同投票大（默认投票数一样时，原告赢）。情况2: 原告是开发者，给开发者投反对票多
+			if (task.Accuser == task.Employer && task.VoteYes >= task.VoteNo) || (task.Accuser == task.Developer && task.VoteNo > task.VoteYes) {
+				winner, _ = sdk.AccAddressFromBech32(task.Employer)
+				task.Status = types.TaskStatusEmployerWin
+			}
+
+			collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+			remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+			deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
+
+			// 赢家通吃
+			coins := sdk.Coins{collateral.Add(remuneration).Add(deposit)}
+			am.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, winner, coins)
+
+			k.SetTask(ctx, task)
+
+			ctx.EventManager().EmitEvents(sdk.Events{
+				sdk.NewEvent(
+					types.EventTypeJudgeTask,
+					sdk.NewAttribute(types.AttributeKeyTaskId, strconv.FormatUint(task.Id, 10)),
+				),
+			})
+		}
+	}
 	return []abci.ValidatorUpdate{}
 }

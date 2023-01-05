@@ -38,20 +38,9 @@ func (k msgServer) JudgeTask(goCtx context.Context, msg *types.MsgJudgeTask) (*t
 		task.Status = types.TaskStatusEmployerWin
 	}
 
-	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
-	if err != nil {
-		panic(err)
-	}
-
-	remuneration, err := sdk.ParseCoinNormalized(task.Remuneration)
-	if err != nil {
-		panic(err)
-	}
-
-	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
-	if err != nil {
-		panic(err)
-	}
+	collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+	remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
+	deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
 
 	// 赢家通吃
 	coins := sdk.Coins{collateral.Add(remuneration).Add(deposit)}

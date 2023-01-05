@@ -32,15 +32,9 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 	}
 
 	// 把酬金给到开发者，抵押物返回给开发者
-	collateral, err := sdk.ParseCoinNormalized(task.Collateral)
-	if err != nil {
-		panic(err)
-	}
+	collateral, _ := sdk.ParseCoinNormalized(task.Collateral)
+	remuneration, _ := sdk.ParseCoinNormalized(task.Remuneration)
 
-	remuneration, err := sdk.ParseCoinNormalized(task.Remuneration)
-	if err != nil {
-		panic(err)
-	}
 	developer, _ := sdk.AccAddressFromBech32(task.Developer)
 
 	sdkError := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, developer, sdk.Coins{collateral.Add(remuneration)})
@@ -67,11 +61,7 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 	}
 
 	// 把保证金返回给雇佣者
-	deposit, err := sdk.ParseCoinNormalized(task.Deposit)
-	if err != nil {
-		panic(err)
-	}
-
+	deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
 	employer, _ := sdk.AccAddressFromBech32(task.Employer)
 	sdkError = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{deposit})
 	if sdkError != nil {
