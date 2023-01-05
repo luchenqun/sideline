@@ -60,10 +60,13 @@ func (k msgServer) SuccessTask(goCtx context.Context, msg *types.MsgSuccessTask)
 		}
 	}
 
-	// 把保证金返回给雇佣者
+	// 把保证金返回给雇佣者。如果是进入了仲裁，那么相当于雇佣者认输，保证金给到开发者
 	deposit, _ := sdk.ParseCoinNormalized(task.Deposit)
-	employer, _ := sdk.AccAddressFromBech32(task.Employer)
-	sdkError = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, employer, sdk.Coins{deposit})
+	address, _ := sdk.AccAddressFromBech32(task.Employer)
+	if task.Status == types.TaskStatusJudging {
+		address = developer
+	}
+	sdkError = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, address, sdk.Coins{deposit})
 	if sdkError != nil {
 		return nil, sdkError
 	}
