@@ -1,4 +1,37 @@
 <template>
+  <div class="container" style="padding:5px 15px">
+    <div class="detail-box" style="padding;:0px">
+      <div class="detail3" style="padding:0px;">
+        <el-row :gutter="0">
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Employer</div>
+              <div class="value">{{employerBalance}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Developer</div>
+              <div class="value">{{developerBalance}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Validator</div>
+              <div class="value">{{validatorBalance}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Sideline Module</div>
+              <div class="value">{{sidelineBalance}}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+  </div>
+
   <div class="container" v-if="task.status == 0 || task.status == 1 || task.status == 2 || task.status == 3 || task.status == 4 || task.status == 5 || task.status == 6 || task.status == 7 || task.status == 8">
     <div class="gva-btn-list" style="margin-bottom:0px;">
       <el-button type="primary" v-if="task.status == 0" @click="submitCancelTask">Cancel Task</el-button>
@@ -49,18 +82,18 @@
       <el-divider class="detail-divider" />
       <div class="detail3" style="padding-bottom:0px;">
         <el-row :gutter="0">
-                      <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                <div class="data">
-                  <div class="key">deadline</div>
-                  <div class="value">{{task.deadline}}</div>
-                </div>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                <div class="data">
-                  <div class="key">status</div>
-                  <div class="value">{{formatTaskStatus(task.status)}}</div>
-                </div>
-              </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">deadline</div>
+              <div class="value">{{task.deadline}}</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">status</div>
+              <div class="value">{{formatTaskStatus(task.status)}}</div>
+            </div>
+          </el-col>
 
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="data">
@@ -182,7 +215,14 @@ export default {
     const $s = useStore()
     const route = useRoute();
     const { id } = route.params
+    const validator = ref("sl1vmuufd2aen7wkeqz7ya26f90l8c62ey9083rax")
+    const validatorBalance = ref("")
+    const sideline = ref("sl1v7kq6jje3eq43k7eeue7vjjn9lpp0fvrmdw9wm")
+    const sidelineBalance = ref("")
+    const developerBalance = ref("")
+    const employerBalance = ref("")
     const address = computed(() => $s.getters['common/wallet/address'])
+    const balance = ref("")
     const task = ref({})
     const preview = ref();
     const form = ref({})
@@ -195,6 +235,7 @@ export default {
     const tid = ref(undefined)
     const msg = ref("")
     const params = ref({})
+    const denom = "wrmb";
 
     onBeforeMount(async () => {
       getData()
@@ -219,7 +260,10 @@ export default {
     });
 
     watch(() => address.value, async () => {
-
+      if (address.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: address.value }, query: { denom } })
+        balance.value = bal.amount + denom;
+      }
     })
 
     const getData = async () => {
@@ -232,6 +276,19 @@ export default {
       params.value.minConfirmJudgeHeight = parseInt(reply?.params?.minConfirmJudgeHeight || 0)
       params.value.minConfirmSubmitHeight = parseInt(reply?.params?.minConfirmSubmitHeight || 0)
       params.value.validatorCommission = parseInt(reply?.params?.validatorCommission || 0)
+
+      const { balance: vbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: validator.value }, query: { denom } })
+      validatorBalance.value = vbal.amount + denom;
+
+      const { balance: sbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: sideline.value }, query: { denom } })
+      sidelineBalance.value = sbal.amount + denom;
+
+
+      const { balance: dbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: task.value.developer }, query: { denom } })
+      developerBalance.value = dbal.amount + denom;
+
+      const { balance: ebal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: task.value.employer }, query: { denom } })
+      employerBalance.value = ebal.amount + denom;
     }
 
     const initForm = () => {
@@ -594,6 +651,13 @@ export default {
       msg,
       id,
       address,
+      balance,
+      validator,
+      validatorBalance,
+      sideline,
+      sidelineBalance,
+      developerBalance,
+      employerBalance,
       preview,
       task,
       dialogVisible,

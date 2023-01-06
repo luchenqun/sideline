@@ -1,4 +1,26 @@
 <template>
+  <div class="container" style="padding:5px 15px">
+    <div class="detail-box" style="padding;:0px">
+      <div class="detail3" style="padding:0px;">
+        <el-row :gutter="0">
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Employer(Keplr)</div>
+              <div v-if="address" class="value">{{walletBalance}}</div>
+              <div v-else class="value">Please connect keplr</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Sideline Module</div>
+              <div class="value">{{sidelineBalance}}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="detail-box">
       <div class="detail1">
@@ -128,7 +150,11 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const { address } = route.params
+    const balance = ref("")
+    const sideline = ref("sl1v7kq6jje3eq43k7eeue7vjjn9lpp0fvrmdw9wm")
+    const sidelineBalance = ref("")
     const walletAddress = computed(() => $s.getters['common/wallet/address'])
+    const walletBalance = ref("")
     const tasks = ref([])
     const employer = ref({})
     const preview = ref();
@@ -147,6 +173,7 @@ export default {
     });
     const blockHeight = ref(0)
     const tid = ref(undefined)
+    const denom = "wrmb";
 
     onBeforeMount(async () => {
       getData()
@@ -163,6 +190,10 @@ export default {
 
     watch(() => walletAddress.value, async () => {
       form.value.creator = walletAddress.value
+      if (walletAddress.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: walletAddress.value }, query: { denom } })
+        walletBalance.value = bal.amount + denom;
+      }
     })
 
     const getData = async () => {
@@ -175,6 +206,14 @@ export default {
         items.push(reply.Task)
       }
       tasks.value = items
+
+      if (walletAddress.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: walletAddress.value }, query: { denom } })
+        walletBalance.value = bal.amount + denom;
+      }
+
+      const { balance: sbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: sideline.value }, query: { denom } })
+      sidelineBalance.value = sbal.amount + denom;
     }
 
     const initForm = () => {
@@ -239,7 +278,11 @@ export default {
     return {
       blockHeight,
       address,
+      balance,
+      sideline,
+      sidelineBalance,
       walletAddress,
+      walletBalance,
       tasks,
       preview,
       employer,

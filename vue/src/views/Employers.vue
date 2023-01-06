@@ -1,4 +1,26 @@
 <template>
+  <div class="container" style="padding:5px 15px">
+    <div class="detail-box" style="padding;:0px">
+      <div class="detail3" style="padding:0px;">
+        <el-row :gutter="0">
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Keplr</div>
+              <div v-if="address" class="value">{{balance}}</div>
+              <div v-else class="value">Please connect keplr</div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="data">
+              <div class="key">Validator</div>
+              <div class="value">{{validatorBalance}}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="gva-btn-list">
       <el-button type="primary" :disabled="!address" @click="dialogVisible = true;">Regist Employer</el-button>
@@ -17,6 +39,7 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column align="left" label="balance" show-overflow-tooltip min-width="100" prop="balance" />
       <el-table-column align="left" label="introduce" show-overflow-tooltip min-width="100" prop="introduce" />
       <el-table-column align="left" label="email" show-overflow-tooltip min-width="100" prop="email" />
       <el-table-column align="left" label="address" show-overflow-tooltip min-width="180" prop="address" />
@@ -73,7 +96,12 @@ export default {
     // store
     const $s = useStore()
     const router = useRouter();
+    const validator = ref("sl1vmuufd2aen7wkeqz7ya26f90l8c62ey9083rax")
+    const validatorBalance = ref("")
+    const sideline = ref("sl1v7kq6jje3eq43k7eeue7vjjn9lpp0fvrmdw9wm")
+    const sidelineBalance = ref("")
     const address = computed(() => $s.getters['common/wallet/address'])
+    const balance = ref("")
     const employers = ref([])
     const form = ref({})
     const formRef = ref(null);
@@ -86,6 +114,7 @@ export default {
       email: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
       avatar: [{ required: true, message: 'This item must be filled in', trigger: 'blur' }],
     });
+    const denom = "wrmb";
 
     onBeforeMount(async () => {
       getData()
@@ -94,15 +123,34 @@ export default {
 
     watch(() => address.value, async () => {
       form.value.creator = address.value
+      if (address.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: address.value }, query: { denom } })
+        balance.value = bal.amount + denom;
+      }
     })
 
     const getData = async () => {
       let reply = await $s.dispatch('sideline.sideline/QueryEmployerAll', {});
       console.log("QueryEmployerAll", reply)
+      for (let employer of reply.employer) {
+        const { balance } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: employer.address }, query: { denom } })
+        employer.balance = balance.amount + denom;
+      }
       employers.value = reply.employer
 
       reply = await $s.dispatch('sideline.sideline/QueryParams', {});
       registrationFee.value = reply?.params?.registrationFee || ""
+
+      if (address.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: address.value }, query: { denom } })
+        balance.value = bal.amount + denom;
+      }
+
+      const { balance: vbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: validator.value }, query: { denom } })
+      validatorBalance.value = vbal.amount + denom;
+
+      const { balance: sbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: sideline.value }, query: { denom } })
+      sidelineBalance.value = sbal.amount + denom;
     }
 
     const initForm = () => {
@@ -165,6 +213,11 @@ export default {
 
     return {
       address,
+      balance,
+      validator,
+      validatorBalance,
+      sideline,
+      sidelineBalance,
       employers,
       dialogVisible,
       rules,
@@ -181,5 +234,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/style/detail.scss";
 </style>
