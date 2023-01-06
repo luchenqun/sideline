@@ -87,7 +87,7 @@
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
-          <el-button icon="tickets" size="small" type="primary" link @click="toDetailEmployer(scope.row)">DETAIL</el-button>
+          <el-button icon="tickets" size="small" type="primary" link @click="toDetailTask(scope.row)">DETAIL</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,7 +99,7 @@ import { computed, onBeforeMount, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { formatTaskStatus } from '@/utils/sideline';
 
 export default {
@@ -109,6 +109,7 @@ export default {
     // store
     const $s = useStore()
     const route = useRoute();
+    const router = useRouter();
     const { address } = route.params
     const walletAddress = computed(() => $s.getters['common/wallet/address'])
     const tasks = ref([])
@@ -143,6 +144,13 @@ export default {
 
     const closeDialog = () => {
       initForm()
+    }
+
+    const toDetailTask = (row) => {
+      router.push({
+        name: 'task',
+        params: row,
+      });
     }
 
     const submitRegistDeveloper = () => {
