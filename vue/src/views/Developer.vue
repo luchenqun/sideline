@@ -205,6 +205,7 @@ export default {
       closeDialog,
       formatTaskStatus,
       submitRegistDeveloper,
+      toDetailTask,
     }
   }
 }

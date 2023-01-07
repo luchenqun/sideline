@@ -10,9 +10,13 @@
             </div>
           </el-col>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-            <div class="data">
+            <div v-if="task.developer" class="data">
               <div class="key">Developer</div>
               <div class="value">{{developerBalance}}</div>
+            </div>
+            <div v-else class="data">
+              <div class="key">Keplr</div>
+              <div class="value">{{balance}}</div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
@@ -283,9 +287,13 @@ export default {
       const { balance: sbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: sideline.value }, query: { denom } })
       sidelineBalance.value = sbal.amount + denom;
 
-
-      const { balance: dbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: task.value.developer }, query: { denom } })
-      developerBalance.value = dbal.amount + denom;
+      if (task.value.developer) {
+        const { balance: dbal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: task.value.developer }, query: { denom } })
+        developerBalance.value = dbal.amount + denom;
+      } else if (address.value) {
+        const { balance: bal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: address.value }, query: { denom } })
+        balance.value = bal.amount + denom;
+      }
 
       const { balance: ebal } = await $s.dispatch('cosmos.bank.v1beta1/QueryBalance', { params: { address: task.value.employer }, query: { denom } })
       employerBalance.value = ebal.amount + denom;
