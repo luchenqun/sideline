@@ -82,7 +82,7 @@
       <el-table-column align="left" label="collateral" show-overflow-tooltip min-width="100" prop="collateral" />
       <el-table-column align="left" label="deadline" show-overflow-tooltip min-width="100" prop="deadline" />
       <el-table-column align="left" min-width="100" label="status">
-        <template #default="scope">{{ formatTaskStatus(scope.row.status) }}</template>
+        <template #default="scope"><span :style="{color:taskColor(scope.row.status)}">{{ formatTaskStatus(scope.row.status) }}</span></template>
       </el-table-column>
       <el-table-column align="right" label="action" width="88">
         <template #default="scope">
@@ -139,7 +139,7 @@ import { computed, onBeforeMount, ref, watch, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElLoading } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
-import { formatTaskStatus } from '@/utils/sideline';
+import { taskColor, formatTaskStatus } from '@/utils/sideline';
 
 export default {
   name: 'Employer',
@@ -296,6 +296,7 @@ export default {
       submitCreateTask,
       formatTaskStatus,
       toDetailTask,
+      taskColor,
     }
   }
 }

@@ -95,7 +95,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="data">
               <div class="key">status</div>
-              <div class="value">{{formatTaskStatus(task.status)}}</div>
+              <div class="value"><span :style="{color:taskColor(task.status)}">{{ formatTaskStatus(task.status) }}</span></div>
             </div>
           </el-col>
 
@@ -207,7 +207,7 @@ import { computed, onBeforeMount, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import { useRoute } from 'vue-router';
-import { formatTaskStatus } from '@/utils/sideline';
+import { formatTaskStatus, taskColor } from '@/utils/sideline';
 
 export default {
   name: 'Employer',
@@ -687,6 +687,7 @@ export default {
       submitStartJudgeTask,
       submitVoteTask,
       submitJudgeTask,
+      taskColor,
     }
   }
 }
